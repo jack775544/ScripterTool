@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZLs2Stf0oR3Iwd3XsjN7IgNGp+f8hcSLd1lyaTEI36xRcoaRhGPKIsPN/aEx2tCMAveP/FYMW3QGIcIAf3NC3A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Jack\\repo\\ScripterTool\\ScripterTool.Reverser\\ScripterTool.Reverser.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Jack\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Jack\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
