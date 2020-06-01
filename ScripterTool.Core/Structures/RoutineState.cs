@@ -4,6 +4,8 @@ namespace ScripterTool.Core.Structures
 {
 	public class RoutineState
 	{
-		public List<Command> Commands { get; set; }
+		public string Label { get; set; }
+
+		public List<Command> Commands { get; set; } = new List<Command>();
 	}
 }

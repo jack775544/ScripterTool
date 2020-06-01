@@ -10,6 +10,11 @@ namespace ScripterTool.Core.Structures
 
 		public bool ActiveOnStart { get; set; }
 
-		public List<List<Command>> Commands { get; set; }
+		public List<RoutineState> States { get; set; } = new List<RoutineState>();
+
+		public override string ToString()
+		{
+			return $"{Name} - {StartTime} - {ActiveOnStart}";
+		}
 	}
 }
