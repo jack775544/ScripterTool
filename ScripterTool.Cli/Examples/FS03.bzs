@@ -1,0 +1,276 @@
+
+[objects]
+
+Object1
+Object2
+Object3
+Object4
+Object5
+Object6
+Object7
+Object8
+Object9
+Object10
+Object11
+Object12
+Object13
+Object14
+Object15
+Object16
+Object17
+Object18
+Object19
+Object20
+Object21
+Object22
+Object23
+Object24
+Object25
+Object26
+Object27
+Object28
+Object29
+Object30
+Object31
+Object32
+Object33
+Object34
+Object35
+Object36
+Object37
+Object38
+
+[positions]
+
+
+[variables]
+
+Variable1, 0
+
+[text]
+
+_Text1,
+"With LT Harker dead\nyou are now incharge\nof the recycler , however\nwe need to upgrade it first\nget those scavs deployed\nwhile you're waiting."
+
+_Text2,
+"OK the recycler\nhas now been upgraded\nget it deployed and\nbegin the assualt on\nthe enemy installation\nto the north-west ."
+
+_Text3,
+"Excellent work , the enemy\ninstallation has been neutralised\nour forces are now able to\nmove out of the canyon ,\nnow lets retake that StarPort ."
+
+_Text4,
+"Commander you better get some\ndefences up here , we've\ngot a large enemy force\nfurther up the canyon , and\nthey're closing fast ."
+
+_Text5,
+"well done you have\ncleared the way\nto the Starport."
+
+_Text6,
+"You have eliminated all enemy\nbases in this area, destroy the\nenemy force blocking the way\nto the starport, and\nany extra units that arrive."
+
+//--------------------------------------------------------------------
+[routine,_Routine1,1,true]
+	GetPlayer,Object2
+	GetByLabel,Object5,"Tech"
+	Ally,5,6
+	Ally,1,2
+	SetScrap,1,40
+	SetScrap,5,20
+	SetScrap,6,20
+	Createp,Object6,"svturr",6,"turr1"
+	Createp,Object7,"svturr",6,"turr2"
+	Createp,Object8,"svturr",6,"turr3"
+	Createp,Object9,"svturr",6,"turr4"
+	Createp,Object10,"svturr",6,"turr5"
+	Createp,Object11,"svturr",6,"turr6"
+	Createp,Object29,"svturr",6,"def1"
+	Createp,Object30,"svturr",6,"def2"
+	Createp,Object31,"svturr",6,"def3"
+	Createp,Object32,"svturr",6,"def4"
+	Createp,Object33,"svturr",6,"def5"
+	Createp,Object25,"sbgtow",5,"tow1"
+	Createp,Object26,"sbgtow",5,"tow2"
+	Createp,Object27,"sbgtow",5,"tow3"
+	Createp,Object28,"sbgtow",5,"tow4"
+	Clear
+	Display,_Text1,white
+	GoTo,Object1,"Rec_path1",1
+	Createp,Object3,">sbrecy_b",5,"RecyclerEnemy"
+	Createp,Object4,">sbrecy_b",6,"RecyclerEnemy2"
+	Wait,30
+	SetPlan,"FS03.aip",5
+	SetPlan,"FS03b.aip",6
+LOC_30:
+	DistObject,Object1,Object5
+	IfGT,50,LOC_30
+	Wait,40
+	GoTo,Object1,"Rec_path1",0
+	Clear
+	Display,_Text2,white
+	RunSpeed,_Routine3,1,false
+LOC_37:
+	IsAround,Object3
+	IfEQ,1,LOC_37
+	RunSpeed,_Routine3,0,false
+	Clear
+	Display,_Text3,green
+	Wait,10
+	Createp,Object12,"ivrckt_BD",2,"spawn_1"
+	Createp,Object13,"ivrckt_BD",2,"spawn_1"
+	Createp,Object14,"ivrckt_BD",2,"spawn_1"
+	Createp,Object15,"ivrckt_BD",2,"spawn_1"
+	GoTo,Object12,"attack_1",1
+	GoTo,Object13,"attack_1",1
+	GoTo,Object14,"attack_1",1
+	GoTo,Object15,"attack_1",1
+	Wait,20
+	Clear
+	Display,_Text4,blue
+	Createp,Object16,"ivwalk_BD",2,"spawn_1"
+	Createp,Object17,"ivwalk_BD",2,"spawn_1"
+	Createp,Object18,"ivwalk_BD",2,"spawn_1"
+	GoTo,Object16,"attack_2",1
+	GoTo,Object17,"attack_2",1
+	GoTo,Object18,"attack_2",1
+	Wait,15
+	Createp,Object19,"ivsct_BD",2,"spawn_1"
+	Createp,Object20,"ivsct_BD",2,"spawn_1"
+	Createp,Object21,"ivsct_BD",2,"spawn_1"
+	GoTo,Object19,"attack_1",1
+	GoTo,Object20,"attack_1",1
+	GoTo,Object21,"attack_1",1
+	Wait,10
+	Createp,Object22,"ivtnk_BD",2,"spawn_1"
+	Createp,Object23,"ivtnk_BD",2,"spawn_1"
+	GoTo,Object22,"attack_2",1
+	GoTo,Object23,"attack_2",1
+	Wait,30
+	Createp,Object24,"svscA_D",5,"spawn_1"
+	GoToo,Object24,Object12,0
+	Createp,Object24,"svBrood_L",5,"spawn_1"
+	GoToo,Object24,Object16,0
+	Wait,5
+	Createp,Object24,"svtank_L",5,"spawn_1"
+	GoToo,Object24,Object12,0
+	Createp,Object24,"svtank_L",5,"spawn_1"
+	GoToo,Object24,Object16,0
+	Wait,10
+	Createp,Object24,"svscA_D",5,"spawn_1"
+	GoToo,Object24,Object12,0
+	Createp,Object24,"svscA_D",5,"spawn_1"
+	GoToo,Object24,Object16,0
+	Wait,15
+	Createp,Object24,"svtank_L",5,"spawn_1"
+	GoToo,Object24,Object12,0
+	Createp,Object24,"svtank_L",5,"spawn_1"
+	GoToo,Object24,Object16,0
+LOC_92:
+	Wait,20
+	Add,Variable1,1,Variable1
+	IfGT,15,LOC_111
+	Createp,Object24,"svscA_D",5,"spawn_1"
+	GoTo,Object24,"attack_1",1
+	Wait,5
+	Createp,Object24,"svBrood_L",5,"spawn_1"
+	GoTo,Object24,"attack_1",1
+	Wait,5
+	Createp,Object24,"svtank_L",5,"spawn_1"
+	GoTo,Object24,"attack_1",1
+	Wait,5
+	Createp,Object24,"svBrood_L",5,"spawn_1"
+	GoToo,Object24,Object1,0
+	Wait,5
+	Createp,Object24,"svtank_L",5,"spawn_1"
+	GoToo,Object24,Object1,0
+	IsAround,Object4
+	IfEQ,1,LOC_92
+LOC_111:
+	IsAround,Object4
+	IfEQ,1,LOC_111
+	Wait,10
+	Clear
+	Display,_Text6,green
+	Createp,Object38,"ibnav",1,"star_nav"
+	SetName,Object38,"StarPort"
+	BeaconOn,Object38
+	GoTo,Object12,"star_nav",1
+	GoTo,Object13,"star_nav",1
+	GoTo,Object14,"star_nav",1
+	GoTo,Object15,"star_nav",1
+	GoTo,Object16,"star_nav",1
+	GoTo,Object17,"star_nav",1
+	GoTo,Object18,"star_nav",1
+	GoTo,Object19,"star_nav",1
+	GoTo,Object20,"star_nav",1
+	GoTo,Object21,"star_nav",1
+	GoTo,Object22,"star_nav",1
+	GoTo,Object23,"star_nav",1
+	Createp,Object34,"Svwalk_J2",5,"finalforce1"
+	Createp,Object35,"Svwalk_L2",5,"finalforce1"
+	Createp,Object24,"Svinst_L2",5,"finalforce1"
+	Patrol,Object24,"patrol_1",1
+	Createp,Object24,"Svartl_L2",5,"finalforce1"
+	Patrol,Object24,"patrol_1",1
+	Createp,Object24,"Svinst_L2",5,"finalforce1"
+	Patrol,Object24,"patrol_1",1
+	Createp,Object24,"Svinst_L2",5,"finalforce1"
+	Patrol,Object24,"patrol_1",1
+	Createp,Object24,"Svinst_L2",5,"finalforce1"
+	Patrol,Object24,"patrol_1",1
+	Createp,Object36,"Svwalk_J2",5,"finalforce2"
+	Createp,Object37,"Svwalk_L2",5,"finalforce2"
+	Createp,Object24,"Svinst_L2",5,"finalforce2"
+	Patrol,Object24,"patrol_2",1
+	Createp,Object24,"Svartl_L2",5,"finalforce2"
+	Patrol,Object24,"patrol_2",1
+	Createp,Object24,"Svartl_L2",5,"finalforce2"
+	Patrol,Object24,"patrol_2",1
+	Createp,Object24,"Svartl_L2",5,"finalforce2"
+	Patrol,Object24,"patrol_2",1
+LOC_153:
+	Wait,60
+	Createp,Object24,"svBrood_L",5,"last_attackers"
+	GoToo,Object24,Object1,0
+	Wait,20
+	Createp,Object24,"svscA_D",5,"last_attackers"
+	GoToo,Object24,Object1,0
+	Wait,20
+	IsAround,Object34
+	IfEQ,1,LOC_153
+LOC_162:
+	Wait,20
+	Createp,Object24,"svscA_D",5,"last_attackers"
+	GoToo,Object24,Object1,0
+	IsAround,Object35
+	IfEQ,1,LOC_162
+LOC_167:
+	Wait,20
+	Createp,Object24,"svBrood_L",5,"last_attackers"
+	GoToo,Object24,Object1,0
+	IsAround,Object36
+	IfEQ,1,LOC_167
+LOC_172:
+	Wait,20
+	Createp,Object24,"svscA_D",5,"last_attackers"
+	GoToo,Object24,Object1,0
+	IsAround,Object37
+	IfEQ,1,LOC_172
+	Wait,20
+	Clear
+	Display,_Text5,green
+	Succeed,16,"FS03win.des"
+
+//--------------------------------------------------------------------
+[routine,_Routine2,1,false]
+LOC_182:
+	GetByLabel,Object1,"Recycler"
+	IsAround,Object1
+	IfEQ,1,LOC_182
+	Fail,10,"FS03fail.des"
+
+//--------------------------------------------------------------------
+[routine,_Routine3,0,false]
+LOC_187:
+	IsAround,Object4
+	IfEQ,1,LOC_187
+	Fail,10,"FS03fail2.des"
+

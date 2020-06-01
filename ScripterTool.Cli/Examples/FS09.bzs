@@ -1,0 +1,237 @@
+
+[objects]
+
+Object1
+Object2
+Object3
+Object4
+Object5
+Object6
+Object7
+Object8
+Object9
+Object10
+Object11
+Object12
+Object13
+Object14
+Object15
+Object16
+Object17
+Object18
+Object19
+
+[positions]
+
+
+[variables]
+
+
+[text]
+
+_Text1,
+"Protect the Recycler convoy as\nit makes it's way through the\njungle. The more swarm AA units\nyou destroy the more dropships\nwe can send in."
+
+_Text2,
+"Well done you've taken out a\ngroup of AA units , A Dropship\n with reinforcements is on it's\nway down to you."
+
+_Text3,
+"Congratulations you made it\nthrough , now establish a base\n and take out the swarm\ninstallation to the\nnorth west."
+
+//--------------------------------------------------------------------
+[routine,_Routine1,1,true]
+	GetByLabel,Object6,"recy"
+	GetByLabel,Object2,"escort1"
+	GetByLabel,Object3,"escort2"
+	GetByLabel,Object4,"escort3"
+	GetByLabel,Object5,"escort4"
+	SetScrap,1,40
+	GoTo,Object6,"recpath_1",1
+	Wait,2
+	Follow,Object2,Object6,1
+	Wait,2
+	Follow,Object3,Object6,1
+	Wait,2
+	Follow,Object4,Object6,1
+	Wait,2
+	Follow,Object5,Object6,1
+	Clear
+	Display,_Text1,white
+	Createp,Object7,"svscA_D",6,"swarm1"
+	Attack,Object7,Object6,1
+	Wait,2
+	Createp,Object7,"svscA_D",6,"swarm1"
+	Attack,Object7,Object6,1
+	Wait,2
+	Createp,Object7,"svscout_L",6,"swarm1"
+	Attack,Object7,Object6,1
+	Wait,2
+	Createp,Object7,"svscout_L",6,"swarm1"
+	Attack,Object7,Object6,1
+	Wait,2
+	Createp,Object7,"svscout_L",6,"swarm1"
+	Attack,Object7,Object6,1
+	Wait,2
+LOC_32:
+	Createp,Object7,"svscout_L",6,"swarm2"
+	Attack,Object7,Object6,1
+	Wait,2
+	Createp,Object7,"svscout_L",6,"swarm2"
+	Attack,Object7,Object6,1
+	Wait,50
+	GetCommand,Object6
+	IfEQ,0,LOC_41
+	JumpTo,LOC_32
+LOC_41:
+	Wait,40
+	GoTo,Object6,"recpath_2",1
+	Wait,10
+LOC_44:
+	Createp,Object7,"svscout_L",6,"swarm2"
+	Attack,Object7,Object6,1
+	Wait,2
+	Createp,Object7,"svscout_L",6,"swarm2"
+	Attack,Object7,Object6,1
+	Wait,50
+	GetCommand,Object6
+	IfEQ,0,LOC_53
+	JumpTo,LOC_44
+LOC_53:
+	Wait,40
+	GoTo,Object6,"recpath_3",1
+	Wait,10
+LOC_56:
+	Createp,Object7,"svscout_J",6,"swarm3"
+	Attack,Object7,Object6,1
+	Wait,2
+	Createp,Object7,"svtank_L",6,"swarm3"
+	Attack,Object7,Object6,1
+	Wait,50
+	GetCommand,Object6
+	IfEQ,0,LOC_65
+	JumpTo,LOC_56
+LOC_65:
+	Wait,40
+	GoTo,Object6,"recpath_4",1
+	Wait,10
+LOC_68:
+	Createp,Object7,"svscout_J",6,"swarm4"
+	Attack,Object7,Object6,1
+	Wait,2
+	Createp,Object7,"svtank_L",6,"swarm4"
+	Attack,Object7,Object6,1
+	Wait,2
+	Createp,Object7,"svinst_J",6,"swarm4"
+	Attack,Object7,Object6,1
+	Wait,50
+	GetCommand,Object6
+	IfEQ,0,LOC_80
+	JumpTo,LOC_68
+LOC_80:
+	Wait,20
+	GoTo,Object6,"base",0
+	GoTo,Object2,"base",0
+	GoTo,Object3,"base",0
+	GoTo,Object4,"base",0
+	GoTo,Object5,"base",0
+	Clear
+	Display,_Text3,green
+	Createp,Object19,"sbrecy00",6,"swarmrec"
+	SetScrap,6,40
+	SetPlan,"FS09_s1.aip",6
+LOC_91:
+	IsAround,Object19
+	IfEQ,1,LOC_91
+	Succeed,10,"FS09win.des"
+
+//--------------------------------------------------------------------
+[routine,_Routine2,1,false]
+	GetByLabel,Object8,"swarmAA1"
+	GetByLabel,Object9,"swarmAA2"
+	GetByLabel,Object10,"swarmAA3"
+LOC_98:
+	IsAround,Object8
+	IfEQ,1,LOC_98
+	IsAround,Object9
+	IfEQ,1,LOC_98
+	IsAround,Object10
+	IfEQ,1,LOC_98
+	Clear
+	Display,_Text2,green
+	Wait,15
+	Createp,Object18,"ivsct_BD",1,"troops"
+	SetGroup,Object18,5
+	Createp,Object18,"ivsct_BD",1,"troops"
+	SetGroup,Object18,5
+	Createp,Object18,"ivserv_BD",1,"troops"
+	SetGroup,Object18,6
+
+//--------------------------------------------------------------------
+[routine,_Routine3,1,false]
+	GetByLabel,Object11,"swarmAA4"
+	GetByLabel,Object12,"swarmAA5"
+LOC_116:
+	IsAround,Object11
+	IfEQ,1,LOC_116
+	IsAround,Object12
+	IfEQ,1,LOC_116
+	Clear
+	Display,_Text2,green
+	Wait,15
+	Createp,Object18,"ivserv_BD",1,"troops"
+	SetGroup,Object18,6
+	Createp,Object18,"ivsct_BD",1,"troops"
+	SetGroup,Object18,5
+	Createp,Object18,"ivsct_BD",1,"troops"
+	SetGroup,Object18,5
+
+//--------------------------------------------------------------------
+[routine,_Routine4,1,false]
+	GetByLabel,Object13,"swarmAA6"
+	GetByLabel,Object14,"swarmAA7"
+	GetByLabel,Object15,"swarmAA8"
+LOC_133:
+	IsAround,Object13
+	IfEQ,1,LOC_133
+	IsAround,Object14
+	IfEQ,1,LOC_133
+	IsAround,Object15
+	IfEQ,1,LOC_133
+	Clear
+	Display,_Text2,green
+	Wait,15
+	Createp,Object18,"ivtnk_BD",1,"troops"
+	SetGroup,Object18,7
+	Createp,Object18,"ivtnk_BD",1,"troops"
+	SetGroup,Object18,7
+	Createp,Object18,"ivtnk_BD",1,"troops"
+	SetGroup,Object18,7
+
+//--------------------------------------------------------------------
+[routine,_Routine5,1,false]
+	GetByLabel,Object16,"swarmAA9"
+	GetByLabel,Object17,"swarmAA10"
+LOC_151:
+	IsAround,Object16
+	IfEQ,1,LOC_151
+	IsAround,Object17
+	IfEQ,1,LOC_151
+	Clear
+	Display,_Text2,green
+	Wait,15
+	Createp,Object18,"ivltankBD",1,"troops"
+	SetGroup,Object18,8
+	Createp,Object18,"ivltankBD",1,"troops"
+	SetGroup,Object18,8
+	Createp,Object18,"ivltankBD",1,"troops"
+	SetGroup,Object18,8
+
+//--------------------------------------------------------------------
+[routine,_Routine6,1,false]
+	GetByLabel,Object6,"recy"
+LOC_166:
+	Wait,10
+	IsAround,Object6
+	IfEQ,1,LOC_166
+	Fail,10,"FS09fail1.des"
+

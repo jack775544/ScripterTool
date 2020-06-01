@@ -1,0 +1,411 @@
+
+[objects]
+
+Object1
+Object2
+Object3
+Object4
+Object5
+Object6
+Object7
+Object8
+Object9
+Object10
+Object11
+Object12
+Object13
+Object14
+Object15
+Object16
+Object17
+Object18
+Object19
+Object20
+Object21
+Object22
+Object23
+Object24
+Object25
+Object26
+Object27
+Object28
+Object29
+Object30
+Object31
+
+[positions]
+
+
+[variables]
+
+
+[text]
+
+_Text1,
+"Commander take your team to the\nlanding zone and clear out the\nswarm infestation, secure the\narea before the Phaer-Rhan\ndropships arrive."
+
+_Text2,
+"Well done commander the LZ is\nsecure, the Phaer-Rhan will\narrive shortly."
+
+_Text3,
+"Dammit, the swarm have gotten\nAA units along the canyon, they\nare tearing the dropships to\npieces, take out those swarm units\nimmediately."
+
+_Text4,
+"well done commander, we are\nrecieving a signal from a crashed\ndropship, go to the crashsite\nand escort the survivors to\nthe landing zone."
+
+_Text5,
+"Escort that Phaer-Rhan Overlord\nto the landing zone ,this\nunit is vital , another essential\nunit , the processor has also\njust arrived at the LZ."
+
+_Text6,
+"Well done , now help defend\nthe area while the Phaer_Rhan\nsetup base , make sure that\nprocessor is well protected ."
+
+_Text7,
+"Excellent work, the Phaer Rhan\nnow have a factory built\nassist them in their attack on the\nSwarm base to the north."
+
+//--------------------------------------------------------------------
+[routine,_Routine1,1,true]
+	Ally,1,2
+	GetByLabel,Object1,"SwarmGT1"
+	GetByLabel,Object1,"SwarmGT2"
+	GetByLabel,Object1,"SwarmGT3"
+	GetByLabel,Object1,"SwarmGT4"
+	GetByLabel,Object1,"SwarmGT5"
+	GetByLabel,Object12,"SwarmAA_1"
+	GetByLabel,Object13,"SwarmAA_2"
+	GetByLabel,Object14,"SwarmAA_3"
+	GetByLabel,Object15,"SwarmAA_4"
+	GetByLabel,Object16,"SwarmAA_5"
+	GetByLabel,Object17,"SwarmAA_6"
+	Createp,Object11,"ibnav",1,"LZ"
+	SetName,Object11,"Landing Zone"
+	BeaconOn,Object11
+	Clear
+	Display,_Text1,white
+	SetPlan,"FS06_s1.aip",6
+	Createp,Object26,"svscA_D",6,"LZ"
+	GoTo,Object26,"attack_path",1
+	Wait,2
+	Createp,Object26,"svscA_D",6,"LZ"
+	GoTo,Object26,"attack_path",1
+	Wait,2
+	Createp,Object26,"svwalk_j",6,"LZ"
+	GoTo,Object26,"attack_path",1
+	Wait,2
+	Createp,Object26,"svwalk_j",6,"LZ"
+	GoTo,Object26,"attack_path",1
+	Wait,2
+	Createp,Object26,"svinst_J",6,"LZ"
+	GoTo,Object26,"attack_path",1
+	Wait,2
+	Createp,Object26,"svinst_J",6,"LZ"
+	GoTo,Object26,"attack_path",1
+	Wait,2
+	Createp,Object26,"svscA_D",6,"LZ"
+	GoTo,Object26,"attack_path",1
+	Wait,2
+	Createp,Object26,"svscA_D",6,"LZ"
+	GoTo,Object26,"attack_path",1
+	Wait,2
+	Createp,Object26,"svtank_J",6,"LZ"
+	GoTo,Object26,"attack_path",1
+	Wait,2
+	Createp,Object26,"svtank_J",6,"LZ"
+	GoTo,Object26,"attack_path",1
+LOC_47:
+	Wait,10
+	IsAround,Object1
+	IfEQ,1,LOC_47
+LOC_50:
+	Wait,10
+	IsAround,Object2
+	IfEQ,1,LOC_50
+LOC_53:
+	Wait,10
+	IsAround,Object3
+	IfEQ,1,LOC_53
+LOC_56:
+	Wait,10
+	IsAround,Object4
+	IfEQ,1,LOC_56
+LOC_59:
+	Wait,10
+	IsAround,Object5
+	IfEQ,1,LOC_59
+	Clear
+	Display,_Text2,green
+	Createp,Object6,"PvDrop_01",2,"drop_spawn"
+	GoTo,Object6,"drop_path",1
+	Wait,25
+	Ally,1,6
+	CamPath,"camera_1",6000,2500,Object6
+	UnAlly,1,6
+	Createp,Object7,"PvDrop_01b",2,"drop_spawn"
+	GoTo,Object7,"drop_path",1
+	Wait,5
+	Createp,Object8,"PvDrop_01b",2,"drop_spawn"
+	GoTo,Object8,"drop_path",1
+	Wait,45
+	Clear
+	Display,_Text3,red
+LOC_78:
+	Wait,10
+	IsAround,Object12
+	IfEQ,1,LOC_78
+LOC_81:
+	Wait,10
+	IsAround,Object13
+	IfEQ,1,LOC_81
+LOC_84:
+	Wait,10
+	IsAround,Object14
+	IfEQ,1,LOC_84
+LOC_87:
+	Wait,10
+	IsAround,Object15
+	IfEQ,1,LOC_87
+LOC_90:
+	Wait,10
+	IsAround,Object16
+	IfEQ,1,LOC_90
+LOC_93:
+	Wait,10
+	IsAround,Object17
+	IfEQ,1,LOC_93
+	Createp,Object18,"ibnav",1,"crashsite"
+	SetName,Object18,"Crashsite"
+	BeaconOn,Object18
+	Clear
+	Display,_Text4,white
+	Wait,5
+	Createp,Object19,"pvcons",2,"crashsite"
+	Wait,5
+	Createp,Object21,"pvscout",2,"crashsite"
+	Wait,5
+	Createp,Object22,"pvscout",2,"crashsite"
+	Wait,5
+	Createp,Object23,"pvscout",2,"crashsite"
+	BeaconOn,Object19
+	SetPlan,"FS06_s2.aip",6
+	SetScrap,6,40
+	RunSpeed,_Routine4,1,false
+LOC_113:
+	GetPlayer,Object10
+	Wait,15
+	DistObject,Object10,Object19
+	IfGT,80,LOC_113
+	Clear
+	Display,_Text5,white
+	Wait,5
+	GoTo,Object19,"LZ",1
+	Wait,3
+	Follow,Object21,Object19,1
+	Wait,3
+	Follow,Object22,Object19,1
+	Wait,3
+	Follow,Object23,Object19,1
+	Wait,3
+	Createp,Object9,"PvDrop_03",2,"drop"
+	Wait,5
+	Createp,Object20,"PvProc",2,"proc"
+	Wait,5
+	RunSpeed,_Routine5,1,false
+	BeaconOn,Object20
+	Wait,5
+	Createp,Object25,"PvPgen",2,"dropoff1"
+	GoTo,Object25,"Pow1",1
+	Wait,5
+	Createp,Object24,"PvGtow",2,"dropoff2"
+LOC_139:
+	Wait,5
+	DistPath,Object25,"Pow1"
+	IfGT,5,LOC_139
+	SetAnimation,Object25,"deploy",1
+	Wait,2
+	StartAnimation,Object25
+	Wait,10
+	Replace,Object25,"pbpgen",0
+	GoTo,Object24,"GT1",1
+	Wait,5
+LOC_149:
+	Wait,5
+	DistPath,Object24,"GT1"
+	IfGT,5,LOC_149
+	SetAnimation,Object24,"deploy",1
+	Wait,2
+	StartAnimation,Object24
+	Wait,10
+	Replace,Object24,"pbgtow",0
+LOC_157:
+	Wait,15
+	DistObject,Object19,Object11
+	IfGT,80,LOC_157
+	Clear
+	Display,_Text6,white
+	Wait,10
+	GoTo,Object20,"Processor",1
+	SetPlan,"FS06_s3.aip",6
+LOC_165:
+	Wait,5
+	DistPath,Object20,"Processor"
+	IfGT,8,LOC_165
+	SetAnimation,Object20,"deploy",1
+	Wait,5
+	StartAnimation,Object20
+	Wait,10
+	Replace,Object20,"pbproc",0
+	SetScrap,2,40
+	RunSpeed,_Routine2,1,false
+	SetPlan,"FS06_p1.aip",2
+	RunSpeed,_Routine3,1,false
+	IsAround,Object21
+	IfEQ,1,LOC_184
+LOC_179:
+	IsAround,Object22
+	IfEQ,1,LOC_186
+LOC_181:
+	IsAround,Object23
+	IfEQ,1,LOC_188
+	JumpTo,LOC_189
+LOC_184:
+	Patrol,Object21,"Patrol_1",1
+	JumpTo,LOC_179
+LOC_186:
+	Patrol,Object22,"Patrol_1",1
+	JumpTo,LOC_181
+LOC_188:
+	Patrol,Object23,"Patrol_1",1
+LOC_189:
+	Wait,5
+	IsAround,Object28
+	IfEQ,0,LOC_189
+	Clear
+	Display,_Text7,white
+	Createp,Object31,"ivwalk_BD",1,"Friends"
+	SetGroup,Object31,7
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivwalk_BD",1,"Friends"
+	SetGroup,Object31,7
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivwalk_BD",1,"Friends"
+	SetGroup,Object31,7
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivserv_BD",1,"Friends"
+	SetGroup,Object31,8
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivserv_BD",1,"Friends"
+	SetGroup,Object31,8
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivrdev_BD",1,"Friends"
+	SetGroup,Object31,9
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivrdev_BD",1,"Friends"
+	SetGroup,Object31,9
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivrdev_BD",1,"Friends"
+	SetGroup,Object31,9
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivtnk4_BD",1,"Friends"
+	SetGroup,Object31,6
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivtnk4_BD",1,"Friends"
+	SetGroup,Object31,6
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivtur_BD",1,"Friends"
+	SetGroup,Object31,5
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivtur_BD",1,"Friends"
+	SetGroup,Object31,5
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivtur_BD",1,"Friends"
+	SetGroup,Object31,5
+	GoTo,Object31,"LZ",0
+	Wait,2
+	Createp,Object31,"ivtur_BD",1,"Friends"
+	SetGroup,Object31,5
+	GoTo,Object31,"LZ",0
+	Wait,2
+
+//--------------------------------------------------------------------
+[routine,_Routine2,0,false]
+LOC_251:
+	Wait,5
+	GetByLabel,Object27,"unnamed_pbrecy"
+	IsAround,Object27
+	IfEQ,0,LOC_264
+	Wait,5
+	GetByLabel,Object28,"unnamed_pbfact"
+	IsAround,Object28
+	IfEQ,0,LOC_271
+	Wait,5
+	GetByLabel,Object30,"unnamed_pbarmo"
+	IsAround,Object30
+	IfEQ,0,LOC_278
+	JumpTo,LOC_251
+LOC_264:
+	Build,Object19,"pbrecy",1
+	DropOff,Object19,"PRcyard",1
+	Wait,5
+LOC_267:
+	GetCommand,Object19
+	IfEQ,0,LOC_270
+	JumpTo,LOC_267
+LOC_270:
+	JumpTo,LOC_251
+LOC_271:
+	Build,Object19,"pbfact",1
+	DropOff,Object19,"PRfact",1
+	Wait,5
+LOC_274:
+	GetCommand,Object19
+	IfEQ,0,LOC_277
+	JumpTo,LOC_274
+LOC_277:
+	JumpTo,LOC_251
+LOC_278:
+	Build,Object19,"pbarmo",1
+	DropOff,Object19,"PRArm",1
+	Wait,5
+LOC_281:
+	GetCommand,Object19
+	IfEQ,0,LOC_284
+	JumpTo,LOC_281
+LOC_284:
+	JumpTo,LOC_251
+
+//--------------------------------------------------------------------
+[routine,_Routine3,0,false]
+LOC_286:
+	GetByLabel,Object29,"SwarmRec"
+	Wait,10
+	IsAround,Object29
+	IfEQ,1,LOC_286
+	Succeed,10,"FS06win.des"
+
+//--------------------------------------------------------------------
+[routine,_Routine4,0,false]
+LOC_292:
+	Wait,10
+	IsAround,Object19
+	IfEQ,1,LOC_292
+	Fail,10,"FS06fail1.des"
+
+//--------------------------------------------------------------------
+[routine,_Routine5,0,false]
+LOC_297:
+	Wait,10
+	IsAround,Object20
+	IfEQ,1,LOC_297
+	Fail,10,"FS06fail2.des"
+

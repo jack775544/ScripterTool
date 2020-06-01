@@ -1,0 +1,248 @@
+
+[objects]
+
+Object1
+Object2
+Object3
+Object4
+Object5
+Object6 <2>
+Object8
+
+[positions]
+
+
+[variables]
+
+Variable1, 0
+Variable2, 0
+Variable3, 0
+Variable4, 0
+
+[text]
+
+//--------------------------------------------------------------------
+[routine,_Routine1,1,true]
+	FreeCamera,true
+	IFaceExec,"FSmech.cfg"
+	IFaceActivate,"INFO"
+LOC_3:
+	IFaceGetInt,"end.end"
+	IfEQ,0,LOC_3
+	IFaceGetInt,"Phaer.count"
+	StoreResult,Variable2
+	IFaceDeactivate,"INFO"
+	IfEQ,1,LOC_10
+	IfEQ,2,LOC_11
+LOC_10:
+	RunSpeed,_Routine4,1,true
+LOC_11:
+	IFaceGetInt,"Swarm.count"
+	StoreResult,Variable1
+	IfEQ,1,LOC_15
+	IfEQ,2,LOC_22
+LOC_15:
+	Ally,3,6
+	Ally,3,5
+	Ally,3,4
+	Ally,3,2
+	Createp,Object5,">sbrecy00",3,"RecyclerEnemy"
+	SetPlan,"SwvMec.aip",3
+	JumpTo,LOC_28
+LOC_22:
+	UnAlly,3,6
+	UnAlly,3,5
+	UnAlly,3,4
+	UnAlly,3,2
+	Createp,Object5,">sbrecy00",3,"RecyclerEnemy"
+	SetPlan,"SwvAll.aip",3
+LOC_28:
+	IFaceGetInt,"Bomb.count"
+	StoreResult,Variable3
+	IfEQ,1,LOC_32
+	IfEQ,2,LOC_41
+LOC_32:
+	Createp,Object3,">ibrecy_m",5,"rece"
+	IFaceGetInt,"Serv.count"
+	StoreResult,Variable4
+	IfEQ,1,LOC_39
+	IfEQ,2,LOC_37
+LOC_37:
+	SetPlan,"EDFvMecB.aip",5
+	JumpTo,LOC_49
+LOC_39:
+	SetPlan,"EDFvMBS.aip",5
+	JumpTo,LOC_49
+LOC_41:
+	Createp,Object3,">ibrecy_m",5,"rece"
+	IFaceGetInt,"Serv.count"
+	StoreResult,Variable4
+	IfEQ,1,LOC_48
+	IfEQ,2,LOC_46
+LOC_46:
+	SetPlan,"EDFvMec.aip",5
+	JumpTo,LOC_49
+LOC_48:
+	SetPlan,"EDFvMecS.aip",5
+LOC_49:
+	FreeFinish,true
+	TeamColor,5,12,64,0
+	Createp,Object1,">Obfact_P",1,"Recy"
+	SetScrap,1,40
+	Createp,Object2,">fbrecy_m",6,"recs"
+	IFaceGetInt,"Serv.count"
+	StoreResult,Variable4
+	IfEQ,1,LOC_60
+	IfEQ,2,LOC_58
+LOC_58:
+	SetPlan,"ScivMec.aip",6
+	JumpTo,LOC_61
+LOC_60:
+	SetPlan,"ScivMecS.aip",6
+LOC_61:
+	Createp,Object4,">ivrecyBD",4,"recBD"
+	IFaceGetInt,"Serv.count"
+	StoreResult,Variable4
+	IfEQ,1,LOC_68
+	IfEQ,2,LOC_66
+LOC_66:
+	SetPlan,"BDvMec.aip",4
+	JumpTo,LOC_69
+LOC_68:
+	SetPlan,"BDvMecS.aip",4
+LOC_69:
+	Ally,6,5
+	Ally,5,4
+	Ally,6,4
+	Ally,2,6
+	Ally,2,4
+	Ally,2,5
+	SetScrap,6,40
+	SetScrap,5,40
+	SetScrap,4,40
+	SetScrap,3,40
+LOC_79:
+	IsAround,Object2
+	IfEQ,0,LOC_85
+	IsAround,Object1
+	IfEQ,1,LOC_79
+	Fail,5,"meclose.des"
+	JumpTo,LOC_104
+LOC_85:
+	IsAround,Object3
+	IfEQ,0,LOC_91
+	IsAround,Object1
+	IfEQ,1,LOC_85
+	Fail,5,"meclose.des"
+	JumpTo,LOC_104
+LOC_91:
+	IsAround,Object4
+	IfEQ,0,LOC_97
+	IsAround,Object1
+	IfEQ,1,LOC_91
+	Fail,5,"meclose.des"
+	JumpTo,LOC_104
+LOC_97:
+	IsAround,Object5
+	IfEQ,0,LOC_103
+	IsAround,Object1
+	IfEQ,1,LOC_97
+	Fail,5,"meclose.des"
+	JumpTo,LOC_104
+LOC_103:
+	Succeed,5,"mecwin.des"
+LOC_104:
+
+//--------------------------------------------------------------------
+[routine,_Routine2,1,true]
+	Wait,10
+	OnNewObject,1,_Routine3,Object8
+
+//--------------------------------------------------------------------
+[routine,_Routine3,0,true]
+LOC_108:
+	GetTeam,Object8
+	IfEQ,1,LOC_111
+	SetSkill,Object8,3
+LOC_111:
+	RunSpeed,_Routine3,0,true
+	JumpTo,LOC_108
+
+//--------------------------------------------------------------------
+[routine,_Routine4,0,true]
+LOC_114:
+	RandJump,LOC_117
+	Wait,300
+	JumpTo,LOC_121
+LOC_117:
+	RandJump,LOC_120
+	Wait,500
+	JumpTo,LOC_121
+LOC_120:
+	Wait,700
+LOC_121:
+	RandJump,LOC_139
+	Createp,Object6,"PvScout",2,"PRspawn_1"
+	Attack,Object6,Object1,1
+	Createp,Object6,"PvScout",2,"PRspawn_1"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvtank",2,"PRspawn_1"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvtank",2,"PRspawn_1"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvtank",2,"PRspawn_1"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvtank",2,"PRspawn_1"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvmisl",2,"PRspawn_1"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvmisl",2,"PRspawn_1"
+	Attack,Object6,Object1,1
+	JumpTo,LOC_114
+LOC_139:
+	RandJump,LOC_155
+	Createp,Object6,"pvtank",2,"PRspawn_2"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvtank",2,"PRspawn_2"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvtank",2,"PRspawn_2"
+	Attack,Object6,Object1,1
+	Createp,Object6,"PvHatnk",2,"PRspawn_2"
+	Attack,Object6,Object1,1
+	Createp,Object6,"PvHatnk",2,"PRspawn_2"
+	Attack,Object6,Object1,1
+	Createp,Object6,"PvHatnk",2,"PRspawn_2"
+	Attack,Object6,Object1,1
+	Createp,Object6,"PvHatnk",2,"PRspawn_2"
+	Attack,Object6,Object1,1
+	JumpTo,LOC_114
+LOC_155:
+	RandJump,LOC_169
+	Createp,Object6,"pvwalk",2,"PRspawn_3"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvwalk",2,"PRspawn_3"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvwalk",2,"PRspawn_3"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvwalk",2,"PRspawn_3"
+	Attack,Object6,Object1,1
+	Createp,Object6,"PvHatnk",2,"PRspawn_3"
+	Attack,Object6,Object1,1
+	Createp,Object6,"PvHatnk",2,"PRspawn_3"
+	Attack,Object6,Object1,1
+	JumpTo,LOC_114
+LOC_169:
+	Createp,Object6,"pvwalk",2,"PRspawn_4"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvwalk",2,"PRspawn_4"
+	Attack,Object6,Object1,1
+	Createp,Object6,"pvatank",2,"PRspawn_4"
+	Attack,Object6,Object1,1
+	Createp,Object6,"PvRckt",2,"PRspawn_4"
+	Attack,Object6,Object1,1
+	Createp,Object6,"PvRckt",2,"PRspawn_4"
+	Attack,Object6,Object1,1
+	Createp,Object6,"PvRckt",2,"PRspawn_4"
+	Attack,Object6,Object1,1
+	JumpTo,LOC_114
+

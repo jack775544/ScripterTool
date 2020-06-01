@@ -1,0 +1,250 @@
+
+[objects]
+
+Object1
+Object2
+Object3 <2>
+Object5
+Object6
+
+[positions]
+
+Position1, 0,0,0
+
+[variables]
+
+Variable1, 0
+Variable2, 0
+
+[text]
+
+//--------------------------------------------------------------------
+[routine,_Routine1,1,true]
+	FreeCamera,true
+	IFaceExec,"FSinstant.cfg"
+	IFaceActivate,"INFO"
+LOC_3:
+	IFaceGetInt,"end.end"
+	IfEQ,0,LOC_3
+	IFaceGetInt,"race.count"
+	StoreResult,Variable1
+	IFaceDeactivate,"INFO"
+	IfEQ,1,LOC_13
+	IfEQ,2,LOC_45
+	IfEQ,3,LOC_76
+	IfEQ,4,LOC_107
+	IfEQ,5,LOC_137
+LOC_13:
+	Createp,Object1,">fvrecy_m",1,"Recy"
+	SetScrap,1,40
+	GetPlayer,Object5
+	Replace,Object5,"fvscout",1
+	GetPos,Object1,Position1
+	AddToPos,40,50,0,Position1
+	PlaceAt,Object5,Position1
+	AddHealth,Object5,1000
+	IFaceGetInt,"race2.count"
+	StoreResult,Variable2
+	IfEQ,1,LOC_28
+	IfEQ,2,LOC_32
+	IfEQ,3,LOC_38
+	IfEQ,4,LOC_35
+	IfEQ,5,LOC_41
+LOC_28:
+	Createp,Object3,">fbrecy_m",6,"recs"
+	TeamColor,6,0,0,1
+	SetPlan,"ScivSci.aip",6
+	JumpTo,LOC_168
+LOC_32:
+	Createp,Object3,">ibrecy_m",6,"rece"
+	SetPlan,"EDFvSci.aip",6
+	JumpTo,LOC_168
+LOC_35:
+	Createp,Object3,">sbrecy00",6,"RecyclerEnemy"
+	SetPlan,"SwvSci.aip",6
+	JumpTo,LOC_168
+LOC_38:
+	Createp,Object3,">bbrecy",6,"recBD"
+	SetPlan,"BDvSci.aip",6
+	JumpTo,LOC_168
+LOC_41:
+	Createp,Object3,">obfact_I",6,"M_Fact"
+	SetPlan,"MechvSci.aip",6
+	JumpTo,LOC_168
+	JumpTo,LOC_168
+LOC_45:
+	Createp,Object1,">ivrecy_m",1,"Recy"
+	SetScrap,1,40
+	GetPlayer,Object5
+	Replace,Object5,"ivscout",1
+	GetPos,Object1,Position1
+	AddToPos,40,50,0,Position1
+	PlaceAt,Object5,Position1
+	AddHealth,Object5,1000
+	IFaceGetInt,"race2.count"
+	StoreResult,Variable2
+	IfEQ,1,LOC_60
+	IfEQ,2,LOC_63
+	IfEQ,3,LOC_69
+	IfEQ,4,LOC_66
+	IfEQ,5,LOC_72
+LOC_60:
+	Createp,Object3,">fbrecy_m",6,"recs"
+	SetPlan,"ScivEDF.aip",6
+	JumpTo,LOC_168
+LOC_63:
+	Createp,Object3,">ibrecy_m",6,"rece"
+	SetPlan,"EDFvEDF.aip",6
+	JumpTo,LOC_168
+LOC_66:
+	Createp,Object3,">sbrecy00",6,"RecyclerEnemy"
+	SetPlan,"SwvEDF.aip",6
+	JumpTo,LOC_168
+LOC_69:
+	Createp,Object3,">bbrecy",6,"recBD"
+	SetPlan,"BDvEDF.aip",6
+	JumpTo,LOC_168
+LOC_72:
+	Createp,Object3,">obfact_I",6,"M_Fact"
+	SetPlan,"MechvEDF.aip",6
+	JumpTo,LOC_168
+	JumpTo,LOC_168
+LOC_76:
+	Createp,Object1,">bvrecy",1,"Recy"
+	SetScrap,1,40
+	GetPlayer,Object5
+	Replace,Object5,"bvscout",1
+	GetPos,Object1,Position1
+	AddToPos,40,50,0,Position1
+	PlaceAt,Object5,Position1
+	AddHealth,Object5,1000
+	IFaceGetInt,"race2.count"
+	StoreResult,Variable2
+	IfEQ,1,LOC_91
+	IfEQ,2,LOC_94
+	IfEQ,3,LOC_100
+	IfEQ,4,LOC_97
+	IfEQ,5,LOC_103
+LOC_91:
+	Createp,Object3,">fbrecy_m",6,"recs"
+	SetPlan,"ScivBD.aip",6
+	JumpTo,LOC_168
+LOC_94:
+	Createp,Object3,">ibrecy_m",6,"rece"
+	SetPlan,"EDFvBD.aip",6
+	JumpTo,LOC_168
+LOC_97:
+	Createp,Object3,">sbrecy00",6,"RecyclerEnemy"
+	SetPlan,"SwvBD.aip",6
+	JumpTo,LOC_168
+LOC_100:
+	Createp,Object3,">bbrecy",6,"recBD"
+	SetPlan,"BDvBD.aip",6
+	JumpTo,LOC_168
+LOC_103:
+	Createp,Object3,">obfact_I",6,"M_Fact"
+	SetPlan,"MechvBD.aip",6
+	JumpTo,LOC_168
+	JumpTo,LOC_168
+LOC_107:
+	Createp,Object1,">tvrecy00",1,"Recy"
+	SetScrap,1,40
+	GetPlayer,Object5
+	Replace,Object5,"tvscout_A",1
+	GetPos,Object1,Position1
+	AddToPos,40,50,0,Position1
+	PlaceAt,Object5,Position1
+	AddHealth,Object5,1000
+	IFaceGetInt,"race2.count"
+	StoreResult,Variable2
+	IfEQ,1,LOC_122
+	IfEQ,2,LOC_125
+	IfEQ,3,LOC_131
+	IfEQ,4,LOC_128
+	IfEQ,5,LOC_134
+LOC_122:
+	Createp,Object3,">fbrecy_m",6,"recs"
+	SetPlan,"ScivSw.aip",6
+	JumpTo,LOC_168
+LOC_125:
+	Createp,Object3,">ibrecy_m",6,"rece"
+	SetPlan,"EDFvSw.aip",6
+	JumpTo,LOC_168
+LOC_128:
+	Createp,Object3,">sbrecy00",6,"RecyclerEnemy"
+	SetPlan,"SwvSw.aip",6
+	JumpTo,LOC_168
+LOC_131:
+	Createp,Object3,">bbrecy",6,"recBD"
+	SetPlan,"BDvSw.aip",6
+	JumpTo,LOC_168
+LOC_134:
+	Createp,Object3,">obfact_I",6,"M_Fact"
+	SetPlan,"MechvSw.aip",6
+	JumpTo,LOC_168
+LOC_137:
+	Createp,Object2,"pvproc",1,"Recy"
+	Createp,Object1,">pvcons",1,"Cons"
+	SetScrap,1,40
+	GetPlayer,Object5
+	Replace,Object5,"pvscout",1
+	GetPos,Object1,Position1
+	AddToPos,40,50,0,Position1
+	PlaceAt,Object5,Position1
+	AddHealth,Object5,1000
+	IFaceGetInt,"race2.count"
+	StoreResult,Variable2
+	IfEQ,1,LOC_153
+	IfEQ,2,LOC_156
+	IfEQ,3,LOC_162
+	IfEQ,4,LOC_159
+	IfEQ,5,LOC_165
+LOC_153:
+	Createp,Object3,">fbrecy_m",6,"recs"
+	SetPlan,"ScivPR.aip",6
+	JumpTo,LOC_168
+LOC_156:
+	Createp,Object3,">ibrecy_m",6,"rece"
+	SetPlan,"EDFvPR.aip",6
+	JumpTo,LOC_168
+LOC_159:
+	Createp,Object3,">sbrecy00",6,"RecyclerEnemy"
+	SetPlan,"SwvPR.aip",6
+	JumpTo,LOC_168
+LOC_162:
+	Createp,Object3,">bbrecy",6,"recBD"
+	SetPlan,"BDvPR.aip",6
+	JumpTo,LOC_168
+LOC_165:
+	Createp,Object3,">obfact_I",6,"M_Fact"
+	SetPlan,"MechvPR.aip",6
+	JumpTo,LOC_168
+LOC_168:
+	FreeFinish,true
+	SetScrap,6,40
+LOC_170:
+	IsAround,Object3
+	IfEQ,0,LOC_176
+	IsAround,Object1
+	IfEQ,1,LOC_170
+	Fail,5,"onelose.des"
+	JumpTo,LOC_177
+LOC_176:
+	Succeed,5,"onewin.des"
+LOC_177:
+
+//--------------------------------------------------------------------
+[routine,_Routine2,1,true]
+	Wait,10
+	OnNewObject,1,_Routine3,Object6
+
+//--------------------------------------------------------------------
+[routine,_Routine3,0,true]
+LOC_181:
+	GetTeam,Object6
+	IfEQ,1,LOC_184
+	SetSkill,Object6,3
+LOC_184:
+	RunSpeed,_Routine3,0,true
+	JumpTo,LOC_181
+

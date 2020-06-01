@@ -1,0 +1,383 @@
+
+[objects]
+
+Object1
+Object2
+Object3
+Object4 <2>
+Object6
+Object7
+Object8
+Object9
+Object10
+Object11
+Object12
+Object13
+Object14
+Object15
+Object16
+Object17
+Object18
+Object19
+Object20
+Object21
+Object22
+Object23
+Object24
+Object25
+Object26
+
+[positions]
+
+
+[variables]
+
+
+[text]
+
+_Text1,
+"Blue Team will scout ahead for\nbiometal pools , we need you to\ndeploy the recycler and start\n setting up a base ."
+
+_Text2,
+"This is Blue Team we have a pool\n for you , dropping Nav Beacon."
+
+_Text3,
+"We have another pool for you ."
+
+_Text4,
+"Here's another pool , send out\nthe scavs while we search for more."
+
+_Text5,
+"we're finding alien ruins, looks\n like they've been empty a long\ntime, we're finding remains of\nmilitary hardware must have been\na battle here."
+
+_Text6,
+"Commander some of these defences\nare still operational , we are\nunder attack."
+
+_Text7,
+"We have lost contact with team blue\nwe are detecting movement\njust north of their last known\nposition ,attempting to get\na visual of the area."
+
+_Text8,
+"We seem to have accidentally\ntriggered some kind of ancient\nplanetary defense system prepare\nfor incoming attackers."
+
+_Text9,
+"We need to shut these defence systems\ndown fast, we are picking up some\nstrange transmitions in\nthe area dispatching a snooper\nscout to investigate."
+
+_Text10,
+"Commander the snooper scout has arrived,\nit will track down and identify\nthe source of the transmitions\nkeep this unit safe at all costs."
+
+_Text11,
+"Commander we've located the source of\nthe transmitions, it appears to be\nsome kind communications\nrelay, attempting to access the\nnetwork now."
+
+_Text12,
+"We've managed to temporarily disable\nthe alien defence systems you have\napprox 30 minutes to take \nout the swarm base before they come\nback online."
+
+_Text13,
+"Well done commander, the Swarm\noutpost has been erradicated."
+
+_Text14,
+"DEPLOY NEAR THE BEACON NOT HALF\nA MILE AWAY,MISSION FAILED"
+
+//--------------------------------------------------------------------
+[routine,_Routine1,1,true]
+	Ally,1,2
+	Ally,5,6
+	Ally,5,2
+	Ally,6,2
+	GetPlayer,Object1
+	GetByLabel,Object2,"Drop1"
+	GetByLabel,Object3,"Drop2"
+	GetByLabel,Object4,"Drop3"
+	GetByLabel,Object7,"pool1"
+	GetByLabel,Object8,"pool2"
+	GetByLabel,Object9,"pool3"
+	GetByLabel,Object18,"ruin_1"
+	GetByLabel,Object20,"coms"
+	GetByLabel,Object23,"SwarmFact"
+	GetByLabel,Object24,"SwarmRec"
+	SetScrap,1,40
+	TeamColor,2,10,10,128
+	Createp,Object10,"ivtank",2,"friend_1"
+	SetName,Object10,"Blue 1"
+	Createp,Object11,"ivscout",2,"friend_2"
+	SetName,Object11,"Blue 2"
+	Createp,Object12,"ivscout",2,"friend_3"
+	SetName,Object12,"Blue 3"
+	Createp,Object13,"ivscout",2,"friend_4"
+	SetName,Object13,"Blue 4"
+	Createp,Object19,"obfact",5,"FactEnemy"
+	Createp,Object21,"obpgen",5,"pgen"
+	SetAnimation,Object2,"takeoff",1
+	Wait,3
+	StartAnimation,Object2
+	Wait,10
+	Remove,Object2
+	Wait,3
+	SetAnimation,Object3,"takeoff",1
+	Wait,3
+	StartAnimation,Object3
+	Wait,10
+	Remove,Object3
+	Wait,3
+	SetAnimation,Object4,"takeoff",1
+	Wait,3
+	StartAnimation,Object4
+	Wait,10
+	Remove,Object4
+	Wait,3
+	Display,_Text1,white
+	Follow,Object11,Object10,1
+	Follow,Object12,Object10,1
+	Follow,Object13,Object10,1
+	GoTo,Object10,"patrol_1",1
+LOC_50:
+	Createp,Object14,"svscout_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,9
+	Createp,Object14,"svscout_J",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,9
+	Createp,Object14,"svscout_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,25
+	DistObject,Object10,Object7
+	IfGT,80,LOC_50
+	Wait,5
+	Clear
+	Display,_Text2,white
+	Createp,Object15,"ibnav",1,"nav1"
+	SetName,Object15,"Pool 1"
+	BeaconOn,Object15
+	Wait,7
+	GoTo,Object10,"patrol_2",1
+LOC_69:
+	Createp,Object14,"svscout_J",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,9
+	Createp,Object14,"svinst_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,9
+	Createp,Object14,"svscout_A",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,32
+	DistObject,Object10,Object8
+	IfGT,80,LOC_69
+	Wait,5
+	Clear
+	Display,_Text3,white
+	Createp,Object16,"ibnav",1,"nav2"
+	SetName,Object16,"Pool 2"
+	BeaconOn,Object16
+	Wait,7
+	GoTo,Object10,"patrol_3",1
+LOC_88:
+	Createp,Object14,"svartl_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,9
+	Createp,Object14,"svinst_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,9
+	Createp,Object14,"svscout_A",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,22
+	DistObject,Object10,Object9
+	IfGT,80,LOC_88
+	Wait,5
+	Clear
+	Display,_Text4,white
+	Createp,Object17,"ibnav",1,"nav3"
+	SetName,Object17,"Pool 3"
+	BeaconOn,Object17
+	Wait,7
+	GoTo,Object10,"patrol_4",1
+LOC_107:
+	Createp,Object14,"svartl_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,6
+	Createp,Object14,"svinst_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,6
+	Createp,Object14,"svtank_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,18
+	DistObject,Object10,Object18
+	IfGT,80,LOC_107
+	Ally,1,6
+	CamPath,"camera_1",1500,2500,Object18
+	UnAlly,1,6
+	Wait,5
+	Clear
+	Display,_Text5,white
+	Wait,7
+	GoTo,Object10,"patrol_5",1
+	GoTo,Object11,"patrol_5",1
+	GoTo,Object12,"patrol_5",1
+	GoTo,Object13,"patrol_5",1
+	UnAlly,5,2
+	UnAlly,6,2
+LOC_131:
+	Createp,Object14,"svartl_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,5
+	Createp,Object14,"svinst_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,5
+	Createp,Object14,"svtank_L",6,"swspawn_1"
+	GoToo,Object14,Object6,0
+	Wait,15
+	HealthPercent,Object10
+	IfLT,90,LOC_143
+	JumpTo,LOC_131
+LOC_143:
+	SetPlan,"FS05.aip",5
+	SetScrap,5,50
+	Clear
+	Display,_Text6,red
+	Wait,25
+	Clear
+	Display,_Text7,white
+	Wait,25
+	Ally,1,6
+	CamPath,"camera_2",3500,5500,Object19
+	UnAlly,1,6
+	Wait,15
+	Clear
+	Display,_Text8,white
+	Wait,250
+	Clear
+	Display,_Text9,white
+	Wait,350
+	Clear
+	Display,_Text10,white
+	SetPlan,"FS05b.aip",6
+	SetScrap,6,40
+	Createp,Object22,"ivsnoop_BD",2,"LZ"
+	BeaconOn,Object22
+	Ally,5,2
+	Wait,20
+	RunSpeed,_Routine3,1,false
+	GoTo,Object22,"Snoop1",1
+	Createp,Object14,"svartl_L",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,9
+	Createp,Object14,"svinst_L",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,9
+	Createp,Object14,"svscout_A",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,190
+	GoTo,Object22,"Snoop2",1
+	Createp,Object14,"svartl_L",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,9
+	Createp,Object14,"svinst_L",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,9
+	Createp,Object14,"svscout_A",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,160
+	GoTo,Object22,"Snoop3",1
+	Createp,Object14,"svartl_L",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,9
+	Createp,Object14,"svinst_L",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,9
+	Createp,Object14,"svscout_A",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,160
+	GoToo,Object22,Object20,1
+	Createp,Object14,"svartl_L",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,9
+	Createp,Object14,"svinst_L",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,9
+	Createp,Object14,"svscout_A",6,"swspawn_1"
+	GoToo,Object14,Object22,0
+	Wait,10
+LOC_210:
+	DistObject,Object22,Object20
+	IfGT,60,LOC_210
+	Clear
+	Display,_Text11,white
+	Wait,100
+	Clear
+	Display,_Text12,white
+	Replace,Object21,"obpgen2",1
+	GoToo,Object22,Object6,1
+	RunSpeed,_Routine3,0,false
+	Wait,5
+	RunSpeed,_Routine6,1,false
+	StartTimer,1800
+	Createp,Object25,"ibnav",1,"swarm_nav"
+	SetName,Object25,"Swarm Base"
+	BeaconOn,Object25
+LOC_226:
+	IsAround,Object24
+	IfEQ,1,LOC_230
+	IsAround,Object23
+	IfEQ,0,LOC_234
+LOC_230:
+	GetTimerTime
+	IfGT,0,LOC_226
+	Fail,10,"FS05fail1.des"
+	JumpTo,LOC_237
+LOC_234:
+	Clear
+	Display,_Text13,green
+	Succeed,16,"FS05win.des"
+LOC_237:
+
+//--------------------------------------------------------------------
+[routine,_Routine2,1,false]
+	GetByLabel,Object6,"recycler"
+LOC_239:
+	IsAround,Object6
+	IfEQ,1,LOC_239
+	Fail,10,"FS05fail2.des"
+
+//--------------------------------------------------------------------
+[routine,_Routine3,0,false]
+LOC_243:
+	IsAround,Object22
+	IfEQ,1,LOC_243
+	Fail,10,"FS05fail3.des"
+
+//--------------------------------------------------------------------
+[routine,_Routine4,1,false]
+LOC_247:
+	GetByLabel,Object20,"coms"
+	Wait,10
+	IsAround,Object20
+	IfEQ,1,LOC_247
+	Fail,10,"FS05fail5.des"
+
+//--------------------------------------------------------------------
+[routine,_Routine5,1,false]
+	Createp,Object26,"ibnav",1,"base"
+	SetName,Object26,"Deploy Here"
+	BeaconOn,Object26
+	GetByLabel,Object6,"recycler"
+LOC_257:
+	Wait,10
+	IsODF,Object6,"ibrecy_BD5"
+	IfEQ,0,LOC_257
+	DistObject,Object6,Object26
+	IfGT,250,LOC_263
+	JumpTo,LOC_266
+LOC_263:
+	Clear
+	Display,_Text14,red
+	Fail,10,"FS05fail4.des"
+LOC_266:
+	RunSpeed,_Routine5,0,false
+
+//--------------------------------------------------------------------
+[routine,_Routine6,0,false]
+LOC_268:
+	Wait,10
+	DistObject,Object22,Object6
+	IfGT,40,LOC_268
+	Remove,Object22
+	RunSpeed,_Routine6,0,false
+
