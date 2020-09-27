@@ -15,6 +15,9 @@ namespace ScripterTool.Core
 		public List<ScripterText> Texts { get; set; } = new List<ScripterText>();
 		public List<ScripterRoutine> Routines { get; set; } = new List<ScripterRoutine>();
 
+		public List<string> OdfPreloads { get; set; } = new List<string>();
+		public List<string> AudioMessagePreloads { get; set; } = new List<string>();
+
 		private enum ParserState
 		{
 			Objects,

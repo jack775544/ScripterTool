@@ -1,0 +1,126 @@
+﻿<#@ template language="C#" visibility="internal" #>
+<#@ import namespace="System" #>
+<#@ import namespace="ScripterTool.Core.Util" #>
+assert(load(assert(LoadFile("_requirefix.lua")),"_requirefix.lua"))();
+
+local Routines = {};
+local RoutineToIDMap = {};
+
+<# foreach (var position in Script.Positions) { #>
+local <#= position.Name #> = SetVector(<#= position.X #>, <#= position.Y #>, <#= position.Z #>);
+<# } #>
+
+<# foreach (var text in Script.Texts) { #>
+local <#= text.Name #> = "<#= text.Value #>";
+<# } #>
+
+local M = {
+    --Mission State
+    RoutineState = {},
+    RoutineWakeTime = {},
+    RoutineActive = {},
+    MissionOver = false,
+
+    -- Objects
+<# foreach (var obj in Script.Objects) { #>
+    <#= obj.Name #> = nil,
+<# } #>
+
+    -- Variables
+<# foreach (var variable in Script.Variables) { #>
+    <#= variable.Name #> = <#= variable.InitialValue #>,
+<# } #>
+
+    -- Just end it already!
+    endme = 0
+}
+
+function DefineRoutine(routineID, func, activeOnStart)
+    if routineID == nil or Routines[routineID]~= nil then
+        error("DefineRoutine: duplicate or invalid routineID: "..tostring(routineID));
+    elseif func == nil then
+        error("DefineRoutine: func is nil for id "..tostring(routineID), 2);
+    else
+        Routines[routineID] = func;
+        RoutineToIDMap[func] = routineID;
+        M.RoutineState[routineID] = 0;
+        M.RoutineWakeTime[routineID] = 0.0;
+        M.RoutineActive[routineID] = activeOnStart;
+    end
+end
+
+function Advance(routineID, delay)
+    routineID = routineID or error("Advance(): invalid routineID.", 2);
+    SetState(routineID, M.RoutineState[routineID] + 1, delay);
+end
+
+function SetState(routineID, state, delay)
+    routineID = routineID or error("SetState(): invalid routineID.", 2);
+    delay = delay or 0.0;
+    M.RoutineState[routineID] = state;
+    M.RoutineWakeTime[routineID] = GetTime() + delay;
+end
+
+function Wait(routineID, delay)
+    M.RoutineWakeTime[routineID] = GetTime() + delay;
+end
+
+function SetRoutineActive(routine, active)
+    local routineID = RoutineToIDMap[routine] or routine or error("SetRoutineActive(): routine '"..tostring(routine).." not found.", 2);
+    M.RoutineActive[routineID] = active;
+end
+
+function DefineRoutines()
+<# 
+for (var i = 0; i < Script.Routines.Count; i++) {
+    var routine = Script.Routines[i];
+#>
+    DefineRoutine(<#= i #>, <#= routine.Name #>, <#= routine.GlobalRoutinePriority ? "true" : "false" #>);
+<# } #>
+end
+
+function Save()
+    return M;
+end
+
+function Load(...)
+    if select('#', ...) > 0 then
+        M = ...
+    end
+end
+
+function InitialSetup()
+    M.TPS = EnableHighTPS();
+    AllowRandomTracks(false);
+    DefineRoutines();
+
+    --Preload to reduce lag spikes when resources are used for the first time.
+    local preloadODFs = {
+<# for (var i = 0; i < Script.OdfPreloads.Count; i++) { #>
+        "<#= Script.OdfPreloads[i] #>"<#= i == Script.OdfPreloads.Count - 1 ? "" : "," #>
+<# } #>
+    };
+    local preloadAudio = {
+<# for (var i = 0; i < Script.AudioMessagePreloads.Count; i++) { #>
+        "<#= Script.AudioMessagePreloads[i] #>"<#= i == Script.AudioMessagePreloads.Count - 1 ? "" : "," #>
+<# } #>
+    };
+    for k,v in pairs(preloadODFs) do
+        PreloadODF(v);
+    end
+    for k,v in pairs(preloadAudio) do
+        PreloadAudioMessage(v);
+    end
+end
+<# foreach (var routine in Script.Routines) { #>
+
+function <#= routine.Name #>(R, STATE) {
+<# foreach (var line in routine.Lines) { #>
+    <#= InstructionTranslator.Translate(line) #>
+<# } #>
+}
+<# } #>
+
+<#+
+public ScriptFile Script { get; set; }
+#>
