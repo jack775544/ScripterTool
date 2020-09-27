@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ScripterTool.Parser.Util
+namespace ScripterTool.Core.Util
 {
 	internal static class StringExtensions
 	{

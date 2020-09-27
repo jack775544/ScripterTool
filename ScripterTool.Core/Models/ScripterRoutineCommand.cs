@@ -1,4 +1,4 @@
-﻿namespace ScripterTool.Parser.Models
+﻿namespace ScripterTool.Core.Models
 {
 	public class ScripterRoutineCommand : INamedObject, ILine, IScripterRoutineObject
 	{

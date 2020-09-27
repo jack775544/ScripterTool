@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ScripterTool.Parser.Models
+namespace ScripterTool.Core.Models
 {
 	public class ScripterRoutine : INamedObject, ILineRange
 	{

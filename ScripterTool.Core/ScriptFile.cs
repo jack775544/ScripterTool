@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ScripterTool.Parser.Models;
-using ScripterTool.Parser.Util;
+using ScripterTool.Core.Models;
+using ScripterTool.Core.Util;
 
-namespace ScripterTool.Parser
+namespace ScripterTool.Core
 {
 	public class ScriptFile
 	{

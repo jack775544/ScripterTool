@@ -12,9 +12,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ScripterTool.Core\ScripterTool.Core.csproj" />
-
 		<PackageReference Include="CommandLineParser" Version="2.8.0" />
-
-		<ProjectReference Include="..\ScripterTool.Parser\ScripterTool.Parser.csproj" />
 	</ItemGroup>
 </Project>

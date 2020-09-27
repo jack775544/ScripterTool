@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using ScripterTool.Parser;
+using ScripterTool.Core;
 
 namespace ScripterTool.Cli
 {
