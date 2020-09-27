@@ -8,15 +8,7 @@
 namespace ScripterTool.Core.Templates
 {
     using System;
-    #line 2 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-using System;
-    #line default
-    #line hidden
-    #line 3 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-using ScripterTool.Core.Util;
-    #line default
-    #line hidden
-    #line 4 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+    #line 2 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
 using ScripterTool.Core.Lua;
     #line default
     #line hidden
@@ -25,13 +17,13 @@ using ScripterTool.Core.Lua;
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+    #line 1 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("JetBrains.ForTea.TextTemplating", "42.42.42.42")]
-    public partial class Mission : MissionBase
+    public partial class IfTemplate : IfTemplateBase
     {
-        #line 127 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+        #line 18 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
 
-public ScriptFile Script { get; set; }
+public LuaIf IfStatement { get; set; }
 
         
         #line default
@@ -43,254 +35,86 @@ public ScriptFile Script { get; set; }
         public virtual string TransformText()
         {
             
-            this.Write("assert(load(assert(LoadFile(\"_requirefix.lua\")),\"_requirefix.lua\"))();\r\n\r\nlocal Routines = {};\r\nlocal RoutineToIDMap = {};\r\n\r\n");
-            #line 10 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- foreach (var position in Script.Positions) { 
+            #line 3 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
+ if (IfStatement.Scopes.Count > 0) { 
             
             #line default
             #line hidden
-            this.Write("local ");
-            
-            #line 11 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(position.Name));
+            #line 4 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
+ for (var i = 0; i < IfStatement.Scopes.Count; i++) { 
             
             #line default
             #line hidden
-            this.Write(" = SetVector(");
-            
-            #line 11 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(position.X));
+            #line 5 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
+ var statement = IfStatement.Scopes[i]; 
             
             #line default
             #line hidden
-            this.Write(", ");
-            
-            #line 11 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(position.Y));
+            #line 6 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
+ if (i == 0) { 
             
             #line default
             #line hidden
-            this.Write(", ");
+            this.Write("if (");
             
-            #line 11 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(position.Z));
+            #line 7 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(statement.Condition));
             
             #line default
             #line hidden
-            this.Write(");\r\n");
-            #line 12 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            this.Write(") then\r\n");
+            #line 8 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
+ } else { 
+            
+            #line default
+            #line hidden
+            this.Write("elseif (");
+            
+            #line 9 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(statement.Condition));
+            
+            #line default
+            #line hidden
+            this.Write(") then\r\n");
+            #line 10 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\r\n");
-            #line 14 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- foreach (var text in Script.Texts) { 
+            #line 11 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
+ foreach (var line in statement.Statements) { 
             
             #line default
             #line hidden
-            this.Write("local ");
-            
-            #line 15 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(text.Name));
-            
-            #line default
-            #line hidden
-            this.Write(" = \"");
-            
-            #line 15 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(text.Value));
-            
-            #line default
-            #line hidden
-            this.Write("\";\r\n");
-            #line 16 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("\r\nlocal M = {\r\n    --Mission State\r\n    RoutineState = {},\r\n    RoutineWakeTime = {},\r\n    RoutineActive = {},\r\n    MissionOver = false,\r\n\r\n    -- Objects\r\n");
-            #line 26 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- foreach (var obj in Script.Objects) { 
+            #line 12 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
+ var template = new LineTemplate { Line = line}; 
             
             #line default
             #line hidden
             this.Write("    ");
             
-            #line 27 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(obj.Name));
-            
-            #line default
-            #line hidden
-            this.Write(" = nil,\r\n");
-            #line 28 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("\r\n    -- Variables\r\n");
-            #line 31 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- foreach (var variable in Script.Variables) { 
-            
-            #line default
-            #line hidden
-            this.Write("    ");
-            
-            #line 32 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(variable.Name));
-            
-            #line default
-            #line hidden
-            this.Write(" = ");
-            
-            #line 32 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(variable.InitialValue));
-            
-            #line default
-            #line hidden
-            this.Write(",\r\n");
-            #line 33 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("\r\n    -- Just end it already!\r\n    endme = 0\r\n}\r\n\r\nfunction DefineRoutine(routineID, func, activeOnStart)\r\n    if routineID == nil or Routines[routineID]~= nil then\r\n        error(\"DefineRoutine: duplicate or invalid routineID: \"..tostring(routineID));\r\n    elseif func == nil then\r\n        error(\"DefineRoutine: func is nil for id \"..tostring(routineID), 2);\r\n    else\r\n        Routines[routineID] = func;\r\n        RoutineToIDMap[func] = routineID;\r\n        M.RoutineState[routineID] = 0;\r\n        M.RoutineWakeTime[routineID] = 0.0;\r\n        M.RoutineActive[routineID] = activeOnStart;\r\n    end\r\nend\r\n\r\nfunction Advance(routineID, delay)\r\n    routineID = routineID or error(\"Advance(): invalid routineID.\", 2);\r\n    SetState(routineID, M.RoutineState[routineID] + 1, delay);\r\nend\r\n\r\nfunction SetState(routineID, state, delay)\r\n    routineID = routineID or error(\"SetState(): invalid routineID.\", 2);\r\n    delay = delay or 0.0;\r\n    M.RoutineState[routineID] = state;\r\n    M.RoutineWakeTime[routineID] = GetTime() + delay;\r\nend\r\n\r\nfunction Wait(routineID, delay)\r\n    M.RoutineWakeTime[routineID] = GetTime() + delay;\r\nend\r\n\r\nfunction SetRoutineActive(routine, active)\r\n    local routineID = RoutineToIDMap[routine] or routine or error(\"SetRoutineActive(): routine '\"..tostring(routine)..\" not found.\", 2);\r\n    M.RoutineActive[routineID] = active;\r\nend\r\n\r\nfunction DefineRoutines()\r\n");
-            #line 75 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- 
-for (var i = 0; i < Script.Routines.Count; i++) {
-    var routine = Script.Routines[i];
-
-            
-            #line default
-            #line hidden
-            this.Write("    DefineRoutine(");
-            
-            #line 79 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(i));
-            
-            #line default
-            #line hidden
-            this.Write(", ");
-            
-            #line 79 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(routine.Name));
-            
-            #line default
-            #line hidden
-            this.Write(", ");
-            
-            #line 79 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(routine.GlobalRoutinePriority ? "true" : "false"));
-            
-            #line default
-            #line hidden
-            this.Write(");\r\n");
-            #line 80 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("end\r\n\r\nfunction Save()\r\n    return M;\r\nend\r\n\r\nfunction Load(...)\r\n    if select('#', ...) > 0 then\r\n        M = ...\r\n    end\r\nend\r\n\r\nfunction InitialSetup()\r\n    M.TPS = EnableHighTPS();\r\n    AllowRandomTracks(false);\r\n    DefineRoutines();\r\n\r\n    --Preload to reduce lag spikes when resources are used for the first time.\r\n    local preloadODFs = {\r\n");
-            #line 100 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- for (var i = 0; i < Script.OdfPreloads.Count; i++) { 
-            
-            #line default
-            #line hidden
-            this.Write("        \"");
-            
-            #line 101 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Script.OdfPreloads[i]));
-            
-            #line default
-            #line hidden
-            this.Write("\"");
-            
-            #line 101 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(i == Script.OdfPreloads.Count - 1 ? "" : ","));
-            
-            #line default
-            #line hidden
-            this.Write("\r\n");
-            #line 102 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("    };\r\n    local preloadAudio = {\r\n");
-            #line 105 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- for (var i = 0; i < Script.AudioMessagePreloads.Count; i++) { 
-            
-            #line default
-            #line hidden
-            this.Write("        \"");
-            
-            #line 106 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Script.AudioMessagePreloads[i]));
-            
-            #line default
-            #line hidden
-            this.Write("\"");
-            
-            #line 106 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(i == Script.AudioMessagePreloads.Count - 1 ? "" : ","));
-            
-            #line default
-            #line hidden
-            this.Write("\r\n");
-            #line 107 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("    };\r\n    for k,v in pairs(preloadODFs) do\r\n        PreloadODF(v);\r\n    end\r\n    for k,v in pairs(preloadAudio) do\r\n        PreloadAudioMessage(v);\r\n    end\r\nend\r\n");
-            #line 116 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- foreach (var routine in Script.Routines) { 
-            
-            #line default
-            #line hidden
-            #line 117 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- var luaRoutine = new LuaRoutine(routine, Script); 
-            
-            #line default
-            #line hidden
-            this.Write("\r\nfunction ");
-            
-            #line 119 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(luaRoutine.Name));
-            
-            #line default
-            #line hidden
-            this.Write("(R, STATE) {\r\n");
-            #line 120 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- foreach (var line in luaRoutine.Lines) { 
-            
-            #line default
-            #line hidden
-            #line 121 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- var template = new LineTemplate { Line = line }; 
-            
-            #line default
-            #line hidden
-            this.Write("    ");
-            
-            #line 122 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 13 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(template.TransformText()));
             
             #line default
             #line hidden
             this.Write("\r\n");
-            #line 123 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 14 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("}\r\n");
-            #line 125 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 15 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\r\n");
+            this.Write("end\r\n");
+            #line 17 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\IfTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -302,7 +126,7 @@ for (var i = 0; i < Script.Routines.Count; i++) {
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("JetBrains.ForTea.TextTemplating", "42.42.42.42")]
-    public class MissionBase
+    public class IfTemplateBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

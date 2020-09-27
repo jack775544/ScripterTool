@@ -1,6 +1,7 @@
 ﻿<#@ template language="C#" visibility="internal" #>
 <#@ import namespace="System" #>
 <#@ import namespace="ScripterTool.Core.Util" #>
+<#@ import namespace="ScripterTool.Core.Lua" #>
 assert(load(assert(LoadFile("_requirefix.lua")),"_requirefix.lua"))();
 
 local Routines = {};
@@ -113,10 +114,12 @@ function InitialSetup()
     end
 end
 <# foreach (var routine in Script.Routines) { #>
+<# var luaRoutine = new LuaRoutine(routine, Script); #>
 
-function <#= routine.Name #>(R, STATE) {
-<# foreach (var line in routine.Lines) { #>
-    <#= InstructionTranslator.Translate(line) #>
+function <#= luaRoutine.Name #>(R, STATE) {
+<# foreach (var line in luaRoutine.Lines) { #>
+<# var template = new LineTemplate { Line = line }; #>
+    <#= template.TransformText() #>
 <# } #>
 }
 <# } #>

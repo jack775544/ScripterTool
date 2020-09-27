@@ -1,0 +1,6 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="ScripterTool.Core.Lua" #>
+<#= Statement.Text #>
+<#+
+public LuaStatement Statement { get; set; }
+#>

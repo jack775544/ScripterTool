@@ -9,6 +9,18 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>Mission.cs</LastGenOutput>
     </None>
+    <None Update="Templates\IfTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>IfTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\StatementTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>StatementTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\LineTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>LineTemplate.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +28,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Mission.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IfTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IfTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\StatementTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StatementTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\LineTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LineTemplate.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
