@@ -1,0 +1,308 @@
+
+[objects]
+drop
+escort1
+escort2
+escort3
+escort4
+recy
+attacker
+swarmAA1
+swarmAA2
+swarmAA3
+swarmAA4
+swarmAA5
+swarmAA6
+swarmAA7
+swarmAA8
+swarmAA9
+swarmAA10
+reinforce
+swarmrec
+
+
+[positions]
+
+
+
+[variables]
+
+
+
+[text]
+
+Orders1,
+"Protect the Recycler convoy as\nit makes it's way through the\njungle. The more swarm AA units\nyou destroy the more dropships\nwe can send in."
+
+AA1Dead,
+"Well done you've taken out a\ngroup of AA units , A Dropship\n with reinforcements is on it's\nway down to you."
+
+AtBase,
+"Congratulations you made it\nthrough , now establish a base\n and take out the swarm\ninstallation to the\nnorth west."
+
+[routine,Main,1,true]
+
+getbylabel,recy,"recy"
+getbylabel,escort1,"escort1"
+getbylabel,escort2,"escort2"
+getbylabel,escort3,"escort3"
+getbylabel,escort4,"escort4"
+SetScrap,1,40
+
+   GoTo,recy,"recpath_1",1
+   wait,2
+   Follow,escort1,recy,1
+   wait,2
+   Follow,escort2,recy,1
+   wait,2
+   Follow,escort3,recy,1
+   wait,2
+   Follow,escort4,recy,1
+
+    clear
+    Display,Orders1,white
+
+    Createp,attacker,"svscA_D",6,"swarm1"
+    attack,attacker,recy,1
+    wait,2
+    Createp,attacker,"svscA_D",6,"swarm1"
+    attack,attacker,recy,1
+    wait,2
+    Createp,attacker,"svscout_L",6,"swarm1"
+    attack,attacker,recy,1
+    wait,2
+    Createp,attacker,"svscout_L",6,"swarm1"
+    attack,attacker,recy,1
+    wait,2
+    Createp,attacker,"svscout_L",6,"swarm1"
+    attack,attacker,recy,1
+    wait,2
+
+
+IN_TRANSIT:
+
+    Createp,attacker,"svscout_L",6,"swarm2"
+    attack,attacker,recy,1
+    wait,2
+    Createp,attacker,"svscout_L",6,"swarm2"
+    attack,attacker,recy,1
+    wait,50
+    
+    GetCommand,recy
+    IfEQ,0,FINNISHED_MOVING
+    JumpTo,IN_TRANSIT
+
+FINNISHED_MOVING:
+
+    wait,40
+    GoTo,recy,"recpath_2",1
+
+    wait,10
+
+IN_TRANSIT2:
+
+    Createp,attacker,"svscout_L",6,"swarm2"
+    attack,attacker,recy,1
+    wait,2
+    Createp,attacker,"svscout_L",6,"swarm2"
+    attack,attacker,recy,1
+    wait,50
+    
+    GetCommand,recy
+    IfEQ,0,FINNISHED_MOVING2
+    JumpTo,IN_TRANSIT2
+
+FINNISHED_MOVING2:
+
+    wait,40
+    GoTo,recy,"recpath_3",1
+
+    wait,10
+
+IN_TRANSIT3:
+
+    Createp,attacker,"svscout_J",6,"swarm3"
+    attack,attacker,recy,1
+    wait,2
+    Createp,attacker,"svtank_L",6,"swarm3"
+    attack,attacker,recy,1
+    wait,50
+    
+    GetCommand,recy
+    IfEQ,0,FINNISHED_MOVING3
+    JumpTo,IN_TRANSIT3
+
+FINNISHED_MOVING3:
+
+    wait,40
+    GoTo,recy,"recpath_4",1
+
+    wait,10
+
+IN_TRANSIT4:
+
+    Createp,attacker,"svscout_J",6,"swarm4"
+    attack,attacker,recy,1
+    wait,2
+    Createp,attacker,"svtank_L",6,"swarm4"
+    attack,attacker,recy,1
+    wait,2
+    Createp,attacker,"svinst_J",6,"swarm4"
+    attack,attacker,recy,1
+    wait,50
+    
+    GetCommand,recy
+    IfEQ,0,FINNISHED_MOVING4
+    JumpTo,IN_TRANSIT4
+
+FINNISHED_MOVING4:
+
+    wait,20
+    GoTo,recy,"base",0
+    GoTo,escort1,"base",0
+    GoTo,escort2,"base",0
+    GoTo,escort3,"base",0
+    GoTo,escort4,"base",0
+
+    clear
+    Display,AtBase,green
+
+    Createp,swarmrec,"sbrecy00",6,"swarmrec"
+    SetScrap,6,40
+    SetPlan,"FS09_s1.aip",6
+
+CHECK_SWARMREC:
+
+     isaround,swarmrec
+     ifeq,true,CHECK_SWARMREC
+
+     succeed,10,"FS09win.des"
+
+
+[routine,CheckAA1,1,false]
+
+    getbylabel,swarmAA1,"swarmAA1"
+    getbylabel,swarmAA2,"swarmAA2"
+    getbylabel,swarmAA3,"swarmAA3"
+
+AA1_IS_ALIVE:
+     
+     
+     isaround,swarmAA1
+     ifeq,true,AA1_IS_ALIVE
+     isaround,swarmAA2
+     ifeq,true,AA1_IS_ALIVE
+     isaround,swarmAA3
+     ifeq,true,AA1_IS_ALIVE
+
+    clear
+    Display,AA1Dead,green
+     
+     wait,15
+    
+     Createp,reinforce,"ivsct_BD",1,"troops"
+     SetGroup,reinforce,5
+     Createp,reinforce,"ivsct_BD",1,"troops"
+     SetGroup,reinforce,5
+     Createp,reinforce,"ivserv_BD",1,"troops"
+     SetGroup,reinforce,6
+
+
+   
+[routine,CheckAA2,1,false]
+
+    getbylabel,swarmAA4,"swarmAA4"
+    getbylabel,swarmAA5,"swarmAA5"
+
+AA2_IS_ALIVE:
+     
+     
+     isaround,swarmAA4
+     ifeq,true,AA2_IS_ALIVE
+     isaround,swarmAA5
+     ifeq,true,AA2_IS_ALIVE
+
+
+    clear
+    Display,AA1Dead,green
+     
+     wait,15
+    
+     Createp,reinforce,"ivserv_BD",1,"troops"
+     SetGroup,reinforce,6
+     Createp,reinforce,"ivsct_BD",1,"troops"
+     SetGroup,reinforce,5
+     Createp,reinforce,"ivsct_BD",1,"troops"
+     SetGroup,reinforce,5
+
+
+[routine,CheckAA3,1,false]
+
+    getbylabel,swarmAA6,"swarmAA6"
+    getbylabel,swarmAA7,"swarmAA7"
+    getbylabel,swarmAA8,"swarmAA8"
+
+AA3_IS_ALIVE:
+     
+     
+     isaround,swarmAA6
+     ifeq,true,AA3_IS_ALIVE
+     isaround,swarmAA7
+     ifeq,true,AA3_IS_ALIVE
+     isaround,swarmAA8
+     ifeq,true,AA3_IS_ALIVE
+
+    clear
+    Display,AA1Dead,green
+     
+     wait,15
+    
+     Createp,reinforce,"ivtnk_BD",1,"troops"
+     SetGroup,reinforce,7
+     Createp,reinforce,"ivtnk_BD",1,"troops"
+     SetGroup,reinforce,7
+     Createp,reinforce,"ivtnk_BD",1,"troops"
+     SetGroup,reinforce,7
+
+
+
+[routine,CheckAA4,1,false]
+
+    getbylabel,swarmAA9,"swarmAA9"
+    getbylabel,swarmAA10,"swarmAA10"
+
+AA4_IS_ALIVE:
+     
+     
+     isaround,swarmAA9
+     ifeq,true,AA4_IS_ALIVE
+     isaround,swarmAA10
+     ifeq,true,AA4_IS_ALIVE
+
+
+    clear
+    Display,AA1Dead,green
+     
+     wait,15
+    
+     Createp,reinforce,"ivltankBD",1,"troops"
+     SetGroup,reinforce,8
+     Createp,reinforce,"ivltankBD",1,"troops"
+     SetGroup,reinforce,8
+     Createp,reinforce,"ivltankBD",1,"troops"
+     SetGroup,reinforce,8
+
+
+
+
+[routine,Checkrec,1,false]
+
+
+     getbylabel,recy,"recy"
+
+REC_IS_ALIVE:
+     
+     wait,10
+     isaround,recy
+     ifeq,true,REC_IS_ALIVE
+     fail,10,"FS09fail1.des"

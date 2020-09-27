@@ -1,0 +1,433 @@
+
+[objects]
+
+Recy
+Player
+Leader
+Barracks
+apc_1
+apc_2
+apc_3
+TempPilot
+Attacker
+Enemy_1
+Enemy_2
+Enemy_3
+Enemy_4
+Enemy_5
+Enemy_6
+Enemy_7
+Enemy_8
+Enemy_9
+Outpost
+Outpost_2
+turr_1
+turr_2
+turr_3
+turr_4
+bones_1
+Tank_1
+Tank_2
+Tank_3
+Serv_1
+
+[positions]
+
+swarm1,1637,2,-1203
+swarm2,-1710,3,1575
+swarm3,-319,2,1496
+swarm4,1704,2,-335
+swarm5,1628,2,1586
+Pilots,-1079,2,-1726
+Reinf,-1262,-14,-1841
+
+[variables]
+
+PilotCount,0
+
+
+[text]
+
+Brief_1,
+"The enemy have launched\na major offensive , many\nof our outposts have been overrun\nand we have lost control\nof the starport."
+
+Brief_2,
+"We are regrouping our\nforces at the central command\ncomplex , we are evacuating all\nnon essential personnel via APC."
+
+Brief_3,
+"Without dropships from the\nstarport we are unable to\nairlift the recycler out ,\nthis means you'll have to\nescort it to safety."
+
+Orders_1,
+"Protect the APC's while\nthey evacuate our troops\nthen escort the recycler back\nto central command." 
+
+Pilots,
+"Well, done our troops\nhave arrived safely ,\nnow you must escort the\nrecycler through the canyons ,\ngood luck."
+
+Warning_1,
+"Enemy turrets are blocking\n the way ahead , clear\nthem out so we can procede."
+
+Turrets,
+"Well done , the turrets\nhave been eliminated\nwe may continue."
+
+Force,
+"A large enemy force\nis blocking the way ahead,\nwe must neutralise them\nbefore we can move on ."
+
+WinText,
+"well done the recycler\nhas made it through.\nThe rest of the journey\nto central command is,\nclear of enemy forces ."
+
+[routine,Main,1,true]
+
+GetPlayer,Player
+GetByLabel,apc_1,"apc_1"
+GetByLabel,apc_2,"apc_2"
+GetByLabel,apc_3,"apc_3"
+GetByLabel,Outpost,"Outpost"
+GetByLabel,Outpost_2,"Outpost_2"
+GetByLabel,bones_1,"bones_1"
+GetByLabel,turr_1,"turr_1"
+GetByLabel,turr_2,"turr_2"
+GetByLabel,turr_3,"turr_3"
+GetByLabel,turr_4,"turr_4"
+setscrap,1,0
+Defend,Leader,Recy,1
+GoTo,Recy,"bay",1
+BeaconOn,Recy
+
+Create,Attacker,"svscA_D",5,swarm1
+GoToo,Attacker,Recy,0
+wait,5
+Create,Attacker,"svscA_D",5,swarm2
+GoToo,Attacker,Recy,0
+
+
+clear
+Display,Brief_1,white
+wait,10
+
+Create,Attacker,"svscA_D",5,swarm1
+GoToo,Attacker,Recy,0
+wait,5
+Create,Attacker,"svscA_D",5,swarm2
+GoToo,Attacker,apc_3,0
+
+clear
+Display,Brief_2,white
+wait,5
+
+Create,Attacker,"svscA_D",5,swarm1
+GoToo,Attacker,Recy,0
+wait,5
+Create,Attacker,"svscA_D",5,swarm2
+GoToo,Attacker,apc_3,0
+
+clear
+Display,Brief_3,white
+wait,5
+
+Create,Attacker,"svscA_D",5,swarm1
+GoToo,Attacker,Recy,0
+wait,5
+Create,Attacker,"svscA_D",5,swarm2
+GoToo,Attacker,apc_3,0
+
+clear
+Display,Orders_1,white
+wait,5
+
+Create,Attacker,"svscA_D",5,swarm1
+GoToo,Attacker,Recy,0
+wait,5
+Create,Attacker,"svscA_D",5,swarm2
+GoToo,Attacker,apc_3,0
+
+Set,PilotCount,0
+
+LOAD_APC_1:
+    
+    Add,PilotCount,1,PilotCount
+    IfGT,5,NEXT
+    create,TempPilot,"ispilo",1,Pilots
+    GoToo,TempPilot,apc_1,1
+ 
+CHECK_PILOT_POS1:
+
+    IsAround,apc_1
+    IfEQ,false,FAILURE1
+    IsAround,apc_2
+    IfEQ,false,FAILURE1
+    IsAround,apc_3
+    IfEQ,false,FAILURE1
+    IsAround,TempPilot
+    IfEQ,false,FAILURE2
+
+    Create,Attacker,"svscA_D",5,swarm1
+    GoToo,Attacker,Recy,0
+    wait,10
+    Create,Attacker,"svscJ_D",5,swarm2
+    GoToo,Attacker,apc_3,0
+    wait,10
+
+    DistObject,TempPilot,apc_1
+    IfGT,12,CHECK_PILOT_POS1
+    Remove,TempPilot
+    JumpTo,LOAD_APC_1
+
+NEXT:
+
+    GoToo,apc_1,Outpost,1
+    Set,PilotCount,0
+
+LOAD_APC_2:
+    
+    Add,PilotCount,1,PilotCount
+    IfGT,5,NEXT2
+    create,TempPilot,"ispilo",1,Pilots
+    GoToo,TempPilot,apc_2,1
+ 
+CHECK_PILOT_POS2:
+
+
+    IsAround,apc_2
+    IfEQ,false,FAILURE1
+    IsAround,apc_3
+    IfEQ,false,FAILURE1
+    IsAround,TempPilot
+    IfEQ,false,FAILURE2
+
+    Create,Attacker,"svscA_D",5,swarm1
+    GoToo,Attacker,Recy,0
+    wait,8
+    Create,Attacker,"svscJ_D",5,swarm2
+    GoToo,Attacker,apc_3,0
+    wait,8
+
+    DistObject,TempPilot,apc_2
+    IfGT,12,CHECK_PILOT_POS2
+    Remove,TempPilot
+    JumpTo,LOAD_APC_2
+
+
+
+NEXT2:
+
+    GoToo,apc_2,Outpost,1
+    Set,PilotCount,0
+
+
+LOAD_APC_3:
+    
+    Add,PilotCount,1,PilotCount
+    IfGT,5,NEXT3
+    create,TempPilot,"ispilo",1,Pilots
+    GoToo,TempPilot,apc_3,1
+ 
+CHECK_PILOT_POS3:
+
+
+    IsAround,apc_3
+    IfEQ,false,FAILURE1
+    IsAround,TempPilot
+    IfEQ,false,FAILURE2
+
+    Create,Attacker,"svscA_D",5,swarm1
+    GoToo,Attacker,Recy,0
+    wait,6
+    Create,Attacker,"svscA_D",5,swarm2
+    GoToo,Attacker,Recy,0
+    wait,8
+
+    DistObject,TempPilot,apc_3
+    IfGT,12,CHECK_PILOT_POS3
+    Remove,TempPilot
+    JumpTo,LOAD_APC_3
+
+
+
+NEXT3:
+
+    GoToo,apc_3,Outpost,1
+    Set,PilotCount,0
+
+CHECK_APC:
+
+    Create,Attacker,"svscA_D",5,swarm1
+    GoToo,Attacker,Recy,0
+    wait,6
+    Create,Attacker,"svscJ_D",5,swarm1
+    GoToo,Attacker,Recy,0
+    wait,6
+    Create,Attacker,"svscA_D",5,swarm2
+    GoToo,Attacker,Recy,0
+    wait,8
+
+    DistObject,apc_3,Outpost
+    IfGT,60,CHECK_APC
+    
+    Remove,apc_1
+    Remove,apc_2
+    Remove,apc_3
+    clear
+    Display,Pilots,green
+    wait,15
+
+    Create,Tank_1,"ivtnk_BD",1,Reinf
+    GoToo,Tank_1,Recy,0
+    wait,4
+    Create,Tank_2,"ivtnk_BD",1,Reinf
+    GoToo,Tank_2,Recy,0
+    wait,4
+    Create,Tank_3,"ivtnk_BD",1,Reinf
+    GoToo,Tank_3,Recy,0
+    wait,4
+    Create,Serv_1,"ivserv_BD",1,Reinf
+    GoToo,Serv_1,Recy,0
+    wait,10
+
+    GoTo,Recy,"recPath_1",1
+
+CHECK_RECY_1:
+
+    Create,Attacker,"svscA_D",5,swarm2
+    GoToo,Attacker,Recy,0
+    wait,25
+    Create,Attacker,"svscJ_D",5,swarm2
+    GoToo,Attacker,Recy,0
+    wait,35
+
+
+    DistObject,Recy,bones_1
+    IfGT,100,CHECK_RECY_1
+
+    clear
+    Display,Warning_1,white
+    wait,15
+
+    Create,Attacker,"svwlkL_D",5,swarm2
+    GoToo,Attacker,Recy,0
+    Create,Attacker,"svwlkL_D",5,swarm2
+    GoToo,Attacker,Recy,0
+    Create,Attacker,"svwlkL_D",5,swarm2
+    GoToo,Attacker,Recy,0
+
+
+
+CHECK_TURRETS:
+
+    Create,Attacker,"svscJ_D",5,swarm2
+    GoToo,Attacker,Recy,0
+    wait,12
+    IsAround,turr_1
+    IfEQ,true,CHECK_TURRETS 
+    IsAround,turr_2
+    IfEQ,true,CHECK_TURRETS 
+    IsAround,turr_3
+    IfEQ,true,CHECK_TURRETS 
+    IsAround,turr_4
+    IfEQ,true,CHECK_TURRETS   
+ 
+    clear
+    Display,Turrets,green
+    wait,15
+
+    GoTo,Recy,"recPath_2",1 
+
+CHECK_RECY_2:
+
+    Create,Attacker,"svscJ_D",5,swarm2
+    GoToo,Attacker,Recy,0
+    Create,Attacker,"svscA_D",5,swarm3
+    GoToo,Attacker,Recy,0
+    wait,22
+    Create,Attacker,"svscJ_D",5,swarm2
+    GoToo,Attacker,Recy,0
+    Create,Attacker,"svscA_D",5,swarm3
+    GoToo,Attacker,Recy,0
+    wait,22
+    DistObject,Recy,Outpost_2
+    IfGT,100,CHECK_RECY_2  
+
+
+    Clear
+    Display,Force,white
+    wait,10
+
+    Create,Enemy_1,"svwlkL_D",5,swarm5
+    GoToo,Enemy_1,Recy,0
+    Create,Enemy_2,"svwlkL_D",5,swarm5
+    GoToo,Enemy_2,Recy,0
+    Create,Enemy_3,"svwlkL_D",5,swarm5
+    GoToo,Enemy_3,Recy,0
+    Create,Enemy_4,"svwlkL_D",5,swarm5
+    GoToo,Enemy_4,Recy,0
+    Create,Enemy_5,"svwlkL_D",5,swarm5
+    GoToo,Enemy_5,Recy,0
+    Create,Enemy_6,"svscA_D",5,swarm5
+    GoToo,Enemy_6,Recy,0
+    Create,Enemy_7,"svscA_D",5,swarm5
+    GoToo,Enemy_7,Recy,0
+    Create,Enemy_8,"svscJ_D",5,swarm5
+    GoToo,Enemy_8,Recy,0
+    Create,Enemy_9,"svscJ_D",5,swarm5
+    GoToo,Enemy_9,Recy,0
+
+CHECK_FORCES:
+
+    Create,Attacker,"svscL_D",5,swarm4
+    GoToo,Attacker,Recy,0
+    wait,12
+    IsAround,Enemy_1
+    IfEQ,true,CHECK_FORCES 
+    IsAround,Enemy_2
+    IfEQ,true,CHECK_FORCES
+    IsAround,Enemy_3
+    IfEQ,true,CHECK_FORCES
+    IsAround,Enemy_4
+    IfEQ,true,CHECK_FORCES
+    IsAround,Enemy_5
+    IfEQ,true,CHECK_FORCES
+    IsAround,Enemy_6
+    IfEQ,true,CHECK_FORCES
+    IsAround,Enemy_7
+    IfEQ,true,CHECK_FORCES
+    IsAround,Enemy_8
+    IfEQ,true,CHECK_FORCES
+    IsAround,Enemy_9
+    IfEQ,true,CHECK_FORCES
+
+    GoToo,Recy,Outpost,1
+    wait,60
+    Clear
+    Display,WinText,green
+    Succeed,16,"FS02win.des"
+    JumpTo,END_MISSION
+
+FAILURE1:
+
+     fail,10,"FS02fail1.des"
+     JumpTo,END_MISSION
+
+FAILURE2:
+
+     fail,10,"FS02fail2.des"
+     JumpTo,END_MISSION
+
+END_MISSION:
+
+[routine,CheckRecy,1,false]
+
+
+REC_IS_ALIVE:
+     getbylabel,Recy,"Recy"
+     isaround,Recy
+     ifeq,true,REC_IS_ALIVE
+     fail,10,"FS02fail3.des"
+
+
+[routine,CheckLeader,1,false]
+
+
+LEAD_IS_ALIVE:
+       getbylabel,Leader,"Leader"
+       isaround,Leader
+       ifeq,true,LEAD_IS_ALIVE
+       fail,10,"FS02fail4.des"

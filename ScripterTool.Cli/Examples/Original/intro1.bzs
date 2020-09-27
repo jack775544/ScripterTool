@@ -1,0 +1,29 @@
+
+[objects]
+Svrecy
+RecyclerEnemy
+
+[positions]
+
+
+
+[variables]
+
+
+
+[text]
+
+
+
+[routine,Main,1,true]
+
+   SpawnBirds,19,"crow01",0,"BirdPath_1"
+   SpawnBirds,7,"buzz01",0,"BirdPath_2"
+   wait,80
+   Createp,Svrecy,"svrecy00",6,"Swarm_rec"
+   GoTo,Svrecy,"Swarm_1",1
+   wait,80
+   Createp,RecyclerEnemy,"sbrecy00",5,"RecyclerEnemy"
+   SetPlan,"intro1.aip",5
+
+

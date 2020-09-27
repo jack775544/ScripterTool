@@ -5,18 +5,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Examples"/>
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Update="Examples\FS01.bzs">
+		<None Update="Examples\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\ScripterTool.Core\ScripterTool.Core.csproj"/>
+		<ProjectReference Include="..\ScripterTool.Core\ScripterTool.Core.csproj" />
 
-		<PackageReference Include="CommandLineParser" Version="2.8.0"/>
+		<PackageReference Include="CommandLineParser" Version="2.8.0" />
+
+		<ProjectReference Include="..\ScripterTool.Parser\ScripterTool.Parser.csproj" />
 	</ItemGroup>
 </Project>

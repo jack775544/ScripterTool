@@ -1,0 +1,503 @@
+
+[objects]
+SwarmGT1
+SwarmGT2
+SwarmGT3
+SwarmGT4
+SwarmGT5
+PRDrop1
+PRDrop2
+PRDrop3
+PRDrop4
+player
+LZ_nav
+SwarmAA_1
+SwarmAA_2
+SwarmAA_3
+SwarmAA_4
+SwarmAA_5
+SwarmAA_6
+Crash_nav
+PRConst
+PRProc
+PRescort1
+PRescort2
+PRescort3
+PRGtow1
+PRPgen1
+Attacker
+Prec
+Pfact
+SwarmRec
+Parmo
+Friend
+
+[positions]
+
+
+
+[variables]
+
+
+
+[text]
+
+Orders,
+"Commander take your team to the\nlanding zone and clear out the\nswarm infestation, secure the\narea before the Phaer-Rhan\ndropships arrive."
+
+Dropships,
+"Well done commander the LZ is\nsecure, the Phaer-Rhan will\narrive shortly." 
+
+Canyon,
+"Dammit, the swarm have gotten\nAA units along the canyon, they\nare tearing the dropships to\npieces, take out those swarm units\nimmediately." 
+
+Crashsite,
+"well done commander, we are\nrecieving a signal from a crashed\ndropship, go to the crashsite\nand escort the survivors to\nthe landing zone."
+
+Crashsite2,
+"Escort that Phaer-Rhan Overlord\nto the landing zone ,this\nunit is vital , another essential\nunit , the processor has also\njust arrived at the LZ."
+
+LandingZone,
+"Well done , now help defend\nthe area while the Phaer_Rhan\nsetup base , make sure that\nprocessor is well protected ."
+
+BaseUp,
+"Excellent work, the Phaer Rhan\nnow have a factory built\nassist them in their attack on the\nSwarm base to the north." 
+
+[routine,Main,1,true]
+
+
+Ally,1,2
+getbylabel,SwarmGT1,"SwarmGT1"
+getbylabel,SwarmGT1,"SwarmGT2"
+getbylabel,SwarmGT1,"SwarmGT3"
+getbylabel,SwarmGT1,"SwarmGT4"
+getbylabel,SwarmGT1,"SwarmGT5"
+getbylabel,SwarmAA_1,"SwarmAA_1"
+getbylabel,SwarmAA_2,"SwarmAA_2"
+getbylabel,SwarmAA_3,"SwarmAA_3"
+getbylabel,SwarmAA_4,"SwarmAA_4"
+getbylabel,SwarmAA_5,"SwarmAA_5"
+getbylabel,SwarmAA_6,"SwarmAA_6"
+
+    Createp,LZ_nav,"ibnav",1,"LZ"
+    SetName,LZ_nav,"Landing Zone"
+    BeaconOn,LZ_nav
+    clear
+    Display,Orders,white
+    SetPlan,"FS06_s1.aip",6
+
+    Createp,Attacker,"svscA_D",6,"LZ"
+    GoTo,Attacker,"attack_path",1
+    wait,2
+    Createp,Attacker,"svscA_D",6,"LZ"
+    GoTo,Attacker,"attack_path",1
+    wait,2
+    Createp,Attacker,"svwalk_j",6,"LZ"
+    GoTo,Attacker,"attack_path",1
+    wait,2
+    Createp,Attacker,"svwalk_j",6,"LZ"
+    GoTo,Attacker,"attack_path",1
+    wait,2
+    Createp,Attacker,"svinst_J",6,"LZ"
+    GoTo,Attacker,"attack_path",1
+    wait,2
+    Createp,Attacker,"svinst_J",6,"LZ"
+    GoTo,Attacker,"attack_path",1
+    wait,2
+    Createp,Attacker,"svscA_D",6,"LZ"
+    GoTo,Attacker,"attack_path",1
+    wait,2
+    Createp,Attacker,"svscA_D",6,"LZ"
+    GoTo,Attacker,"attack_path",1
+    wait,2
+    Createp,Attacker,"svtank_J",6,"LZ"
+    GoTo,Attacker,"attack_path",1
+    wait,2
+    Createp,Attacker,"svtank_J",6,"LZ"
+    GoTo,Attacker,"attack_path",1
+
+GT1_ALIVE:
+     wait,10
+     isaround,SwarmGT1
+     ifeq,true,GT1_ALIVE
+
+GT2_ALIVE:
+     wait,10
+     isaround,SwarmGT2
+     ifeq,true,GT2_ALIVE
+
+GT3_ALIVE:
+     wait,10
+     isaround,SwarmGT3
+     ifeq,true,GT3_ALIVE
+
+GT4_ALIVE:
+     wait,10
+     isaround,SwarmGT4
+     ifeq,true,GT4_ALIVE
+
+GT5_ALIVE:
+     wait,10
+     isaround,SwarmGT5
+     ifeq,true,GT5_ALIVE
+
+
+     clear
+     Display,Dropships,green
+
+     Createp,PRDrop1,"PvDrop_01",2,"drop_spawn"
+     GoTo,PRDrop1,"drop_path",1
+     Wait,25
+     Ally,1,6
+     CamPath,"camera_1",6000,2500,PRDrop1
+     Unally,1,6
+     Createp,PRDrop2,"PvDrop_01b",2,"drop_spawn"
+     GoTo,PRDrop2,"drop_path",1
+     Wait,5
+     Createp,PRDrop3,"PvDrop_01b",2,"drop_spawn"
+     GoTo,PRDrop3,"drop_path",1
+     Wait,45
+     clear
+     Display,Canyon,red
+
+AA1_ALIVE:
+     wait,10
+     isaround,SwarmAA_1
+     ifeq,true,AA1_ALIVE
+
+AA2_ALIVE:
+     wait,10
+     isaround,SwarmAA_2
+     ifeq,true,AA2_ALIVE
+
+AA3_ALIVE:
+     wait,10
+     isaround,SwarmAA_3
+     ifeq,true,AA3_ALIVE
+
+AA4_ALIVE:
+     wait,10
+     isaround,SwarmAA_4
+     ifeq,true,AA4_ALIVE
+
+AA5_ALIVE:
+     wait,10
+     isaround,SwarmAA_5
+     ifeq,true,AA5_ALIVE
+
+AA6_ALIVE:
+     wait,10
+     isaround,SwarmAA_6
+     ifeq,true,AA6_ALIVE
+
+    Createp,Crash_nav,"ibnav",1,"crashsite"
+    SetName,Crash_nav,"Crashsite"
+    BeaconOn,Crash_nav
+    clear
+    Display,Crashsite,white
+    wait,5
+    Createp,PRConst,"pvcons",2,"crashsite"
+    wait,5
+    Createp,PRescort1,"pvscout",2,"crashsite"
+    wait,5
+    Createp,PRescort2,"pvscout",2,"crashsite"
+    wait,5
+    Createp,PRescort3,"pvscout",2,"crashsite"
+    BeaconOn,PRConst
+
+    SetPlan,"FS06_s2.aip",6
+    SetScrap,6,40
+    
+    RunSpeed,CheckOverlord,1,false
+
+AT_CRASHSITE:
+
+    GetPlayer,player
+    wait,15
+    DistObject,player,PRConst
+    IfGT,80,AT_CRASHSITE
+
+    clear
+    Display,Crashsite2,white
+    wait,5
+    GoTo,PRConst,"LZ",1
+    wait,3
+    Follow,PRescort1,PRConst,1
+    wait,3
+    Follow,PRescort2,PRConst,1
+    wait,3
+    Follow,PRescort3,PRConst,1
+    wait,3
+    Createp,PRDrop4,"PvDrop_03",2,"drop"
+    wait,5
+    Createp,PRProc,"PvProc",2,"proc"
+    wait,5
+    RunSpeed,CheckProc,1,false
+    BeaconOn,PRProc
+
+    wait,5
+
+    Createp,PRPgen1,"PvPgen",2,"dropoff1"
+    GoTo,PRPgen1,"Pow1",1
+    wait,5
+    Createp,PRGtow1,"PvGtow",2,"dropoff2"
+    
+
+
+DEPLOY_POWER:
+
+    wait,5 
+    DistPath,PRPgen1,"Pow1"
+    IfGT,5,DEPLOY_POWER
+
+    SetAnimation,PRPgen1,"deploy",1
+    wait,2
+    StartAnimation,PRPgen1
+    wait,10
+    Replace,PRPgen1,"pbpgen",false
+
+    GoTo,PRGtow1,"GT1",1
+    wait,5
+    
+
+DEPLOY_GT:
+
+    wait,5 
+    DistPath,PRGtow1,"GT1"
+    IfGT,5,DEPLOY_GT
+
+
+    SetAnimation,PRGtow1,"deploy",1
+    wait,2
+    StartAnimation,PRGtow1
+    wait,10
+    Replace,PRGtow1,"pbgtow",false
+
+
+
+AT_LZ:
+
+    wait,15
+    DistObject,PRConst,LZ_nav
+    IfGT,80,AT_LZ
+
+    clear
+    Display,LandingZone,white
+    wait,10
+    GoTo,PRProc,"Processor",1
+    SetPlan,"FS06_s3.aip",6 
+
+AT_DEPLOY:
+    
+    wait,5 
+    DistPath,PRProc,"Processor"
+    IfGT,8,AT_DEPLOY
+    
+    SetAnimation,PRProc,"deploy",1
+    wait,5
+    StartAnimation,PRProc
+    wait,10
+    Replace,PRProc,"pbproc",false
+    SetScrap,2,40
+    RunSpeed,PhaerRhanAI,1,false
+    SetPlan,"FS06_p1.aip",2 
+    RunSpeed,checkswarm,1,false
+
+    isaround,PRescort1
+    ifeq,true,PATROL_1
+
+CHECK_ESCORT2:
+
+    isaround,PRescort2
+    ifeq,true,PATROL_2
+
+CHECK_ESCORT3:
+
+    isaround,PRescort3
+    ifeq,true,PATROL_3
+
+    JumpTo,END
+
+PATROL_1:
+    
+    Patrol,PRescort1,"Patrol_1",1
+    JumpTo,CHECK_ESCORT2
+
+PATROL_2:
+    
+    Patrol,PRescort2,"Patrol_1",1
+    JumpTo,CHECK_ESCORT3
+
+PATROL_3:
+    
+    Patrol,PRescort3,"Patrol_1",1
+
+END:
+
+    wait,5
+    isaround,Pfact
+    ifeq,false,END
+
+
+    clear
+    Display,BaseUp,white
+
+    Createp,Friend,"ivwalk_BD",1,"Friends"
+    SetGroup,Friend,7
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivwalk_BD",1,"Friends"
+    SetGroup,Friend,7
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivwalk_BD",1,"Friends"
+    SetGroup,Friend,7
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivserv_BD",1,"Friends"
+    SetGroup,Friend,8
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivserv_BD",1,"Friends"
+    SetGroup,Friend,8
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivrdev_BD",1,"Friends"
+    SetGroup,Friend,9
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivrdev_BD",1,"Friends"
+    SetGroup,Friend,9
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivrdev_BD",1,"Friends"
+    SetGroup,Friend,9
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivtnk4_BD",1,"Friends"
+    SetGroup,Friend,6
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivtnk4_BD",1,"Friends"
+    SetGroup,Friend,6
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivtur_BD",1,"Friends"
+    SetGroup,Friend,5
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivtur_BD",1,"Friends"
+    SetGroup,Friend,5
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivtur_BD",1,"Friends"
+    SetGroup,Friend,5
+    GoTo,Friend,"LZ",0
+    Wait,2
+    Createp,Friend,"ivtur_BD",1,"Friends"
+    SetGroup,Friend,5
+    GoTo,Friend,"LZ",0
+    Wait,2
+
+[routine,PhaerRhanAI,0,false]
+
+PR_MAIN:
+
+    wait,5
+    getbylabel,Prec,"unnamed_pbrecy"
+    isaround,Prec
+    ifeq,false,BUILD_CYARD
+
+    wait,5
+    getbylabel,Pfact,"unnamed_pbfact"
+    isaround,Pfact
+    ifeq,false,BUILD_FACT
+
+    wait,5
+    getbylabel,Parmo,"unnamed_pbarmo"
+    isaround,Parmo
+    ifeq,false,BUILD_ARMO
+
+    JumpTo,PR_MAIN
+
+BUILD_CYARD:
+
+    Build,PRConst,"pbrecy",1
+    DropOff,PRConst,"PRcyard",1
+    wait,5
+
+CONSTRUCTING_CYARD:
+    
+    GetCommand,PRConst
+    IfEQ,0,FINNISHED_CYARD
+    JumpTo,CONSTRUCTING_CYARD
+
+FINNISHED_CYARD:
+  
+    JumpTo,PR_MAIN
+
+BUILD_FACT:
+
+    Build,PRConst,"pbfact",1
+    DropOff,PRConst,"PRfact",1
+    wait,5
+
+CONSTRUCTING_FACT:
+    
+    GetCommand,PRConst
+    IfEQ,0,FINNISHED_FACT
+    JumpTo,CONSTRUCTING_FACT
+
+FINNISHED_FACT:
+  
+    JumpTo,PR_MAIN
+
+BUILD_ARMO:
+
+    Build,PRConst,"pbarmo",1
+    DropOff,PRConst,"PRArm",1
+    wait,5
+
+CONSTRUCTING_ARMO:
+    
+    GetCommand,PRConst
+    IfEQ,0,FINNISHED_ARMO
+    JumpTo,CONSTRUCTING_ARMO
+
+FINNISHED_ARMO:
+  
+    JumpTo,PR_MAIN
+
+[routine,checkswarm,0,false]
+
+
+SWARM_IS_ALIVE:
+     
+     getbylabel,SwarmRec,"SwarmRec"
+     wait,10
+     isaround,SwarmRec
+     ifeq,true,SWARM_IS_ALIVE
+     succeed,10,"FS06win.des"
+
+
+
+[routine,CheckOverlord,0,false]
+
+
+OVERLORD_IS_ALIVE:
+     
+     wait,10
+     isaround,PRConst
+     ifeq,true,OVERLORD_IS_ALIVE
+     fail,10,"FS06fail1.des"
+
+
+[routine,CheckProc,0,false]
+
+
+PROC_IS_ALIVE:
+     
+     wait,10
+     isaround,PRProc
+     ifeq,true,PROC_IS_ALIVE
+     fail,10,"FS06fail2.des"

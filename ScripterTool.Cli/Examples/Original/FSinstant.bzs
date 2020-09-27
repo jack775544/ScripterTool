@@ -1,0 +1,77 @@
+
+[objects]
+Recycler
+Player
+EnemyRec
+Turr1
+Turr2
+Turr3
+Turr4
+Turr5
+Turr6
+def1
+def2
+def3
+def4
+def5
+
+
+[positions]
+
+
+
+[variables]
+
+
+
+[text]
+
+
+WinText,
+"well done you have\ndefeated the enemy team."
+
+[routine,Main,1,true]
+   
+   getplayer,Player
+   Createp,Turr1,"svturr",6,"Turr1"
+   Createp,Turr2,"svturr",6,"Turr2"
+   Createp,Turr3,"svturr",6,"Turr3"
+   Createp,Turr4,"svturr",6,"Turr4"
+   Createp,Turr5,"svturr",6,"Turr5"
+   Createp,Turr6,"svturr",6,"Turr6"
+   Createp,def1,"sbgtow",6,"def1"
+   Createp,def2,"sbgtow",6,"def2"
+   Createp,def3,"sbgtow",6,"def3"
+   Createp,def4,"sbgtow",6,"def4"
+   Createp,def5,"sbgtow",6,"def5"
+   Createp,EnemyRec,"sbrecy00",6,"RecyclerEnemy"
+   Createp,Recycler,"IvrecyBD",1,"Recy"
+   SetScrap,1,40
+   SetScrap,6,20
+   SetPlan,"FSia_svBD1.aip",6
+
+
+
+CHECK_ENEMY_REC:
+
+   isaround,Recycler
+   IfEQ,false,REC_IS_DEAD
+   IsAround,EnemyRec
+   IfEQ,true,CHECK_ENEMY_REC
+
+   
+    wait,10
+    Clear
+    Display,WinText,green
+    Succeed,16,"FSiaWin.des"
+    JumpTo,END
+
+
+REC_IS_DEAD:
+
+     fail,10,"FSiaFail.des"
+     
+
+END:
+
+     wait,10

@@ -1,0 +1,109 @@
+
+[objects]
+command
+red_1
+red_2
+red_3
+red_4
+red_5
+red_6
+blue_1
+blue_2
+blue_3
+blue_4
+blue_5
+engineers
+Attacker
+light
+pilot
+
+
+[positions]
+
+
+
+[variables]
+
+AttackCount,0
+
+[text]
+
+
+
+[routine,Main,1,true]
+
+   getbylabel,command,"command"
+   getbylabel,light,"light"
+   Createp,red_1,"ivtnk_BD",1,"spawn_1"
+   Createp,red_2,"ivtnk_BD",1,"spawn_1"
+   Createp,red_3,"ivtnk_BD",1,"spawn_1"
+   Createp,red_4,"ivltankBD",1,"spawn_1"
+   Createp,red_5,"ivltankBD",1,"spawn_1"
+   Createp,red_6,"ivltankBD",1,"spawn_1"
+   Follow,red_2,red_1,1
+   Follow,red_3,red_1,1
+   Follow,red_4,red_1,1
+   Follow,red_5,red_1,1
+   Follow,red_6,red_1,1
+   GoTo,red_1,"path_1",1
+   wait,20
+   Createp,blue_1,"ivsct_BD",1,"spawn_1"
+   Createp,blue_2,"ivsct_BD",1,"spawn_1"
+   Createp,blue_3,"ivsct_BD",1,"spawn_1"
+   Createp,blue_4,"ivrckt_BD",1,"spawn_1"
+   Createp,blue_5,"ivrckt_BD",1,"spawn_1"
+   Follow,blue_2,blue_1,1
+   Follow,blue_3,blue_1,1
+   Follow,blue_5,blue_4,1
+   GoTo,blue_1,"path_1",1
+   GoTo,blue_4,"path_1",1
+   wait,20
+   Createp,engineers,"ivRepT1",1,"spawn_1"
+   GoTo,engineers,"engineer",1
+
+AT_COMMAND_YET:
+
+   DistObject,engineers,light
+   IfGT,40,AT_COMMAND_YET
+
+   wait,10
+   Createp,pilot,"ispilo",1,"engineer"
+   GoToo,pilot,command,1
+
+CHECK_PILOT_POS:
+
+   DistObject,pilot,command
+   IfGT,12,CHECK_PILOT_POS
+   Remove,pilot
+
+   GoTo,blue_1,"patrol_1",1
+   wait,20
+
+CREATE_ATTACKERS:
+
+    Add,AttackCount,1,AttackCount
+    IfGT,8,NEXT
+
+    Createp,Attacker,"svbrood_j",5,"spawn_1"
+    attack,Attacker,red_1,1
+    wait,2
+    Createp,Attacker,"svwalk_j",5,"spawn_4"
+    attack,Attacker,red_1,1
+    wait,2
+    Createp,Attacker,"svtank_j",5,"spawn_1"
+    attack,Attacker,red_3,1
+    wait,2
+    Createp,Attacker,"svbrood_j",5,"spawn_2"
+    attack,Attacker,blue_1,1
+    wait,2
+    Createp,Attacker,"svwalk_j",5,"spawn_3"
+    attack,Attacker,blue_4,1
+    wait,2
+    Createp,Attacker,"svtank_j",5,"spawn_2"
+    attack,Attacker,blue_5,1
+    wait,2
+    JumpTo,CREATE_ATTACKERS
+
+NEXT:
+
+

@@ -1,0 +1,392 @@
+[objects]
+friend
+enemy1
+enemy2
+enemy3
+enemy4
+attacker
+player
+newguy
+
+
+
+
+[positions]
+
+
+
+[variables]
+
+Swarm,0
+Phaer,0
+Bomb,0
+Serv,0
+
+
+
+[text]
+
+
+[routine,Main,1,true]
+
+//Starting up iface and importing variables
+
+FreeCamera,true
+IFaceExec,"FSmech.cfg"
+
+
+IFaceActivate,"INFO"
+
+
+WINEXIT:
+	IFaceGetInt,"end.end"
+	ifeq,0,WINEXIT
+
+IFaceGetInt,"Phaer.count"
+StoreResult,Phaer
+ifacedeactivate,"INFO"
+
+ifeq,1,PRYES
+ifeq,2,SWARMOPT
+
+PRYES:
+
+RunSpeed,PhaerRhan,1,true
+
+SWARMOPT:
+
+IFaceGetInt,"Swarm.count"
+StoreResult,Swarm
+
+ifeq,1,SALLY
+ifeq,2,SUNALLY
+
+SALLY:
+
+Ally,3,6
+Ally,3,5
+Ally,3,4
+Ally,3,2
+
+createp,enemy4,">sbrecy00",3,"RecyclerEnemy"
+setplan,"SwvMec.aip",3
+
+jumpto,BOMBER
+
+SUNALLY:
+
+UnAlly,3,6
+UnAlly,3,5
+UnAlly,3,4
+UnAlly,3,2
+
+createp,enemy4,">sbrecy00",3,"RecyclerEnemy"
+setplan,"SwvAll.aip",3
+
+BOMBER:
+
+
+IFaceGetInt,"Bomb.count"
+StoreResult,Bomb
+
+ifeq,1,BOMBENABLE
+ifeq,2,BOMBDISABLE
+
+BOMBENABLE:
+
+createp,enemy2,">ibrecy_m",5,"rece"
+
+IFaceGetInt,"Serv.count"
+StoreResult,Serv
+
+ifeq,1,ESERVB
+ifeq,2,ENOSERVB
+
+ENOSERVB:
+
+setplan,"EDFvMecB.aip",5
+
+jumpto,MAINROUTINE
+
+ESERVB:
+
+setplan,"EDFvMBS.aip",5
+
+jumpto,MAINROUTINE
+
+BOMBDISABLE:
+
+createp,enemy2,">ibrecy_m",5,"rece"
+
+IFaceGetInt,"Serv.count"
+StoreResult,Serv
+
+ifeq,1,ESERV
+ifeq,2,ENOSERV
+
+ENOSERV:
+
+setplan,"EDFvMec.aip",5
+
+jumpto,MAINROUTINE
+
+ESERV:
+
+setplan,"EDFvMecS.aip",5
+
+MAINROUTINE:
+
+FreeFinish,true
+
+teamcolor,5,12,64,0
+
+createp,friend,">Obfact_P",1,"Recy"
+setscrap,1,40
+
+
+createp,enemy1,">fbrecy_m",6,"recs"
+
+
+IFaceGetInt,"Serv.count"
+StoreResult,Serv
+
+ifeq,1,SSERV
+ifeq,2,SNOSERV
+
+SNOSERV:
+
+setplan,"ScivMec.aip",6
+
+jumpto,CONTINUEMAIN
+
+SSERV:
+
+setplan,"ScivMecS.aip",6
+
+CONTINUEMAIN:
+
+createp,enemy3,">ivrecyBD",4,"recBD"
+
+IFaceGetInt,"Serv.count"
+StoreResult,Serv
+
+ifeq,1,BDSERV
+ifeq,2,BDNOSERV
+
+BDNOSERV:
+
+setplan,"BDvMec.aip",4
+
+jumpto,MAINAGAIN
+
+BDSERV:
+
+setplan,"BDvMecS.aip",4
+
+MAINAGAIN:
+
+
+
+Ally,6,5
+Ally,5,4
+Ally,6,4
+Ally,2,6
+Ally,2,4
+Ally,2,5
+
+
+
+
+
+  setscrap,6,40
+  setscrap,5,40
+  setscrap,4,40
+  setscrap,3,40
+
+
+
+check1:
+
+isaround,enemy1
+ifeq,false,check2
+
+
+isaround,friend
+ifeq,true,check1
+
+
+fail,5,"meclose.des"
+jumpto,OVER
+
+check2:
+
+isaround,enemy2
+ifeq,false,check3
+
+
+isaround,friend
+ifeq,true,check2
+
+
+fail,5,"meclose.des"
+jumpto,OVER
+
+check3:
+
+isaround,enemy3
+ifeq,false,check4
+
+
+isaround,friend
+ifeq,true,check3
+
+
+fail,5,"meclose.des"
+jumpto,OVER
+
+check4:
+
+isaround,enemy4
+ifeq,false,WINNER
+
+
+isaround,friend
+ifeq,true,check4
+
+
+fail,5,"meclose.des"
+jumpto,OVER
+
+WINNER:
+
+succeed,5,"mecwin.des"
+
+OVER:
+
+[routine,new,1,true]
+wait,10
+OnNewObject,1,changes,newguy
+
+
+[routine,changes,0,true]
+start:
+getteam,newguy
+ifeq,1,over
+setskill,newguy,3
+
+over:
+runspeed,changes,0,true
+
+
+jumpto,start
+
+
+[routine,PhaerRhan,0,true]
+
+PHAER:
+
+  randjump,W500
+  wait,300
+  jumpto,ENDW
+
+W500:
+
+  randjump,W700
+  wait,500
+  jumpto,ENDW
+
+W700:
+
+  wait,700
+
+
+ENDW:
+
+     randjump,SPAWNPR2
+
+     Createp,attacker,"PvScout",2,"PRspawn_1"
+     attack,attacker,friend,1     
+     Createp,attacker,"PvScout",2,"PRspawn_1"
+     attack,attacker,friend,1
+     Createp,attacker,"pvtank",2,"PRspawn_1"
+     attack,attacker,friend,1
+     Createp,attacker,"pvtank",2,"PRspawn_1"
+     attack,attacker,friend,1
+     Createp,attacker,"pvtank",2,"PRspawn_1"
+     attack,attacker,friend,1
+     Createp,attacker,"pvtank",2,"PRspawn_1"
+     attack,attacker,friend,1
+     Createp,attacker,"pvmisl",2,"PRspawn_1"
+     attack,attacker,friend,1
+     Createp,attacker,"pvmisl",2,"PRspawn_1"
+     attack,attacker,friend,1
+
+     jumpto,PHAER
+
+SPAWNPR2:
+
+     randjump,SPAWNPR3
+
+     Createp,attacker,"pvtank",2,"PRspawn_2"
+     attack,attacker,friend,1  
+     Createp,attacker,"pvtank",2,"PRspawn_2"
+     attack,attacker,friend,1 
+     Createp,attacker,"pvtank",2,"PRspawn_2"
+     attack,attacker,friend,1 
+     Createp,attacker,"PvHatnk",2,"PRspawn_2"
+     attack,attacker,friend,1 
+     Createp,attacker,"PvHatnk",2,"PRspawn_2"
+     attack,attacker,friend,1 
+     Createp,attacker,"PvHatnk",2,"PRspawn_2"
+     attack,attacker,friend,1 
+     Createp,attacker,"PvHatnk",2,"PRspawn_2"
+     attack,attacker,friend,1 
+
+     jumpto,PHAER
+
+SPAWNPR3:
+
+     randjump,SPAWNPR4
+     
+
+     Createp,attacker,"pvwalk",2,"PRspawn_3"
+     attack,attacker,friend,1  
+     Createp,attacker,"pvwalk",2,"PRspawn_3"
+     attack,attacker,friend,1  
+     Createp,attacker,"pvwalk",2,"PRspawn_3"
+     attack,attacker,friend,1  
+     Createp,attacker,"pvwalk",2,"PRspawn_3"
+     attack,attacker,friend,1  
+     Createp,attacker,"PvHatnk",2,"PRspawn_3"
+     attack,attacker,friend,1 
+     Createp,attacker,"PvHatnk",2,"PRspawn_3"
+     attack,attacker,friend,1 
+
+
+     jumpto,PHAER
+
+
+SPAWNPR4:
+
+     
+
+     Createp,attacker,"pvwalk",2,"PRspawn_4"
+     attack,attacker,friend,1  
+     Createp,attacker,"pvwalk",2,"PRspawn_4"
+     attack,attacker,friend,1  
+     Createp,attacker,"pvatank",2,"PRspawn_4"
+     attack,attacker,friend,1  
+     Createp,attacker,"PvRckt",2,"PRspawn_4"
+     attack,attacker,friend,1  
+     Createp,attacker,"PvRckt",2,"PRspawn_4"
+     attack,attacker,friend,1 
+     Createp,attacker,"PvRckt",2,"PRspawn_4"
+     attack,attacker,friend,1 
+
+
+     jumpto,PHAER
+
+
+
+
+

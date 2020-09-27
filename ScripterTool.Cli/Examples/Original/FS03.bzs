@@ -1,0 +1,331 @@
+
+[objects]
+Recycler
+Player
+EnemyRec1
+EnemyRec2
+Tech
+Turr1
+Turr2
+Turr3
+Turr4
+Turr5
+Turr6
+Rckt1
+Rckt2
+Rckt3
+Rckt4
+Walk1
+Walk2
+Walk3
+Sct1
+Sct2
+Sct3
+Tnk1
+Tnk2
+Attacker
+tow1
+tow2
+tow3
+tow4
+def1
+def2
+def3
+def4
+def5
+Swalk1
+Swalk2
+Swalk3
+Swalk4
+star_nav
+
+
+
+[positions]
+
+
+
+[variables]
+
+AttackerCount,0
+
+[text]
+
+startxt,
+"With LT Harker dead\nyou are now incharge\nof the recycler , however\nwe need to upgrade it first\nget those scavs deployed\nwhile you're waiting." 
+
+techtxt,
+"OK the recycler\nhas now been upgraded\nget it deployed and\nbegin the assualt on\nthe enemy installation\nto the north-west ."
+
+rec1txt,
+"Excellent work , the enemy\ninstallation has been neutralised\nour forces are now able to\nmove out of the canyon ,\nnow lets retake that StarPort ."
+
+allies,
+"Commander you better get some\ndefences up here , we've\ngot a large enemy force\nfurther up the canyon , and\nthey're closing fast ."
+
+WinText,
+"well done you have\ncleared the way\nto the Starport."
+
+lastorders,
+"You have eliminated all enemy\nbases in this area, destroy the\nenemy force blocking the way\nto the starport, and\nany extra units that arrive."  
+
+[routine,Main,1,true]
+   
+   getplayer,Player
+   GetByLabel,Tech,"Tech"
+   Ally,5,6
+   Ally,1,2
+   SetScrap,1,40
+   SetScrap,5,20
+   SetScrap,6,20
+   Createp,Turr1,"svturr",6,"turr1"
+   Createp,Turr2,"svturr",6,"turr2"
+   Createp,Turr3,"svturr",6,"turr3"
+   Createp,Turr4,"svturr",6,"turr4"
+   Createp,Turr5,"svturr",6,"turr5"
+   Createp,Turr6,"svturr",6,"turr6"
+   Createp,def1,"svturr",6,"def1"
+   Createp,def2,"svturr",6,"def2"
+   Createp,def3,"svturr",6,"def3"
+   Createp,def4,"svturr",6,"def4"
+   Createp,def5,"svturr",6,"def5"
+   Createp,tow1,"sbgtow",5,"tow1"
+   Createp,tow2,"sbgtow",5,"tow2"
+   Createp,tow3,"sbgtow",5,"tow3"
+   Createp,tow4,"sbgtow",5,"tow4"
+   Clear
+   Display,startxt,white
+   GoTo,Recycler,"Rec_path1",1
+   Createp,EnemyRec1,">sbrecy_b",5,"RecyclerEnemy"
+   Createp,EnemyRec2,">sbrecy_b",6,"RecyclerEnemy2"
+   WAIT,30
+   SetPlan,"FS03.aip",5
+   SetPlan,"FS03b.aip",6
+
+AT_TECH:
+
+   DistObject,Recycler,Tech
+   IfGT,50,AT_TECH
+   wait,40
+   GoTo,Recycler,"Rec_path1",0
+   Clear
+   Display,techtxt,white
+
+   RunSpeed,CheckRecy2,1,false
+
+CHECK_ENEMY_REC:
+
+   IsAround,EnemyRec1
+   IfEQ,true,CHECK_ENEMY_REC
+
+   RunSpeed,CheckRecy2,0,false
+
+   Clear
+   Display,rec1txt,green
+
+   wait,10
+
+   Createp,Rckt1,"ivrckt_BD",2,"spawn_1"
+   Createp,Rckt2,"ivrckt_BD",2,"spawn_1"
+   Createp,Rckt3,"ivrckt_BD",2,"spawn_1"
+   Createp,Rckt4,"ivrckt_BD",2,"spawn_1"
+   GoTo,Rckt1,"attack_1",1
+   GoTo,Rckt2,"attack_1",1
+   GoTo,Rckt3,"attack_1",1 
+   GoTo,Rckt4,"attack_1",1
+   wait,20
+
+   Clear
+   Display,allies,blue
+
+   Createp,Walk1,"ivwalk_BD",2,"spawn_1"
+   Createp,Walk2,"ivwalk_BD",2,"spawn_1"
+   Createp,Walk3,"ivwalk_BD",2,"spawn_1"
+   GoTo,Walk1,"attack_2",1
+   GoTo,Walk2,"attack_2",1
+   GoTo,Walk3,"attack_2",1
+   wait,15
+   Createp,Sct1,"ivsct_BD",2,"spawn_1"
+   Createp,Sct2,"ivsct_BD",2,"spawn_1"
+   Createp,Sct3,"ivsct_BD",2,"spawn_1"
+   GoTo,Sct1,"attack_1",1
+   GoTo,Sct2,"attack_1",1
+   GoTo,Sct3,"attack_1",1
+   wait,10
+   Createp,Tnk1,"ivtnk_BD",2,"spawn_1"
+   Createp,Tnk2,"ivtnk_BD",2,"spawn_1"
+   GoTo,Tnk1,"attack_2",1
+   GoTo,Tnk2,"attack_2",1
+
+   wait,30
+
+   Createp,Attacker,"svscA_D",5,"spawn_1"
+   GoToo,Attacker,Rckt1,0
+   Createp,Attacker,"svBrood_L",5,"spawn_1"
+   GoToo,Attacker,Walk1,0
+   wait,5
+   Createp,Attacker,"svtank_L",5,"spawn_1"
+   GoToo,Attacker,Rckt1,0
+   Createp,Attacker,"svtank_L",5,"spawn_1"
+   GoToo,Attacker,Walk1,0
+   wait,10
+   Createp,Attacker,"svscA_D",5,"spawn_1"
+   GoToo,Attacker,Rckt1,0
+   Createp,Attacker,"svscA_D",5,"spawn_1"
+   GoToo,Attacker,Walk1,0
+   wait,15
+   Createp,Attacker,"svtank_L",5,"spawn_1"
+   GoToo,Attacker,Rckt1,0
+   Createp,Attacker,"svtank_L",5,"spawn_1"
+   GoToo,Attacker,Walk1,0
+
+
+
+CHECK_ENEMY_REC2:
+
+   wait,20
+   Add,AttackerCount,1,AttackerCount
+   IfGT,15,CHECK_ENEMY_REC2B
+
+   Createp,Attacker,"svscA_D",5,"spawn_1"
+   GoTo,Attacker,"attack_1",1
+   wait,5
+   Createp,Attacker,"svBrood_L",5,"spawn_1"
+   GoTo,Attacker,"attack_1",1
+   wait,5
+   Createp,Attacker,"svtank_L",5,"spawn_1"
+   GoTo,Attacker,"attack_1",1
+   wait,5
+   Createp,Attacker,"svBrood_L",5,"spawn_1"
+   GoToo,Attacker,Recycler,0
+   wait,5
+   Createp,Attacker,"svtank_L",5,"spawn_1"
+   GoToo,Attacker,Recycler,0
+
+   IsAround,EnemyRec2
+   IfEQ,true,CHECK_ENEMY_REC2
+
+CHECK_ENEMY_REC2B:
+
+   IsAround,EnemyRec2
+   IfEQ,true,CHECK_ENEMY_REC2B
+
+    wait,10
+    Clear
+    Display,lastorders,green
+
+    Createp,star_nav,"ibnav",1,"star_nav"
+    SetName,star_nav,"StarPort"
+    BeaconOn,star_nav
+
+   GoTo,Rckt1,"star_nav",1
+   GoTo,Rckt2,"star_nav",1
+   GoTo,Rckt3,"star_nav",1 
+   GoTo,Rckt4,"star_nav",1
+
+   GoTo,Walk1,"star_nav",1
+   GoTo,Walk2,"star_nav",1
+   GoTo,Walk3,"star_nav",1
+
+   GoTo,Sct1,"star_nav",1
+   GoTo,Sct2,"star_nav",1
+   GoTo,Sct3,"star_nav",1
+
+   GoTo,Tnk1,"star_nav",1
+   GoTo,Tnk2,"star_nav",1
+
+    Createp,Swalk1,"Svwalk_J2",5,"finalforce1"
+    Createp,Swalk2,"Svwalk_L2",5,"finalforce1"
+    Createp,Attacker,"Svinst_L2",5,"finalforce1"
+    Patrol,Attacker,"patrol_1",1
+    Createp,Attacker,"Svartl_L2",5,"finalforce1"
+    Patrol,Attacker,"patrol_1",1
+    Createp,Attacker,"Svinst_L2",5,"finalforce1"
+    Patrol,Attacker,"patrol_1",1
+    Createp,Attacker,"Svinst_L2",5,"finalforce1"
+    Patrol,Attacker,"patrol_1",1
+    Createp,Attacker,"Svinst_L2",5,"finalforce1"
+    Patrol,Attacker,"patrol_1",1
+
+    Createp,Swalk3,"Svwalk_J2",5,"finalforce2"
+    Createp,Swalk4,"Svwalk_L2",5,"finalforce2"
+    Createp,Attacker,"Svinst_L2",5,"finalforce2"
+    Patrol,Attacker,"patrol_2",1
+    Createp,Attacker,"Svartl_L2",5,"finalforce2"
+    Patrol,Attacker,"patrol_2",1
+    Createp,Attacker,"Svartl_L2",5,"finalforce2"
+    Patrol,Attacker,"patrol_2",1
+    Createp,Attacker,"Svartl_L2",5,"finalforce2"
+    Patrol,Attacker,"patrol_2",1
+
+WALK_1:
+
+     wait,60
+
+     Createp,Attacker,"svBrood_L",5,"last_attackers"
+     GoToo,Attacker,Recycler,0
+     wait,20
+     Createp,Attacker,"svscA_D",5,"last_attackers"
+     GoToo,Attacker,Recycler,0
+     wait,20
+
+     isaround,Swalk1
+     ifeq,true,WALK_1
+
+WALK_2:
+
+     wait,20
+
+
+     Createp,Attacker,"svscA_D",5,"last_attackers"
+     GoToo,Attacker,Recycler,0
+
+     isaround,Swalk2
+     ifeq,true,WALK_2
+
+WALK_3:
+
+     wait,20
+
+     Createp,Attacker,"svBrood_L",5,"last_attackers"
+     GoToo,Attacker,Recycler,0
+
+
+     isaround,Swalk3
+     ifeq,true,WALK_3
+
+WALK_4:
+
+     wait,20
+
+     Createp,Attacker,"svscA_D",5,"last_attackers"
+     GoToo,Attacker,Recycler,0
+
+     isaround,Swalk4
+     ifeq,true,WALK_4
+
+    wait,20
+
+    clear
+    Display,WinText,green
+    Succeed,16,"FS03win.des"
+
+
+[routine,CheckRecy,1,false]
+
+
+REC_IS_ALIVE:
+     getbylabel,Recycler,"Recycler"
+     isaround,Recycler
+     ifeq,true,REC_IS_ALIVE
+     fail,10,"FS03fail.des"
+
+
+[routine,CheckRecy2,0,false]
+
+
+REC2_IS_ALIVE:
+
+     isaround,EnemyRec2
+     ifeq,true,REC2_IS_ALIVE
+     fail,10,"FS03fail2.des"

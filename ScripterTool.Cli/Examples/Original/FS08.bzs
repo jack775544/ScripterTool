@@ -1,0 +1,188 @@
+
+[objects]
+S1recy
+S2recy
+launcher1
+launcher2
+launcher3
+Player
+Nav1
+Nav2
+Nav3
+BaseNav
+Recycler
+PRover
+PRproc
+PRgt1
+PRgt2
+PRgt3
+PRgt4
+PRgt5
+PRsbay
+PRcom
+PRserv1
+PRserv2
+PRserv3
+Turr1
+Turr2
+Turr3
+
+
+
+[positions]
+
+
+
+[variables]
+
+
+
+[text]
+Orders,
+"The Swarm is attempting to escape\ntake out those launchers\nwe've dropped navs to help you,\nbe quick, time is short."
+
+Orders2,
+"Well done Commander, now build a\nbase and destroy the\nremaining swarm forces, a\nrecycler is on it's way\nto you."
+
+
+[routine,Main,1,true]
+
+Ally,5,6
+Ally,1,2
+
+
+
+getbylabel,S1recy,"S1recy"
+getbylabel,launcher1,"launcher1"
+getbylabel,launcher2,"launcher2"
+getbylabel,launcher3,"launcher3"
+
+ Createp,S2recy,"sbrecy00",5,"S2recy"
+ Createp,PRproc,"pbproc",2,"PRproc"
+ Createp,PRover,"Pvcons",2,"PRover"
+ Createp,PRgt1,"Pbgtow",2,"PRgt1"
+ Createp,PRgt2,"Pbgtow",2,"PRgt2"
+ Createp,PRgt3,"Pbgtow",2,"PRgt3"
+ Createp,PRgt4,"Pbgtow",2,"PRgt4"
+ Createp,PRgt5,"Pbgtow",2,"PRgt5"
+ Createp,PRcom,"Pbcoms",2,"PRcom"
+ Createp,PRsbay,"Pbsbay",2,"PRsbay"
+ Createp,PRserv1,"Pvserv",2,"PRover"
+ Createp,PRserv2,"Pvserv",2,"PRover"
+ Createp,PRserv3,"Pvserv",2,"PRover"
+
+  SetScrap,2,40
+  SetScrap,5,40
+  SetScrap,6,40
+
+    SetPlan,"FS08_s1.aip",6
+    SetPlan,"FS08_s2.aip",5
+    SetPlan,"FS08_p1.aip",2
+
+    Createp,Nav1,"ibnav",1,"Nav1"
+    SetName,Nav1,"Launcher1"
+    BeaconOn,Nav1
+
+    Createp,Nav2,"ibnav",1,"Nav2"
+    SetName,Nav2,"Launcher2"
+    BeaconOn,Nav2
+
+    Createp,Nav3,"ibnav",1,"Nav3"
+    SetName,Nav3,"Launcher3"
+    BeaconOn,Nav3
+
+    clear
+    Display,Orders,white
+
+    StartTimer,600
+
+COUNT_DOWN:
+
+     isaround,launcher1
+     ifeq,false,COUNT_DOWN2
+
+     GetTimerTime
+     IfGT,0,COUNT_DOWN
+     fail,10,"FS08fail1.des"
+     JumpTo,END
+
+COUNT_DOWN2:
+
+     isaround,launcher2
+     ifeq,false,COUNT_DOWN3
+
+     GetTimerTime
+     IfGT,0,COUNT_DOWN2
+     fail,10,"FS08fail1.des"
+     JumpTo,END
+
+COUNT_DOWN3:
+
+     isaround,launcher3
+     ifeq,false,NEXT
+
+     GetTimerTime
+     IfGT,0,COUNT_DOWN3
+     fail,10,"FS08fail1.des"
+     JumpTo,END
+
+NEXT:
+    
+    StopTimer
+
+    BeaconOff,Nav1
+    BeaconOff,Nav2
+    BeaconOff,Nav3
+
+    Createp,BaseNav,"ibnav",1,"BaseNav"
+    SetName,BaseNav,"Deploy Recycler Here"
+    BeaconOn,BaseNav
+
+    clear
+    Display,Orders2,green
+
+    wait,10
+
+    Createp,Recycler,"ivrecyBD",1,"Recycler"
+    Createp,Turr1,"ivtur_BD",1,"Recycler"
+    Createp,Turr2,"ivtur_BD",1,"Recycler"
+    Createp,Turr3,"ivtur_BD",1,"Recycler"
+
+
+    SetPlan,"FS08_s3.aip",6
+    SetPlan,"FS08_s4.aip",5
+    SetPlan,"FS08_p2.aip",2
+
+    SetScrap,1,40
+    GoToo,Recycler,BaseNav,0
+    Follow,Turr1,Recycler,0
+    Follow,Turr2,Recycler,0
+    Follow,Turr3,Recycler,0
+
+
+    RunSpeed,CheckRecy,1,false
+
+
+CHECK_SWARM1:
+
+     isaround,S1recy
+     ifeq,true,CHECK_SWARM1
+
+CHECK_SWARM2:
+
+     isaround,S2recy
+     ifeq,true,CHECK_SWARM2
+
+     succeed,10,"FS08win.des"
+
+END:
+
+[routine,CheckRecy,0,false] 
+
+RECY_IS_ALIVE:
+     
+     wait,10
+     isaround,Recycler
+     ifeq,true,RECY_IS_ALIVE
+     fail,10,"FS08fail2.des"
+
