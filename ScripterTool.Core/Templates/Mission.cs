@@ -29,7 +29,7 @@ using ScripterTool.Core.Lua;
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("JetBrains.ForTea.TextTemplating", "42.42.42.42")]
     public partial class Mission : MissionBase
     {
-        #line 127 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+        #line 126 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
 
 public ScriptFile Script { get; set; }
 
@@ -260,32 +260,26 @@ for (var i = 0; i < Script.Routines.Count; i++) {
             
             #line default
             #line hidden
-            this.Write("(R, STATE) {\r\n");
+            this.Write("(R, STATE)\r\n");
             #line 120 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  foreach (var line in luaRoutine.Lines) { 
             
             #line default
             #line hidden
+            
             #line 121 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- var template = new LineTemplate { Line = line }; 
-            
-            #line default
-            #line hidden
-            this.Write("    ");
-            
-            #line 122 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(template.TransformText()));
+            this.Write(this.ToStringHelper.ToStringWithCulture(line.ToString(1, true)));
             
             #line default
             #line hidden
             this.Write("\r\n");
-            #line 123 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 122 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("}\r\n");
-            #line 125 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            this.Write("end\r\n");
+            #line 124 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  } 
             
             #line default

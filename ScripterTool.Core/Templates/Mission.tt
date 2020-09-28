@@ -116,12 +116,11 @@ end
 <# foreach (var routine in Script.Routines) { #>
 <# var luaRoutine = new LuaRoutine(routine, Script); #>
 
-function <#= luaRoutine.Name #>(R, STATE) {
+function <#= luaRoutine.Name #>(R, STATE)
 <# foreach (var line in luaRoutine.Lines) { #>
-<# var template = new LineTemplate { Line = line }; #>
-    <#= template.TransformText() #>
+<#= line.ToString(1, true) #>
 <# } #>
-}
+end
 <# } #>
 
 <#+
