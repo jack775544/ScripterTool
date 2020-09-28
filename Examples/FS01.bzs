@@ -1,0 +1,359 @@
+
+[objects]
+
+IndexedObject
+Attacker
+Attacker0
+Attacker1
+Attacker2
+Attacker3
+Attacker4
+Attacker5
+Attacker6
+Attacker7
+Attacker8
+Attackers <6>
+MyRecycler
+Wingman_1
+Wingman_2
+Leader
+RepTeam
+Player
+Hangar
+Outpost
+Bones
+Service_1
+Service_2
+GunTow
+GunTow2
+LastWalk
+
+[positions]
+
+SwarmSP1,1628,2,1586
+SwarmSP2,-1715,-5,1532
+Serv_1,-1236,2,-1728
+Serv_2,-1294,2,-1730
+
+[variables]
+
+Index,0
+AttackerCount,0
+WaveCount,0
+
+[text]
+
+Orders_1,
+"Lt Harker we have\nlost contact with outpost\none. Escort a repair team\nto the outpost, we need \nthat com bunker back online." 
+
+Orders_2,
+"We're under attack , they're\neverywhere. Protect that repair\nteam at all costs, ensure they\nget safely back to base .
+
+Orders_3,
+"Build a scavenger and start making\nsome turrets a large enemy force\nis inbound "  
+
+Obsevation,
+" Something is wrong here\nall the trees are dying\nand there's no sign of any\nanimal life at all."
+
+Comms,
+"We've lost comms with base,\nall this dust is screwing things\nup, continue with the mission\nwe'll contact base when we get\nthe bunker online."
+
+Outpost,
+"What the hell has happened here,\nthe outpost is totally destroyed.\nBaker,Davidson and Mckenzie\ncheck the perimeter for hostiles. "
+
+Warning_1,
+"Warning :Stay in Formation."
+
+Objective_1,
+"Well done , The Repair Team\nhas arrived back safely."
+
+WinText,
+"Well done You Have Survived\nFor Now !!"
+
+
+[routine,Main,1,true]
+
+GetPlayer,Player
+setscrap,1,0
+Display,Orders_1,white
+getbylabel,Outpost,"Outpost"
+getbylabel,GunTow2,"GunTow2"
+getbylabel,GunTow,"GunTow"
+getbylabel,Bones,"Bones"
+getbylabel,Wingman_1,"Wingman_1"
+getbylabel,Wingman_2,"Wingman_2"
+GoTo,RepTeam,"Rep_Path",1
+Wait,10
+Follow,Leader,RepTeam,1
+Follow,Wingman_1,Leader,1
+Follow,Wingman_2,Leader,1
+BeaconOn,RepTeam
+GoTo,RepTeam,"PatrolRte_1",1
+Wait,40
+Clear
+Display,Obsevation,white
+
+AT_BONES:
+
+    
+    DistObject,Leader,Player
+    IfGT,400,PLAYER_WARNING_1
+
+RETURN_1:
+
+    DistObject,RepTeam,Bones
+    IfGT,100,AT_BONES
+    Clear
+    Display,Comms,white
+    GoTo,RepTeam,"PatrolRte_2",1
+
+AT_OUTPOST_YET:
+
+    DistObject,Leader,Player
+    IfGT,400,PLAYER_WARNING_2
+
+RETURN_2:
+
+    DistObject,RepTeam,Outpost
+    IfGT,80,AT_OUTPOST_YET
+
+Clear
+Display,Outpost,white
+Patrol,Wingman_1,"Perimeter_Path",1
+Follow,Wingman_2,Wingman_1,1
+wait,20
+Create,Attacker,"svscL_D",5,SwarmSP1
+attack,Attacker,Wingman_1,1
+wait,35
+Clear
+Display,Orders_2,white
+attack,Wingman_1,Attacker,0
+Follow,Wingman_2,Wingman_1,0
+wait,10
+
+CREATE_GROUP:
+Wait,1
+Create,IndexedObject,"svscL_D",5,SwarmSP1
+SetByIndex,Attackers,Index,IndexedObject
+Add,Index,1,Index
+IfLT,6,CREATE_GROUP
+
+Set,Index,0
+
+SEND_ATTACK:
+GetByIndex,IndexedObject,Attackers,Index
+Attack,IndexedObject,RepTeam,1
+Add,Index,1,Index
+IfLT,6,SEND_ATTACK
+
+Create,Service_1,"ivserv_BD",1,Serv_1
+Goto,Service_1,"Rep_Path",1
+Create,Service_2,"ivserv_BD",1,Serv_2
+Goto,Service_2,"Rep_Path",1
+wait,20
+Goto,RepTeam,"EscPath_1",1
+
+    RunSpeed,SwarmAttack,1,false
+
+CHECK_TEAM_POS:
+
+    wait,5
+
+    DistObject,Leader,Player
+    IfGT,400,PLAYER_WARNING_3
+
+RETURN_3:
+
+    DistObject,RepTeam,Hangar
+    IfGT,80,CHECK_TEAM_POS
+
+    RunSpeed,SwarmAttack,0,false
+
+    Goto,Leader,"Rep_Path",1
+    clear
+    Display,Objective_1,green
+    wait,10
+
+    RunSpeed,CheckRepTeam,0,false
+    BeaconOff,RepTeam
+
+    Gotoo,Service_1,GunTow2,0
+    Service,Service_2,Leader,0
+
+    AddScrap,1,40
+    clear
+    Display,Orders_3,White
+    wait,20
+    Defend,Leader,GunTow2,1
+
+SEND_WAVE:
+	RunSpeed,Main,1,true
+	Createp,Attacker1,"svscJ_D",5,"attackers_2"
+	Attack,Attacker1,MyRecycler,0
+	Wait,3
+	Createp,Attacker2,"svscA_D",5,"attackers_2"
+	GoToo,Attacker2,MyRecycler,1
+	Wait,3
+	Createp,Attacker3,"svscA_D",5,"attackers_2"
+	GoToo,Attacker3,MyRecycler,1
+	Wait,3
+	Createp,Attacker6,"svscA_D",5,"attackers_1"
+	GoToo,Attacker6,Hangar,1
+	Wait,3
+	Createp,Attacker7,"svwlkL_D",5,"attackers_1"
+	GoToo,Attacker7,Hangar,1
+	Wait,3
+	Createp,Attacker8,"svwlkL_D",5,"attackers_1"
+	SetMaxHealth,Attacker8,5800
+	SetCurHealth,Attacker8,5800
+	GoToo,Attacker8,Hangar,1
+	Wait,50
+
+	Add,WaveCount,1,WaveCount
+	IfLT,5,SEND_WAVE
+
+
+      Createp,LastWalk,"svwlkL_D",5,"attackers_2"
+	GoToo,LastWalk,MyRecycler,1
+
+LASTWALK_POS:
+
+     Wait,15
+
+     Createp,Attacker,"svscA_D",5,"attackers_2"
+     attack,Attacker,MyRecycler,1
+     wait,2
+     Createp,Attacker,"svscA_D",5,"attackers_2"
+     attack,Attacker,MyRecycler,1
+     wait,2
+     Createp,Attacker,"svscA_D",5,"attackers_2"
+     GoToo,Attacker,MyRecycler,1
+     wait,2
+     Createp,Attacker,"svscJ_D",5,"attackers_1"
+     GoToo,Attacker,Hangar,1
+     wait,2
+     Createp,Attacker,"svscJ_D",5,"attackers_1"
+     GoToo,Attacker,Hangar,1
+
+     isaround,GunTow
+     ifeq,true,ATTACK_TOWER_1
+
+CHECK_TOW_2:
+     isaround,GunTow2
+     ifeq,true,ATTACK_TOWER_2
+
+CHECK_WALK:
+       isaround,LastWalk
+       ifeq,true,LASTWALK_POS
+
+      Wait,100
+	Clear
+	Display,WinText,green
+	Succeed,16,"Winner.des"
+      jumpto,END
+
+ATTACK_TOWER_1:
+     Createp,Attacker,"svscA_D",5,"attackers_1"
+     attack,Attacker,GunTow,1
+     wait,2
+     Createp,Attacker,"svscA_D",5,"attackers_1"
+     attack,Attacker,GunTow,1
+     wait,2
+     jumpto,CHECK_TOW_2
+
+ATTACK_TOWER_2:
+     Createp,Attacker,"svscA_D",5,"attackers_2"
+     attack,Attacker,GunTow2,1
+     wait,2
+     Createp,Attacker,"svscA_D",5,"attackers_2"
+     attack,Attacker,GunTow2,1
+     wait,2
+     jumpto,CHECK_WALK
+
+
+PLAYER_WARNING_1:
+
+     clear
+     Display,Warning_1,red
+     wait,10
+     jumpto,RETURN_1
+
+PLAYER_WARNING_2:
+
+     clear
+     Display,Warning_1,red
+     wait,10
+     jumpto,RETURN_2
+
+PLAYER_WARNING_3:
+
+     clear
+     Display,Warning_1,red
+     wait,10
+     jumpto,RETURN_3
+
+END:
+
+[routine,CheckLeader,1,false]
+
+
+LEAD_IS_ALIVE:
+       getbylabel,Leader,"Leader"
+       isaround,Leader
+       ifeq,true,LEAD_IS_ALIVE
+       fail,10,"failtext.des"
+
+[routine,CheckRepTeam,1,false]
+
+
+TEAM_IS_ALIVE:
+      getbylabel,RepTeam,"RepTeam"
+      isaround,RepTeam
+      ifeq,true,TEAM_IS_ALIVE
+      fail,10,"failtext2.des"
+
+[routine,CheckMyRecyler,1,false]
+
+
+REC_IS_ALIVE:
+     getbylabel,MyRecycler,"MyRecycler"
+     isaround,MyRecycler
+     ifeq,true,REC_IS_ALIVE
+     fail,10,"failtext3.des"
+
+[routine,CheckHangar,1,false]
+
+
+HANGAR_IS_ALIVE:
+       getbylabel,Hangar,"Hangar"
+       isaround,Hangar
+       ifeq,true,HANGAR_IS_ALIVE
+       fail,10,"failtext.des"
+
+[routine,SwarmAttack,0,false]
+
+SWARM_ATTACK:
+
+    Wait,35
+
+    Create,Attacker,"svscL_D",5,SwarmSP1
+    attack,Attacker,RepTeam,1
+    wait,2
+    Create,Attacker,"svscL_D",5,SwarmSP1
+    attack,Attacker,RepTeam,1
+    wait,2
+    Create,Attacker,"svscL_D",5,SwarmSP1
+    attack,Attacker,RepTeam,1
+    wait,2
+    Create,Attacker,"svscJ_D",5,SwarmSP2
+    attack,Attacker,RepTeam,1
+    wait,2
+    Create,Attacker,"svscJ_D",5,SwarmSP2
+    attack,Attacker,RepTeam,1
+
+     jumpto,SWARM_ATTACK
+
+
+
+
+

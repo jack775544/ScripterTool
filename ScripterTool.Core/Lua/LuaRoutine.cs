@@ -106,20 +106,6 @@ namespace ScripterTool.Core.Lua
 			{
 				TerminateCurrentScope(false);
 			}
-
-			// if (advance)
-			// {
-			// 	lines.Add(new LuaStatement
-			// 	{
-			// 		Text = "Advance(R)"
-			// 	});
-			// }
-			//
-			// _switch.Scopes.Add(new LuaIfScope
-			// {
-			// 	Condition = $"STATE == {idx}",
-			// 	Statements = lines,
-			// });
 		}
 
 		private int GetNextStateIdx()
