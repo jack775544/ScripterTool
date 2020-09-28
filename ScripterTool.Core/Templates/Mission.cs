@@ -29,7 +29,7 @@ using ScripterTool.Core.Lua;
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("JetBrains.ForTea.TextTemplating", "42.42.42.42")]
     public partial class Mission : MissionBase
     {
-        #line 126 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+        #line 130 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
 
 public ScriptFile Script { get; set; }
 
@@ -115,47 +115,70 @@ public ScriptFile Script { get; set; }
             
             #line default
             #line hidden
+            #line 27 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+ if (obj.Usages > 1) { 
+            
+            #line default
+            #line hidden
             this.Write("    ");
             
-            #line 27 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 28 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(obj.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" = {},\r\n");
+            #line 29 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+ } else { 
+            
+            #line default
+            #line hidden
+            this.Write("    ");
+            
+            #line 30 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(obj.Name));
             
             #line default
             #line hidden
             this.Write(" = nil,\r\n");
-            #line 28 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 31 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+ } 
+            
+            #line default
+            #line hidden
+            #line 32 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  } 
             
             #line default
             #line hidden
             this.Write("\r\n    -- Variables\r\n");
-            #line 31 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 35 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  foreach (var variable in Script.Variables) { 
             
             #line default
             #line hidden
             this.Write("    ");
             
-            #line 32 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 36 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(variable.Name));
             
             #line default
             #line hidden
             this.Write(" = ");
             
-            #line 32 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 36 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(variable.InitialValue));
             
             #line default
             #line hidden
             this.Write(",\r\n");
-            #line 33 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 37 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  } 
             
             #line default
             #line hidden
             this.Write("\r\n    -- Just end it already!\r\n    endme = 0\r\n}\r\n\r\nfunction DefineRoutine(routineID, func, activeOnStart)\r\n    if routineID == nil or Routines[routineID]~= nil then\r\n        error(\"DefineRoutine: duplicate or invalid routineID: \"..tostring(routineID));\r\n    elseif func == nil then\r\n        error(\"DefineRoutine: func is nil for id \"..tostring(routineID), 2);\r\n    else\r\n        Routines[routineID] = func;\r\n        RoutineToIDMap[func] = routineID;\r\n        M.RoutineState[routineID] = 0;\r\n        M.RoutineWakeTime[routineID] = 0.0;\r\n        M.RoutineActive[routineID] = activeOnStart;\r\n    end\r\nend\r\n\r\nfunction Advance(routineID, delay)\r\n    routineID = routineID or error(\"Advance(): invalid routineID.\", 2);\r\n    SetState(routineID, M.RoutineState[routineID] + 1, delay);\r\nend\r\n\r\nfunction SetState(routineID, state, delay)\r\n    routineID = routineID or error(\"SetState(): invalid routineID.\", 2);\r\n    delay = delay or 0.0;\r\n    M.RoutineState[routineID] = state;\r\n    M.RoutineWakeTime[routineID] = GetTime() + delay;\r\nend\r\n\r\nfunction Wait(routineID, delay)\r\n    M.RoutineWakeTime[routineID] = GetTime() + delay;\r\nend\r\n\r\nfunction SetRoutineActive(routine, active)\r\n    local routineID = RoutineToIDMap[routine] or routine or error(\"SetRoutineActive(): routine '\"..tostring(routine)..\" not found.\", 2);\r\n    M.RoutineActive[routineID] = active;\r\nend\r\n\r\nfunction DefineRoutines()\r\n");
-            #line 75 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 79 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  
 for (var i = 0; i < Script.Routines.Count; i++) {
     var routine = Script.Routines[i];
@@ -165,121 +188,121 @@ for (var i = 0; i < Script.Routines.Count; i++) {
             #line hidden
             this.Write("    DefineRoutine(");
             
-            #line 79 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 83 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 79 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 83 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(routine.Name));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 79 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(routine.GlobalRoutinePriority ? "true" : "false"));
+            #line 83 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(routine.GlobalRoutineSpeed > 0 ? "true" : "false"));
             
             #line default
             #line hidden
             this.Write(");\r\n");
-            #line 80 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 84 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  } 
             
             #line default
             #line hidden
             this.Write("end\r\n\r\nfunction Save()\r\n    return M;\r\nend\r\n\r\nfunction Load(...)\r\n    if select('#', ...) > 0 then\r\n        M = ...\r\n    end\r\nend\r\n\r\nfunction InitialSetup()\r\n    M.TPS = EnableHighTPS();\r\n    AllowRandomTracks(false);\r\n    DefineRoutines();\r\n\r\n    --Preload to reduce lag spikes when resources are used for the first time.\r\n    local preloadODFs = {\r\n");
-            #line 100 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 104 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  for (var i = 0; i < Script.OdfPreloads.Count; i++) { 
             
             #line default
             #line hidden
             this.Write("        \"");
             
-            #line 101 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 105 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Script.OdfPreloads[i]));
             
             #line default
             #line hidden
             this.Write("\"");
             
-            #line 101 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 105 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i == Script.OdfPreloads.Count - 1 ? "" : ","));
             
             #line default
             #line hidden
             this.Write("\r\n");
-            #line 102 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 106 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  } 
             
             #line default
             #line hidden
             this.Write("    };\r\n    local preloadAudio = {\r\n");
-            #line 105 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 109 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  for (var i = 0; i < Script.AudioMessagePreloads.Count; i++) { 
             
             #line default
             #line hidden
             this.Write("        \"");
             
-            #line 106 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 110 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Script.AudioMessagePreloads[i]));
             
             #line default
             #line hidden
             this.Write("\"");
             
-            #line 106 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 110 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i == Script.AudioMessagePreloads.Count - 1 ? "" : ","));
             
             #line default
             #line hidden
             this.Write("\r\n");
-            #line 107 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 111 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  } 
             
             #line default
             #line hidden
             this.Write("    };\r\n    for k,v in pairs(preloadODFs) do\r\n        PreloadODF(v);\r\n    end\r\n    for k,v in pairs(preloadAudio) do\r\n        PreloadAudioMessage(v);\r\n    end\r\nend\r\n");
-            #line 116 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 120 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  foreach (var routine in Script.Routines) { 
             
             #line default
             #line hidden
-            #line 117 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 121 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  var luaRoutine = new LuaRoutine(routine, Script); 
             
             #line default
             #line hidden
             this.Write("\r\nfunction ");
             
-            #line 119 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 123 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(luaRoutine.Name));
             
             #line default
             #line hidden
             this.Write("(R, STATE)\r\n");
-            #line 120 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 124 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  foreach (var line in luaRoutine.Lines) { 
             
             #line default
             #line hidden
             
-            #line 121 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 125 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(line.ToString(1, true)));
             
             #line default
             #line hidden
             this.Write("\r\n");
-            #line 122 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 126 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  } 
             
             #line default
             #line hidden
             this.Write("end\r\n");
-            #line 124 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            #line 128 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  } 
             
             #line default

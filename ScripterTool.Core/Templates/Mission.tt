@@ -24,7 +24,11 @@ local M = {
 
     -- Objects
 <# foreach (var obj in Script.Objects) { #>
+<# if (obj.Usages > 1) { #>
+    <#= obj.Name #> = {},
+<# } else { #>
     <#= obj.Name #> = nil,
+<# } #>
 <# } #>
 
     -- Variables
@@ -76,7 +80,7 @@ function DefineRoutines()
 for (var i = 0; i < Script.Routines.Count; i++) {
     var routine = Script.Routines[i];
 #>
-    DefineRoutine(<#= i #>, <#= routine.Name #>, <#= routine.GlobalRoutinePriority ? "true" : "false" #>);
+    DefineRoutine(<#= i #>, <#= routine.Name #>, <#= routine.GlobalRoutineSpeed > 0 ? "true" : "false" #>);
 <# } #>
 end
 
