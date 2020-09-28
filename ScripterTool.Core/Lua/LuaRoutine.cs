@@ -13,12 +13,15 @@ namespace ScripterTool.Core.Lua
 
 		private int _stateIdx = -1;
 		private Dictionary<string, int> _stateMapping = new Dictionary<string, int>();
-		private LuaIf _currentState;
+		private LuaIf _switch;
 		private string _lastReturnVariable;
 
 		public LuaRoutine(ScripterRoutine routine)
 		{
 			Name = routine.Name;
+			_switch = new LuaIf();
+			Lines.Add(_switch);
+
 			// All routine commands are in states
 			for (var i = 0; i < routine.Lines.Count; i++)
 			{
@@ -50,23 +53,17 @@ namespace ScripterTool.Core.Lua
 		{
 			var idx = GetNextStateIdx();
 			_stateMapping[label.Name] = idx;
-			Lines.Add(new LuaIf
+			_switch.Scopes.Add(new LuaIfScope
 			{
-				Comment = "Label: " + label.Name,
-				Scopes = new List<LuaIfScope>
+				Condition = $"STATE == {idx}",
+				Statements = new List<LuaLine>
 				{
-					new LuaIfScope
+					new LuaStatement
 					{
-						Condition = $"STATE == {idx}",
-						Statements = new List<LuaLine>
-						{
-							new LuaStatement
-							{
-								Text = "Advance(R)"
-							}
-						}
+						Text = "Advance(R)"
 					}
-				}
+				},
+				Comment = "Label: " + label.Name,
 			});
 		}
 
@@ -107,16 +104,10 @@ namespace ScripterTool.Core.Lua
 				});
 			}
 
-			Lines.Add(new LuaIf
+			_switch.Scopes.Add(new LuaIfScope
 			{
-				Scopes = new List<LuaIfScope>
-				{
-					new LuaIfScope
-					{
-						Condition = $"STATE == {idx}",
-						Statements = lines,
-					}
-				}
+				Condition = $"STATE == {idx}",
+				Statements = lines,
 			});
 		}
 

@@ -25,9 +25,10 @@ namespace ScripterTool.Core.Lua
 			for (var i = 0; i < Scopes.Count; i++)
 			{
 				var scope = Scopes[i];
+				var scopeComment = scope.Comment != null ? $" -- {scope.Comment}" : "";
 				if (i == 0)
 				{
-					builder.Append(new string(' ', 4 * indentLevel) + $"if ({scope.Condition}) then");
+					builder.Append(new string(' ', 4 * indentLevel) + $"if ({scope.Condition}) then{scopeComment}");
 					if (Comment != null)
 					{
 						builder.Append($" -- {Comment}");
@@ -36,7 +37,7 @@ namespace ScripterTool.Core.Lua
 				}
 				else
 				{
-					builder.AppendLine(new string(' ', 4 * indentLevel) + $"elseif ({scope.Condition}) then");
+					builder.AppendLine(new string(' ', 4 * indentLevel) + $"elseif ({scope.Condition}) then{scopeComment}");
 				}
 
 				foreach (var line in scope.Statements)

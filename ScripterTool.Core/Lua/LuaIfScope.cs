@@ -6,5 +6,6 @@ namespace ScripterTool.Core.Lua
 	{
 		public string Condition { get; set; }
 		public List<LuaLine> Statements { get; set; }
+		public string Comment { get; set; }
 	}
 }
