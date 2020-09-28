@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ScripterTool.Core.Lua.Translator;
 using ScripterTool.Core.Models;
 
 namespace ScripterTool.Core.Lua
@@ -43,6 +44,7 @@ namespace ScripterTool.Core.Lua
 			_stateMapping[label.Name] = idx;
 			Lines.Add(new LuaIf
 			{
+				Comment = "Label: " + label.Name,
 				Scopes = new List<LuaIfScope>
 				{
 					new LuaIfScope
@@ -63,6 +65,23 @@ namespace ScripterTool.Core.Lua
 		private void TranslateCommand(ScripterRoutineCommand command)
 		{
 			var idx = GetNextStateIdx();
+			var lines = new List<LuaLine>();
+			if (InstructionTranslator.Instructions.TryGetValue(command.Name, out var translator))
+			{
+				lines.AddRange(translator(command.Params).Statements);
+			}
+			else
+			{
+				Console.WriteLine($"Unable to translate {command.Name}");
+				lines.Add(new LuaStatement
+				{
+					Text = $"{command.Name}({string.Join(", ", command.Params)})"
+				});
+			}
+			lines.Add(new LuaStatement
+			{
+				Text = "Advance(R)"
+			});
 			Lines.Add(new LuaIf
 			{
 				Scopes = new List<LuaIfScope>
@@ -70,17 +89,7 @@ namespace ScripterTool.Core.Lua
 					new LuaIfScope
 					{
 						Condition = $"STATE == {idx}",
-						Statements = new List<LuaLine>
-						{
-							new LuaStatement
-							{
-								Text = $"{command.Name}({string.Join(", ", command.Params)})"
-							},
-							new LuaStatement
-							{
-								Text = "Advance(R)"
-							}
-						}
+						Statements = lines,
 					}
 				}
 			});

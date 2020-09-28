@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace ScripterTool.Core.Lua
@@ -16,7 +17,7 @@ namespace ScripterTool.Core.Lua
 		{
 			if (Scopes.Count == 0)
 			{
-				return "";
+				return removeTrailingNewLine ? "" : Environment.NewLine;
 			}
 
 			var builder = new StringBuilder();
@@ -26,7 +27,12 @@ namespace ScripterTool.Core.Lua
 				var scope = Scopes[i];
 				if (i == 0)
 				{
-					builder.AppendLine(new string(' ', 4 * indentLevel) + $"if ({scope.Condition}) then");
+					builder.Append(new string(' ', 4 * indentLevel) + $"if ({scope.Condition}) then");
+					if (Comment != null)
+					{
+						builder.Append($" -- {Comment}");
+					}
+					builder.AppendLine();
 				}
 				else
 				{
@@ -38,14 +44,12 @@ namespace ScripterTool.Core.Lua
 					builder.Append(line.ToString(indentLevel + 1));
 				}
 			}
+			
+			builder.Append(new string(' ', 4 * indentLevel) + "end");
 
-			if (removeTrailingNewLine)
+			if (!removeTrailingNewLine)
 			{
-				builder.Append(new string(' ', 4 * indentLevel) + "end");
-			}
-			else
-			{
-				builder.AppendLine(new string(' ', 4 * indentLevel) + "end");
+				builder.AppendLine();
 			}
 
 			return builder.ToString();

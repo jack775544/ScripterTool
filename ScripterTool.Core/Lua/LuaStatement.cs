@@ -13,9 +13,10 @@ namespace ScripterTool.Core.Lua
 
 		public override string ToString(int indentLevel, bool removeTrailingNewLine = false)
 		{
+			var comment = Comment == null ? "" : $" -- {Comment}";
 			return removeTrailingNewLine
-				? new string(' ', 4 * indentLevel) + Text + ";"
-				: new string(' ', 4 * indentLevel) + Text + ";" + Environment.NewLine;
+				? new string(' ', 4 * indentLevel) + Text + ";" + comment
+				: new string(' ', 4 * indentLevel) + Text + ";" + comment + Environment.NewLine;
 		}
 	}
 }
