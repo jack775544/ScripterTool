@@ -6,46 +6,65 @@ namespace ScripterTool.Core.Lua.Translator
 {
 	public class InstructionTranslator
 	{
-		public static Dictionary<string, Func<string[], Instruction>> Instructions = new Dictionary<string, Func<string[], Instruction>>(StringComparer.OrdinalIgnoreCase)
+		public static Dictionary<string, Func<string[], TranslatorContext, Instruction>> Instructions = new Dictionary<string, Func<string[], TranslatorContext, Instruction>>(StringComparer.OrdinalIgnoreCase)
 		{
-			{"SetScrap", args => new Instruction($"SetScrap({args[0]}, {args[1]})")},
-			{"Display", args => new Instruction($"AddObjective({args[0]}, \"{args[1]}\")")},
-			{"GetByLabel", args => new Instruction($"M.{args[0]} = GetHandle({args[1]})")},
-			{"GetPlayer", args => new Instruction($"M.{args[0]} = GetPlayerHandle()")},
-			{"GoTo", args => new Instruction($"Goto(M.{args[0]}, {args[1]}, {args[2]})")},
-			{"GoToo", args => new Instruction($"Goto(M.{args[0]}, M.{args[1]}, {args[2]})")},
-			{"Follow", args => new Instruction($"Follow(M.{args[0]}, M.{args[1]}, {args[2]})")},
-			{"Clear", args => new Instruction("ClearObjectives()")},
-			{"BeaconOn", args => new Instruction($"SetObjectiveOn(M.{args[0]})")},
-			{"BeaconOff", args => new Instruction($"SetObjectiveOff(M.{args[0]})")},
-			{"Patrol", args => new Instruction($"Patrol(M.{args[0]}, {args[1]}, {args[2]})")},
-			{"Create", args => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")},
-			{"Createp", args => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")},
-			{"Attack", args => new Instruction($"Attack(M.{args[0]}, M.{args[1]}, {args[2]})")},
-			{"SetByIndex", args => new Instruction($"M.{args[0]}[M.{args[1]}] = M.{args[2]}")},
-			{"Add", args => new Instruction($"M.{args[0]} = {args[1]} + M.{args[2]}")},
-			{"Set", args => new Instruction($"M.{args[0]} = {args[1]}")},
-			{"GetByIndex", args => new Instruction($"M.{args[0]} = M.{args[1]}[M.{args[2]}]")},
-			{"Service", args => new Instruction($"Service(M.{args[0]}, M.{args[1]}, {args[2]})")},
-			{"AddScrap", args => new Instruction($"AddScrap({args[0]}, {args[1]})")},
-			{"Defend", args => new Instruction($"Defend(M.{args[0]}, M.{args[1]}, {args[2]})")},
-			{"SetMaxHealth", args => new Instruction($"SetMaxHealth(M.{args[0]}, {args[1]})")},
-			{"SetCurHealth", args => new Instruction($"SetCurHealth(M.{args[0]}, {args[1]})")},
-			{"IsAround", args => new Instruction($"IsAround(M.{args[0]})")},
-			{"Succeed", args => new Instruction($"SucceedMission({args[0]}, {args[1]})")},
-			{"Fail", args => new Instruction($"FailMission({args[0]}, {args[1]})")},
+			{"SetScrap", (args, ctx) => new Instruction($"SetScrap({args[0]}, {args[1]})")},
+			{"Display", (args, ctx) => new Instruction($"AddObjective({args[0]}, \"{args[1]}\")")},
+			{"GetByLabel", (args, ctx) => new Instruction($"M.{args[0]} = GetHandle({args[1]})")},
+			{"GetPlayer", (args, ctx) => new Instruction($"M.{args[0]} = GetPlayerHandle()")},
+			{"GoTo", (args, ctx) => new Instruction($"Goto(M.{args[0]}, {args[1]}, {args[2]})")},
+			{"GoToo", (args, ctx) => new Instruction($"Goto(M.{args[0]}, M.{args[1]}, {args[2]})")},
+			{"Follow", (args, ctx) => new Instruction($"Follow(M.{args[0]}, M.{args[1]}, {args[2]})")},
+			{"Clear", (args, ctx) => new Instruction("ClearObjectives()")},
+			{"BeaconOn", (args, ctx) => new Instruction($"SetObjectiveOn(M.{args[0]})")},
+			{"BeaconOff", (args, ctx) => new Instruction($"SetObjectiveOff(M.{args[0]})")},
+			{"Patrol", (args, ctx) => new Instruction($"Patrol(M.{args[0]}, {args[1]}, {args[2]})")},
+			{"Create", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")},
+			{"Createp", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")},
+			{"Attack", (args, ctx) => new Instruction($"Attack(M.{args[0]}, M.{args[1]}, {args[2]})")},
+			{"SetByIndex", (args, ctx) => new Instruction($"M.{args[0]}[M.{args[1]}] = M.{args[2]}")},
+			{"Set", (args, ctx) => new Instruction($"M.{args[0]} = {args[1]}")},
+			{"GetByIndex", (args, ctx) => new Instruction($"M.{args[0]} = M.{args[1]}[M.{args[2]}]")},
+			{"Service", (args, ctx) => new Instruction($"Service(M.{args[0]}, M.{args[1]}, {args[2]})")},
+			{"AddScrap", (args, ctx) => new Instruction($"AddScrap({args[0]}, {args[1]})")},
+			{"Defend", (args, ctx) => new Instruction($"Defend(M.{args[0]}, M.{args[1]}, {args[2]})")},
+			{"SetMaxHealth", (args, ctx) => new Instruction($"SetMaxHealth(M.{args[0]}, {args[1]})")},
+			{"SetCurHealth", (args, ctx) => new Instruction($"SetCurHealth(M.{args[0]}, {args[1]})")},
+			{"Succeed", (args, ctx) => new Instruction($"SucceedMission({args[0]}, {args[1]})")},
+			{"Fail", (args, ctx) => new Instruction($"FailMission({args[0]}, {args[1]})")},
 
-			{"Wait", args => new Instruction($"Advance(R, {args[0]})") {NeedNewScope = true}},
-			{"RunSpeed", args =>
+			{"Wait", (args, ctx) => new Instruction($"Advance(R, {args[0]})") {NeedNewScope = true}},
+			{"RunSpeed", (args, ctx) =>
 				{
 					var active = int.Parse(args[1]) > 0 ? "true" : "false";
 					return new Instruction($"SetRoutineActive({args[0]}, {active})");
 				}
 			},
 
-			{"DistObject", args => new Instruction($"result = Distance3D(M.{args[0]}, M.{args[1]})")},
+			{"DistObject", (args, ctx) =>
+				{
+					var retVar = $"Value{ctx.Routine.Name}{ctx.LineIdx}"; 
+					return new Instruction($"M.{retVar} = Distance3D(M.{args[0]}, M.{args[1]})")
+					{
+						ReturnVariable = retVar,
+					};
+				}
+			},
+			{"IsAround", (args, ctx) =>
+				{
+					var retVar = $"Value{ctx.Routine.Name}{ctx.LineIdx}";
+					return new Instruction($"M.{retVar} = IsAround(M.{args[0]})")
+					{
+						ReturnVariable = retVar,
+					};
+				}
+			},
+			{"Add", (args, ctx) => new Instruction($"M.{args[0]} = {args[1]} + M.{args[2]}")
+			{
+				ReturnVariable = args[0],
+			}},
 
-			{"IfEQ", args => new Instruction
+			{"IfEQ", (args, ctx) => new Instruction
 				{
 					Statements = new List<LuaLine>
 					{
@@ -55,7 +74,7 @@ namespace ScripterTool.Core.Lua.Translator
 							{
 								new LuaIfScope
 								{
-									Condition = $"result == {args[0]}",
+									Condition = $"M.{ctx.LastReturnVariable} == {args[0]}",
 									Statements = new List<LuaLine>
 									{
 										new LuaStatement
@@ -69,7 +88,7 @@ namespace ScripterTool.Core.Lua.Translator
 					}
 				}
 			},
-			{"IfLT", args => new Instruction
+			{"IfLT", (args, ctx) => new Instruction
 				{
 					Statements = new List<LuaLine>
 					{
@@ -79,7 +98,7 @@ namespace ScripterTool.Core.Lua.Translator
 							{
 								new LuaIfScope
 								{
-									Condition = $"result < {args[0]}",
+									Condition = $"M.{ctx.LastReturnVariable} < {args[0]}",
 									Statements = new List<LuaLine>
 									{
 										new LuaStatement
@@ -93,7 +112,7 @@ namespace ScripterTool.Core.Lua.Translator
 					}
 				}
 			},
-			{"IfGT", args => new Instruction
+			{"IfGT", (args, ctx) => new Instruction
 				{
 					Statements = new List<LuaLine>
 					{
@@ -103,7 +122,7 @@ namespace ScripterTool.Core.Lua.Translator
 							{
 								new LuaIfScope
 								{
-									Condition = $"result > {args[0]}",
+									Condition = $"M.{ctx.LastReturnVariable} > {args[0]}",
 									Statements = new List<LuaLine>
 									{
 										new LuaStatement
@@ -117,7 +136,7 @@ namespace ScripterTool.Core.Lua.Translator
 					}
 				}
 			},
-			{"JumpTo", args => new Instruction($"SetState(R, @@{args[0]}@@)")},
+			{"JumpTo", (args, ctx) => new Instruction($"SetState(R, @@{args[0]}@@)")},
 		};
 	}
 }

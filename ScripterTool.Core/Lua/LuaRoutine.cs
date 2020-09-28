@@ -14,6 +14,7 @@ namespace ScripterTool.Core.Lua
 		private int _stateIdx = -1;
 		private Dictionary<string, int> _stateMapping = new Dictionary<string, int>();
 		private LuaIf _currentState;
+		private string _lastReturnVariable;
 
 		public LuaRoutine(ScripterRoutine routine)
 		{
@@ -22,7 +23,7 @@ namespace ScripterTool.Core.Lua
 			for (var i = 0; i < routine.Lines.Count; i++)
 			{
 				var line = routine.Lines[i];
-				TranslateLine(line);
+				TranslateLine(line, i);
 			}
 		}
 
@@ -32,7 +33,7 @@ namespace ScripterTool.Core.Lua
 			Lines = lines;
 		}
 
-		private void TranslateLine(IScripterRoutineObject line)
+		private void TranslateLine(IScripterRoutineObject line, int lineIdx)
 		{
 			switch (line)
 			{
@@ -40,7 +41,7 @@ namespace ScripterTool.Core.Lua
 					TranslateLabel(label);
 					break;
 				case ScripterRoutineCommand command:
-					TranslateCommand(command);
+					TranslateCommand(command, lineIdx);
 					break;
 			}
 		}
@@ -69,16 +70,25 @@ namespace ScripterTool.Core.Lua
 			});
 		}
 
-		private void TranslateCommand(ScripterRoutineCommand command)
+		private void TranslateCommand(ScripterRoutineCommand command, int lineIdx)
 		{
 			var idx = GetNextStateIdx();
 			var lines = new List<LuaLine>();
 			var advance = true;
 			if (InstructionTranslator.Instructions.TryGetValue(command.Name, out var translator))
 			{
-				var instruction = translator(command.Params);
+				var instruction = translator(command.Params, new TranslatorContext
+				{
+					LineIdx = idx,
+					LastReturnVariable = _lastReturnVariable,
+					Routine = this,
+				});
 				lines.AddRange(instruction.Statements);
 				advance = !instruction.NeedNewScope;
+				if (instruction.ReturnVariable != null)
+				{
+					_lastReturnVariable = instruction.ReturnVariable;
+				}
 			}
 			else
 			{
@@ -117,7 +127,7 @@ namespace ScripterTool.Core.Lua
 
 		public override string ToString()
 		{
-			return base.ToString();
+			return ToString(0, true);
 		}
 
 		public string ToString(int indentLevel, bool removeTrailingNewLine = false)

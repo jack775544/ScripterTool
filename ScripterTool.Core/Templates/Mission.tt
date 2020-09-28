@@ -6,7 +6,6 @@ assert(load(assert(LoadFile("_requirefix.lua")),"_requirefix.lua"))();
 
 local Routines = {};
 local RoutineToIDMap = {};
-local result = nil;
 
 <# foreach (var position in Script.Positions) { #>
 local <#= position.Name #> = SetVector(<#= position.X #>, <#= position.Y #>, <#= position.Z #>);
