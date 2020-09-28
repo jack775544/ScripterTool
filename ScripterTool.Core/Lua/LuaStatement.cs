@@ -14,8 +14,8 @@ namespace ScripterTool.Core.Lua
 		public override string ToString(int indentLevel, bool removeTrailingNewLine = false)
 		{
 			return removeTrailingNewLine
-				? new string(' ', 4 * indentLevel) + Text
-				: new string(' ', 4 * indentLevel) + Text + Environment.NewLine;
+				? new string(' ', 4 * indentLevel) + Text + ";"
+				: new string(' ', 4 * indentLevel) + Text + ";" + Environment.NewLine;
 		}
 	}
 }

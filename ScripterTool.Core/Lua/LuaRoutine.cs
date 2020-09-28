@@ -52,7 +52,7 @@ namespace ScripterTool.Core.Lua
 						{
 							new LuaStatement
 							{
-								Text = "Advance(R);"
+								Text = "Advance(R)"
 							}
 						}
 					}
@@ -74,11 +74,11 @@ namespace ScripterTool.Core.Lua
 						{
 							new LuaStatement
 							{
-								Text = $"{command.Name}({string.Join(", ", command.Params)});"
+								Text = $"{command.Name}({string.Join(", ", command.Params)})"
 							},
 							new LuaStatement
 							{
-								Text = "Advance(R);"
+								Text = "Advance(R)"
 							}
 						}
 					}
