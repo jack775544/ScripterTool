@@ -6,6 +6,7 @@ namespace ScripterTool.Core.Lua.Translator
 	{
 		public List<LuaLine> Statements { get; set; } = new List<LuaLine>();
 		public bool NeedNewScope { get; set; }
+		public bool Advance { get; set; }
 		public string ReturnVariable { get; set; }
 
 		public Instruction()

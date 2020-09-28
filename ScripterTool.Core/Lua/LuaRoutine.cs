@@ -12,15 +12,22 @@ namespace ScripterTool.Core.Lua
 		public List<LuaLine> Lines { get; set; } = new List<LuaLine>();
 
 		private int _stateIdx = -1;
+		private int _commandIdx = 0;
 		private Dictionary<string, int> _stateMapping = new Dictionary<string, int>();
 		private LuaIf _switch;
+		private LuaIfScope _currentScope;
 		private string _lastReturnVariable;
 
 		public LuaRoutine(ScripterRoutine routine)
 		{
 			Name = routine.Name;
 			_switch = new LuaIf();
+			_currentScope = new LuaIfScope
+			{
+				Condition = $"STATE == {GetNextStateIdx()}",
+			};
 			Lines.Add(_switch);
+			_switch.Scopes.Add(_currentScope);
 
 			// All routine commands are in states
 			for (var i = 0; i < routine.Lines.Count; i++)
@@ -51,27 +58,24 @@ namespace ScripterTool.Core.Lua
 
 		private void TranslateLabel(ScripterRoutineLabel label)
 		{
-			var idx = GetNextStateIdx();
-			_stateMapping[label.Name] = idx;
-			_switch.Scopes.Add(new LuaIfScope
+			if (_currentScope.Statements.Count == 0)
 			{
-				Condition = $"STATE == {idx}",
-				Statements = new List<LuaLine>
-				{
-					new LuaStatement
-					{
-						Text = "Advance(R)"
-					}
-				},
-				Comment = "Label: " + label.Name,
-			});
+				_currentScope.Comment = "Label: " + label.Name;
+				_stateMapping[label.Name] = _stateIdx;
+			}
+			else
+			{
+				TerminateCurrentScope(true);
+				_currentScope.Comment = "Label: " + label.Name;
+				_stateMapping[label.Name] = _stateIdx;
+			}
 		}
 
 		private void TranslateCommand(ScripterRoutineCommand command, int lineIdx)
 		{
-			var idx = GetNextStateIdx();
+			var idx = ++_commandIdx;
 			var lines = new List<LuaLine>();
-			var advance = true;
+			var needNewScope = true;
 			if (InstructionTranslator.Instructions.TryGetValue(command.Name, out var translator))
 			{
 				var instruction = translator(command.Params, new TranslatorContext
@@ -81,7 +85,7 @@ namespace ScripterTool.Core.Lua
 					Routine = this,
 				});
 				lines.AddRange(instruction.Statements);
-				advance = !instruction.NeedNewScope;
+				needNewScope = instruction.NeedNewScope;
 				if (instruction.ReturnVariable != null)
 				{
 					_lastReturnVariable = instruction.ReturnVariable;
@@ -92,28 +96,51 @@ namespace ScripterTool.Core.Lua
 				Console.WriteLine($"Unable to translate {command.Name}");
 				lines.Add(new LuaStatement
 				{
-					Text = $"{command.Name}({string.Join(", ", command.Params)})"
+					Text = $"{command.Name}({string.Join(", ", command.Params)})",
+					Comment = "Could not translate",
 				});
 			}
-
-			if (advance)
+			
+			_currentScope.Statements.AddRange(lines);
+			if (needNewScope)
 			{
-				lines.Add(new LuaStatement
-				{
-					Text = "Advance(R)"
-				});
+				TerminateCurrentScope(false);
 			}
 
-			_switch.Scopes.Add(new LuaIfScope
-			{
-				Condition = $"STATE == {idx}",
-				Statements = lines,
-			});
+			// if (advance)
+			// {
+			// 	lines.Add(new LuaStatement
+			// 	{
+			// 		Text = "Advance(R)"
+			// 	});
+			// }
+			//
+			// _switch.Scopes.Add(new LuaIfScope
+			// {
+			// 	Condition = $"STATE == {idx}",
+			// 	Statements = lines,
+			// });
 		}
 
 		private int GetNextStateIdx()
 		{
 			return ++_stateIdx;
+		}
+
+		private void TerminateCurrentScope(bool advance)
+		{
+			if (advance)
+			{
+				_currentScope.Statements.Add(new LuaStatement
+				{
+					Text = "Advance(R)"
+				});
+			}
+			_currentScope = new LuaIfScope
+			{
+				Condition = $"STATE == {GetNextStateIdx()}",
+			};
+			_switch.Scopes.Add(_currentScope);
 		}
 
 		public override string ToString()

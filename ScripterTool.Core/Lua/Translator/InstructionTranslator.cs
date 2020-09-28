@@ -79,7 +79,12 @@ namespace ScripterTool.Core.Lua.Translator
 									{
 										new LuaStatement
 										{
-											Text = $"SetState(R, @@{args[1]}@@)"
+											Text = $"SetState(R, @@{args[1]}@@)",
+											Comment = $"Goto label {args[1]}"
+										},
+										new LuaStatement
+										{
+											Text = "return"
 										}
 									}
 								}
@@ -103,7 +108,12 @@ namespace ScripterTool.Core.Lua.Translator
 									{
 										new LuaStatement
 										{
-											Text = $"SetState(R, @@{args[1]}@@)"
+											Text = $"SetState(R, @@{args[1]}@@)",
+											Comment = $"Goto label {args[1]}"
+										},
+										new LuaStatement
+										{
+											Text = "return"
 										}
 									}
 								}
@@ -127,16 +137,32 @@ namespace ScripterTool.Core.Lua.Translator
 									{
 										new LuaStatement
 										{
-											Text = $"SetState(R, @@{args[1]}@@)"
+											Text = $"SetState(R, @@{args[1]}@@)",
+											Comment = $"Goto label {args[1]}"
+										},
+										new LuaStatement
+										{
+											Text = "return"
 										}
 									}
 								}
 							}
 						}
-					}
+					},
 				}
 			},
-			{"JumpTo", (args, ctx) => new Instruction($"SetState(R, @@{args[0]}@@)")},
+			{"JumpTo", (args, ctx) => new Instruction
+			{
+				Statements = new List<LuaLine>
+				{
+					new LuaStatement
+					{
+						Text = $"SetState(R, @@{args[0]}@@)",
+						Comment = $"Jump to label {args[0]}"
+					}
+				},
+				NeedNewScope = true,
+			}},
 		};
 	}
 }
