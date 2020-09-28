@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using ScripterTool.Core.Lua.Translator;
 using ScripterTool.Core.Models;
 
@@ -14,7 +15,7 @@ namespace ScripterTool.Core.Lua
 		private Dictionary<string, int> _stateMapping = new Dictionary<string, int>();
 		private LuaIf _currentState;
 
-		public LuaRoutine(ScripterRoutine routine, ScriptFile scriptFile)
+		public LuaRoutine(ScripterRoutine routine)
 		{
 			Name = routine.Name;
 			// All routine commands are in states
@@ -23,6 +24,12 @@ namespace ScripterTool.Core.Lua
 				var line = routine.Lines[i];
 				TranslateLine(line);
 			}
+		}
+
+		public LuaRoutine(string name, List<LuaLine> lines)
+		{
+			Name = name;
+			Lines = lines;
 		}
 
 		private void TranslateLine(IScripterRoutineObject line)
@@ -66,9 +73,12 @@ namespace ScripterTool.Core.Lua
 		{
 			var idx = GetNextStateIdx();
 			var lines = new List<LuaLine>();
+			var advance = true;
 			if (InstructionTranslator.Instructions.TryGetValue(command.Name, out var translator))
 			{
-				lines.AddRange(translator(command.Params).Statements);
+				var instruction = translator(command.Params);
+				lines.AddRange(instruction.Statements);
+				advance = !instruction.NeedNewScope;
 			}
 			else
 			{
@@ -78,10 +88,15 @@ namespace ScripterTool.Core.Lua
 					Text = $"{command.Name}({string.Join(", ", command.Params)})"
 				});
 			}
-			lines.Add(new LuaStatement
+
+			if (advance)
 			{
-				Text = "Advance(R)"
-			});
+				lines.Add(new LuaStatement
+				{
+					Text = "Advance(R)"
+				});
+			}
+
 			Lines.Add(new LuaIf
 			{
 				Scopes = new List<LuaIfScope>
@@ -98,6 +113,35 @@ namespace ScripterTool.Core.Lua
 		private int GetNextStateIdx()
 		{
 			return ++_stateIdx;
+		}
+
+		public override string ToString()
+		{
+			return base.ToString();
+		}
+
+		public string ToString(int indentLevel, bool removeTrailingNewLine = false)
+		{
+			var builder = new StringBuilder();
+			builder.AppendLine($"function {Name}(R, STATE)");
+			foreach (var line in Lines)
+			{
+				builder.AppendLine(line.ToString(indentLevel + 1, removeTrailingNewLine));
+			}
+
+			builder.Append("end");
+			if (!removeTrailingNewLine)
+			{
+				builder.AppendLine();
+			}
+
+			var script = builder.ToString();
+			foreach (var (original, id) in _stateMapping)
+			{
+				script = script.Replace($"@@{original}@@", id.ToString());
+			}
+
+			return script;
 		}
 	}
 }

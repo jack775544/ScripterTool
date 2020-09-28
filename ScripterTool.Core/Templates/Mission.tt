@@ -6,6 +6,7 @@ assert(load(assert(LoadFile("_requirefix.lua")),"_requirefix.lua"))();
 
 local Routines = {};
 local RoutineToIDMap = {};
+local result = nil;
 
 <# foreach (var position in Script.Positions) { #>
 local <#= position.Name #> = SetVector(<#= position.X #>, <#= position.Y #>, <#= position.Z #>);
@@ -117,14 +118,18 @@ function InitialSetup()
         PreloadAudioMessage(v);
     end
 end
-<# foreach (var routine in Script.Routines) { #>
-<# var luaRoutine = new LuaRoutine(routine, Script); #>
 
-function <#= luaRoutine.Name #>(R, STATE)
-<# foreach (var line in luaRoutine.Lines) { #>
-<#= line.ToString(1, true) #>
-<# } #>
+function Update()
+    for routineID,r in pairs(Routines) do
+        if M.RoutineActive[routineID] and M.RoutineWakeTime[routineID] <= GetTime() then
+            r(routineID, M.RoutineState[routineID]);
+        end
+    end
 end
+<# foreach (var routine in Script.Routines) { #>
+<# var luaRoutine = new LuaRoutine(routine); #>
+
+<#= luaRoutine.ToString(0, true) #>
 <# } #>
 
 <#+

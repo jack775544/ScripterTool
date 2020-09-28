@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace ScripterTool.Core.Lua.Translator
 {
@@ -42,7 +43,81 @@ namespace ScripterTool.Core.Lua.Translator
 				}
 			},
 
-			{"DistObject", args => new Instruction($"local result = Distance3D(M.{args[0]}, M.{args[1]})")}
+			{"DistObject", args => new Instruction($"result = Distance3D(M.{args[0]}, M.{args[1]})")},
+
+			{"IfEQ", args => new Instruction
+				{
+					Statements = new List<LuaLine>
+					{
+						new LuaIf
+						{
+							Scopes = new List<LuaIfScope>
+							{
+								new LuaIfScope
+								{
+									Condition = $"result == {args[0]}",
+									Statements = new List<LuaLine>
+									{
+										new LuaStatement
+										{
+											Text = $"SetState(R, @@{args[1]}@@)"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			{"IfLT", args => new Instruction
+				{
+					Statements = new List<LuaLine>
+					{
+						new LuaIf
+						{
+							Scopes = new List<LuaIfScope>
+							{
+								new LuaIfScope
+								{
+									Condition = $"result < {args[0]}",
+									Statements = new List<LuaLine>
+									{
+										new LuaStatement
+										{
+											Text = $"SetState(R, @@{args[1]}@@)"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			{"IfGT", args => new Instruction
+				{
+					Statements = new List<LuaLine>
+					{
+						new LuaIf
+						{
+							Scopes = new List<LuaIfScope>
+							{
+								new LuaIfScope
+								{
+									Condition = $"result > {args[0]}",
+									Statements = new List<LuaLine>
+									{
+										new LuaStatement
+										{
+											Text = $"SetState(R, @@{args[1]}@@)"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			{"JumpTo", args => new Instruction($"SetState(R, @@{args[0]}@@)")},
 		};
 	}
 }
