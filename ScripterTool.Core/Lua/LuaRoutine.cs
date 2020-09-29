@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ScripterTool.Core.Lua.Translator;
 using ScripterTool.Core.Models;
+using ScripterTool.Core.Util;
 
 namespace ScripterTool.Core.Lua
 {
@@ -17,6 +18,8 @@ namespace ScripterTool.Core.Lua
 		private LuaIf _switch;
 		private LuaIfScope _currentScope;
 		private string _lastReturnVariable;
+		public HashSet<string> OdfPreloads = new HashSet<string>();
+		public HashSet<string> AudioPreloads = new HashSet<string>();
 
 		public LuaRoutine(ScripterRoutine routine)
 		{
@@ -90,6 +93,9 @@ namespace ScripterTool.Core.Lua
 				{
 					_lastReturnVariable = instruction.ReturnVariable;
 				}
+
+				OdfPreloads.AddRange(instruction.OdfPreloads);
+				AudioPreloads.AddRange(instruction.AudioPreloads);
 			}
 			else
 			{

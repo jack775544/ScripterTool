@@ -19,8 +19,6 @@ namespace ScripterTool.Core.Lua.Translator
 			{"BeaconOn", (args, ctx) => new Instruction($"SetObjectiveOn(M.{args[0]})")},
 			{"BeaconOff", (args, ctx) => new Instruction($"SetObjectiveOff(M.{args[0]})")},
 			{"Patrol", (args, ctx) => new Instruction($"Patrol(M.{args[0]}, {args[1]}, {args[2]})")},
-			{"Create", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")},
-			{"Createp", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")},
 			{"Attack", (args, ctx) => new Instruction($"Attack(M.{args[0]}, M.{args[1]}, {args[2]})")},
 			{"SetByIndex", (args, ctx) => new Instruction($"M.{args[0]}[M.{args[1]}] = M.{args[2]}")},
 			{"Set", (args, ctx) => new Instruction($"M.{args[0]} = {args[1]}")},
@@ -32,6 +30,17 @@ namespace ScripterTool.Core.Lua.Translator
 			{"SetCurHealth", (args, ctx) => new Instruction($"SetCurHealth(M.{args[0]}, {args[1]})")},
 			{"Succeed", (args, ctx) => new Instruction($"SucceedMission({args[0]}, {args[1]})")},
 			{"Fail", (args, ctx) => new Instruction($"FailMission({args[0]}, {args[1]})")},
+
+			{"Create", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")
+				{
+					OdfPreloads = new HashSet<string> {args[1]},
+				}
+			},
+			{"Createp", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")
+				{
+					OdfPreloads = new HashSet<string> {args[1]},
+				}
+			},
 
 			{"Wait", (args, ctx) => new Instruction($"Advance(R, {args[0]})") {NeedNewScope = true}},
 			{"RunSpeed", (args, ctx) =>

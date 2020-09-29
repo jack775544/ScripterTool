@@ -8,6 +8,8 @@ namespace ScripterTool.Core.Lua.Translator
 		public bool NeedNewScope { get; set; }
 		public bool Advance { get; set; }
 		public string ReturnVariable { get; set; }
+		public HashSet<string> OdfPreloads { get; set; } = new HashSet<string>(); 
+		public HashSet<string> AudioPreloads { get; set; } = new HashSet<string>(); 
 
 		public Instruction()
 		{

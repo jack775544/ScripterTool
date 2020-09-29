@@ -123,6 +123,13 @@ function InitialSetup()
 
     --Preload to reduce lag spikes when resources are used for the first time.
     local preloadODFs = {
+        "svscL_D",
+        "ivserv_BD",
+        "svscJ_D",
+        "svscA_D",
+        "svwlkL_D",
+        "svscL_D",
+        "svscJ_D"
     };
     local preloadAudio = {
     };
@@ -470,4 +477,3 @@ function SwarmAttack(R, STATE)
     elseif (STATE == 6) then
     end
 end
-

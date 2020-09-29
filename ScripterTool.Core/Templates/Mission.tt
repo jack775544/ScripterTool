@@ -1,7 +1,6 @@
 ﻿<#@ template language="C#" visibility="internal" #>
-<#@ import namespace="System" #>
-<#@ import namespace="ScripterTool.Core.Util" #>
 <#@ import namespace="ScripterTool.Core.Lua" #>
+<#@ import namespace="System.Collections.Generic" #>
 assert(load(assert(LoadFile("_requirefix.lua")),"_requirefix.lua"))();
 
 local Routines = {};
@@ -101,13 +100,13 @@ function InitialSetup()
 
     --Preload to reduce lag spikes when resources are used for the first time.
     local preloadODFs = {
-<# for (var i = 0; i < Script.OdfPreloads.Count; i++) { #>
-        "<#= Script.OdfPreloads[i] #>"<#= i == Script.OdfPreloads.Count - 1 ? "" : "," #>
+<# for (var i = 0; i < OdfPreloads.Count; i++) { #>
+        <#= OdfPreloads[i] #><#= i == OdfPreloads.Count - 1 ? "" : "," #>
 <# } #>
     };
     local preloadAudio = {
-<# for (var i = 0; i < Script.AudioMessagePreloads.Count; i++) { #>
-        "<#= Script.AudioMessagePreloads[i] #>"<#= i == Script.AudioMessagePreloads.Count - 1 ? "" : "," #>
+<# for (var i = 0; i < AudioMessagePreloads.Count; i++) { #>
+        <#= AudioMessagePreloads[i] #><#= i == AudioMessagePreloads.Count - 1 ? "" : "," #>
 <# } #>
     };
     for k,v in pairs(preloadODFs) do
@@ -130,7 +129,9 @@ end
 
 <#= luaRoutine.ToString(0, true) #>
 <# } #>
-
 <#+
 public ScriptFile Script { get; set; }
+public List<LuaRoutine> Routines { get; set; } = new List<LuaRoutine>();
+public List<string> OdfPreloads { get; set; } = new List<string>();
+public List<string> AudioMessagePreloads { get; set; } = new List<string>();
 #>
