@@ -13,6 +13,6 @@ dotnet run input.bzs output.lua
 
 ## Examples
 
-An example input file can be found [here](/Examples/FS01.bzs)
+An example input file can be found [here](/Examples/FS01.bzs).
 
 An example output file can be found [here](Examples/FS01.lua).
