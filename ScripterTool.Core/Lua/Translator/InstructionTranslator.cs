@@ -31,6 +31,9 @@ namespace ScripterTool.Core.Lua.Translator
 			{"Succeed", (args, ctx) => new Instruction($"SucceedMission({args[0]}, {args[1]})")},
 			{"Fail", (args, ctx) => new Instruction($"FailMission({args[0]}, {args[1]})")},
 			{"Remove", (args, ctx) => new Instruction($"RemoveObject(M.{args[0]})")},
+			{"Ally", (args, ctx) => new Instruction($"Ally({args[0]}, {args[1]})")},
+			{"SetPlan", (args, ctx) => new Instruction($"SetAIP({args[0]}, {args[1]})")},
+			{"SetName", (args, ctx) => new Instruction($"SetObjectiveName(M.{args[0]}, {args[1]})")},
 
 			{"Create", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")
 				{
