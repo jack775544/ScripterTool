@@ -10,11 +10,10 @@ namespace ScripterTool.Cli
 		{
 			var inFile = Path.GetFullPath(args[0]);
 			var outFile = Path.GetFullPath(args[1]);
-			var b = new ScriptFile(File.ReadAllText(inFile));
+			var parsedFile = new ScriptFile(File.ReadAllText(inFile));
 
-			var c = LuaGenerator.Generate(b);
-			Console.WriteLine(c);
-			File.WriteAllText(outFile, c);
+			var luaFile = LuaGenerator.Generate(parsedFile);
+			File.WriteAllText(outFile, luaFile);
 		}
 	}
 }

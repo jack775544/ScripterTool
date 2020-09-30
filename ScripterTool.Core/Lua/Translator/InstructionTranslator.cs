@@ -30,6 +30,7 @@ namespace ScripterTool.Core.Lua.Translator
 			{"SetCurHealth", (args, ctx) => new Instruction($"SetCurHealth(M.{args[0]}, {args[1]})")},
 			{"Succeed", (args, ctx) => new Instruction($"SucceedMission({args[0]}, {args[1]})")},
 			{"Fail", (args, ctx) => new Instruction($"FailMission({args[0]}, {args[1]})")},
+			{"Remove", (args, ctx) => new Instruction($"RemoveObject(M.{args[0]})")},
 
 			{"Create", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")
 				{
