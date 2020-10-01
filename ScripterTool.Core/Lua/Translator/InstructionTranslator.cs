@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScripterTool.Core.Lua.Translator
@@ -34,6 +35,22 @@ namespace ScripterTool.Core.Lua.Translator
 			{"Ally", (args, ctx) => new Instruction($"Ally({args[0]}, {args[1]})")},
 			{"SetPlan", (args, ctx) => new Instruction($"SetAIP({args[0]}, {args[1]})")},
 			{"SetName", (args, ctx) => new Instruction($"SetObjectiveName(M.{args[0]}, {args[1]})")},
+			{"SetAnimation", (args, ctx) => new Instruction($"SetAnimation(M.{args[0]}, {args[1]}, {args[2]})")},
+			{"StartAnimation", (args, ctx) => new Instruction($"StartAnimation(M.{args[0]})")},
+			{"Build", (args, ctx) => new Instruction($"Build(M.{args[0]}, {args[1]}, {args[2]})")
+			{
+				NeedNewScope = true,
+			}},
+			{"DropOff", (args, ctx) => new Instruction($"Dropoff(M.{args[0]}, {args[1]}, {args[2]})")},
+			{"CamPath", (args, ctx) => new Instruction($"CameraPath({args[0]}, {args[1]}, {args[2]}, M.{args[3]})")},
+			{"SetUserTarget", (args, ctx) => new Instruction($"SetUserTarget(M.{args[0]})")},
+			{"StartTimer", (args, ctx) => args.Length switch
+				{
+					3 => new Instruction($"StartCockpitTimer({args[0]}, {args[1]}, {args[2]})"),
+					2 => new Instruction($"StartCockpitTimer({args[0]}, {args[1]})"),
+					_ => new Instruction($"StartCockpitTimer({args[0]})")
+				}
+			},
 
 			{"Create", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")
 				{
@@ -67,6 +84,15 @@ namespace ScripterTool.Core.Lua.Translator
 				{
 					var retVar = $"Value{ctx.Routine.Name}{ctx.LineIdx}";
 					return new Instruction($"M.{retVar} = IsAround(M.{args[0]})")
+					{
+						ReturnVariable = retVar,
+					};
+				}
+			},
+			{"GetTimerTime", (args, ctx) =>
+				{
+					var retVar = $"Value{ctx.Routine.Name}{ctx.LineIdx}";
+					return new Instruction($"M.{retVar} = GetCockpitTimer()")
 					{
 						ReturnVariable = retVar,
 					};

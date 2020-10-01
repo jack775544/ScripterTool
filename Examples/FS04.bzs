@@ -1,0 +1,346 @@
+
+[objects]
+dropship
+const
+collapse_1
+collapse_2
+collapse_3
+collapse_4
+collapse_5
+collapse_6
+nav_1
+nav_2
+nav_3
+nav_4
+scav1
+scav2
+scav3
+scav4
+Attacker
+rocks
+radar
+power
+player
+
+[positions]
+
+Crabs1,286,19,-1641
+Crabs2,1197,53,-446
+Crabs3,-228,24,-198
+Crabs4,-1614,42,-212
+Crabs5,-683,42,-584
+Crabs6,-362,36,-925
+Crabs7,548,20,555
+
+[variables]
+
+
+
+[text]
+
+Orders,
+"Commander,escort the constructor\nwhile it builds a series of plasma\nbatteries,be careful of unstable\nterrain."
+
+Scavs,
+"It appears that the local wildlife\nhas taken a dislike to us,protect\nthose extractors at all costs "
+
+Const,
+"The terrain ahead is highly\nunstable guide the constructor\nthrough to nav beacon 3 ."
+
+Const2,
+"Well done , one more left to\ngo,guide the constructor to\nnav beacon 4,but be\nquick,the alien fleet is\nalmost upon us. "
+
+Fleet,
+"ATTENTION , we are getting reports\nthat the alien fleet is non-hostile\nrepeat,alien fleet is non-hostile,\nabort mission immediately ."
+
+NewOrders,
+"We don't have much time,we need\nto shut down the plasma batteries,\n you can to do this from\nthe radar tracking station\nhighlighted on your HUD."
+
+Radar,
+"It's too late , we don't have time\n to shut the station down manually\nyou'll have to find another way\nto take it offline." 
+
+Win,
+"Well done you have shutdown the\nradar tracking system in time ."
+
+
+
+[routine,Main,1,true]
+
+GetPlayer,player
+getbylabel,dropship,"dropship"
+getbylabel,nav_1,"nav_1"
+getbylabel,nav_2,"nav_2"
+getbylabel,nav_3,"nav_3"
+getbylabel,nav_4,"nav_4"
+getbylabel,collapse_1,"collapse_1"
+getbylabel,collapse_2,"collapse_2"
+getbylabel,collapse_3,"collapse_3"
+getbylabel,collapse_4,"collapse_4"
+getbylabel,collapse_5,"collapse_5"
+getbylabel,collapse_6,"collapse_6"
+getbylabel,rocks,"rocks"
+getbylabel,radar,"radar"
+getbylabel,power,"power"
+
+
+setanimation,dropship,"takeoff",1
+wait,3
+startanimation,dropship
+wait,10
+remove,dropship
+Display,Orders,white
+GoToo,const,nav_1,1
+BeaconOn,const
+
+GO_TO_NAV1:
+
+    DistObject,const,nav_1
+    IfGT,180,GO_TO_NAV1
+
+    Build,const,"IbplasBD1",1
+    DropOff,const,"tower_1",1
+    wait,50
+    GoToo,const,nav_2,1
+
+    Create,Attacker,"TvCrab",6,Crabs1
+    attack,Attacker,scav1,1
+    wait,2
+    Create,Attacker,"TvCrab",6,Crabs1
+    attack,Attacker,scav1,1
+    wait,2
+    Create,Attacker,"TvCrab",6,Crabs1
+    attack,Attacker,scav2,1
+    wait,2
+    Create,Attacker,"TvCrab",6,Crabs2
+    attack,Attacker,scav3,1
+    wait,2
+    Create,Attacker,"TvCrab",6,Crabs2
+    attack,Attacker,scav4,1
+    wait,2
+    Create,Attacker,"TvCrab",6,Crabs2
+    attack,Attacker,scav4,1
+    wait,6
+    CamPath,"camera_1",1500,2500,scav2
+    clear
+    Display,Scavs,white
+    wait,115
+
+    Create,Attacker,"TvCrab",6,Crabs3
+    attack,Attacker,const,1
+    wait,4
+    Create,Attacker,"TvCrab",6,Crabs3
+    attack,Attacker,const,1
+    wait,4
+    Create,Attacker,"TvCrab",6,Crabs3
+    attack,Attacker,const,1
+    wait,4
+
+
+
+
+GO_TO_NAV2:
+
+    wait,20
+    Create,Attacker,"TvCrab",6,Crabs3
+    attack,Attacker,const,1
+
+    DistObject,const,nav_2
+    IfGT,180,GO_TO_NAV2
+    Create,Attacker,"TvCrab",6,Crabs6
+    attack,Attacker,const,1
+    wait,5
+    Create,Attacker,"TvCrab",6,Crabs6
+    attack,Attacker,const,1
+
+    Build,const,"IbplasBD1",1
+    DropOff,const,"tower_2",1
+    Create,Attacker,"TvCrab",6,Crabs6
+    attack,Attacker,const,1
+    wait,5
+    Create,Attacker,"TvCrab",6,Crabs6
+    attack,Attacker,const,1
+    wait,70
+
+    GoTo,const,"path_1",1
+
+GO_TO_ROCKS:
+
+    Create,Attacker,"TvCrab",6,Crabs6
+    attack,Attacker,const,1
+    wait,20
+    DistObject,const,rocks
+    IfGT,80,GO_TO_ROCKS
+
+    GoToo,const,rocks,0
+    clear
+    Display,Const,white
+
+GO_TO_NAV3:
+
+    Create,Attacker,"TvCrab",6,Crabs4
+    attack,Attacker,const,1
+    wait,15
+    Create,Attacker,"TvCrab",6,Crabs5
+    attack,Attacker,const,1
+    wait,10
+    DistObject,const,nav_3
+    IfGT,80,GO_TO_NAV3
+
+    Build,const,"IbplasBD1",1
+    DropOff,const,"tower_3",1
+   wait,50
+    GoToo,const,nav_3,0
+    clear
+    Display,Const2,white
+
+NAV_4:
+
+    Create,Attacker,"TvCrab",6,Crabs7
+    attack,Attacker,const,1
+    wait,20
+    DistObject,const,nav_4
+    IfGT,80,NAV_4
+    clear
+    Display,Fleet,red
+    wait,15
+    clear
+    Display,NewOrders,Green
+    wait,6
+    CamPath,"camera_2",1500,3000,radar
+    wait,5
+    SetUserTarget,radar
+    StartTimer,205
+
+COUNT_DOWN:
+     DistObject,player,radar
+     IfLT,80,MESSAGE
+     GetTimerTime
+     IfGT,0,COUNT_DOWN
+     fail,10,"FS04fail3.des"
+     JumpTo,END
+
+MESSAGE:
+    clear
+    Display,Radar,white
+
+POWER:   
+     isaround,power
+     ifeq,false,WIN
+     GetTimerTime
+     IfGT,0,POWER
+     fail,10,"FS04fail3.des"
+     JumpTo,END  
+
+WIN:
+	Clear
+	Display,Win,green
+	Succeed,16,"FS04win.des"
+END:
+
+[routine,CheckConstructor,1,false]
+
+
+CONSTRUCTOR_IS_ALIVE:
+      getbylabel,const,"const"
+      isaround,const
+      ifeq,true,CONSTRUCTOR_IS_ALIVE
+      fail,10,"FS04fail1.des"
+
+[routine,CheckScav1,1,false]
+
+SCAV1_ALIVE:
+
+     getbylabel,scav1,"scav1"
+     isaround,scav1
+     ifeq,true,SCAV1_ALIVE
+     fail,10,"FS04fail2.des"
+
+[routine,CheckScav2,1,false]
+
+SCAV2_ALIVE:
+
+     getbylabel,scav2,"scav2"
+     isaround,scav2
+     ifeq,true,SCAV2_ALIVE
+     fail,10,"FS04fail2.des"
+
+[routine,CheckScav3,1,false]
+
+SCAV3_ALIVE:
+
+     getbylabel,scav3,"scav3"
+     isaround,scav3
+     ifeq,true,SCAV3_ALIVE
+     fail,10,"FS04fail2.des"
+
+[routine,CheckScav4,1,false]
+
+SCAV4_ALIVE:
+
+     getbylabel,scav4,"scav4"
+     isaround,scav4
+     ifeq,true,SCAV4_ALIVE
+     fail,10,"FS04fail2.des"
+
+[routine,CheckCollapse,1,false]
+
+MAIN_LOOP:
+
+    DistObject,const,collapse_1
+    IfGT,40,NEXT_1
+    setanimation,collapse_1,"break",1
+    wait,2
+    startanimation,collapse_1
+    wait,4
+    remove,collapse_1
+
+
+NEXT_1:
+
+    DistObject,const,collapse_2
+    IfGT,40,NEXT_2
+    setanimation,collapse_2,"break",1
+    wait,2
+    startanimation,collapse_2
+    wait,3
+    remove,collapse_2
+NEXT_2:
+    DistObject,const,collapse_3
+    IfGT,40,NEXT_3
+    setanimation,collapse_3,"break",1
+    wait,2
+    startanimation,collapse_3
+    wait,4
+    remove,collapse_3
+
+NEXT_3:
+
+    DistObject,const,collapse_4
+    IfGT,40,NEXT_4
+    setanimation,collapse_4,"break",1
+    wait,2
+    startanimation,collapse_4
+    wait,4
+    remove,collapse_4
+
+NEXT_4:
+
+    DistObject,const,collapse_5
+    IfGT,40,NEXT_5
+    setanimation,collapse_5,"break",1
+    wait,2
+    startanimation,collapse_5 
+    wait,4
+    remove,collapse_5
+
+NEXT_5:
+
+    DistObject,const,collapse_6
+    IfGT,40,MAIN_LOOP
+    setanimation,collapse_6,"break",1
+    wait,2
+    startanimation,collapse_6 
+    wait,4
+    remove,collapse_6
+
+
