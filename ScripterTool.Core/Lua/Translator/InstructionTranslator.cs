@@ -51,6 +51,8 @@ namespace ScripterTool.Core.Lua.Translator
 					_ => new Instruction($"StartCockpitTimer({args[0]})")
 				}
 			},
+			{"TeamColor", (args, ctx) => new Instruction($"SetTeamColor({args[0]}, {args[1]}, {args[2]}, {args[3]})")},
+			{"UnAlly", (args, ctx) => new Instruction($"UnAlly({args[0]}, {args[1]})")},
 
 			{"Create", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")
 				{
@@ -93,6 +95,15 @@ namespace ScripterTool.Core.Lua.Translator
 				{
 					var retVar = $"Value{ctx.Routine.Name}{ctx.LineIdx}";
 					return new Instruction($"M.{retVar} = GetCockpitTimer()")
+					{
+						ReturnVariable = retVar,
+					};
+				}
+			},
+			{"HealthPercent", (args, ctx) =>
+				{
+					var retVar = $"Value{ctx.Routine.Name}{ctx.LineIdx}";
+					return new Instruction($"M.{retVar} = GetHealth(M.{args[0]})")
 					{
 						ReturnVariable = retVar,
 					};

@@ -1,0 +1,450 @@
+
+[objects]
+player
+Drop1
+Drop2
+Drop3
+Drop4
+recycler
+pool1
+pool2
+pool3
+Tblue1
+Tblue2
+Tblue3
+Tblue4
+Attacker
+nav_1
+nav_2
+nav_3
+ruin_1
+MechanaFact
+coms
+power
+Snoop
+SwarmFact
+SwarmRec
+swarm_nav
+base_nav
+
+
+[positions]
+
+
+
+[variables]
+
+
+
+[text]
+
+Orders,
+"Blue Team will scout ahead for\nbiometal pools , we need you to\ndeploy the recycler and start\n setting up a base ."
+
+Pool1,
+"This is Blue Team we have a pool\n for you , dropping Nav Beacon."
+
+Pool2,
+"We have another pool for you ."
+
+Pool3,
+"Here's another pool , send out\nthe scavs while we search for more."
+
+Ruins,
+"we're finding alien ruins, looks\n like they've been empty a long\ntime, we're finding remains of\nmilitary hardware must have been\na battle here."
+
+Attacked,
+"Commander some of these defences\nare still operational , we are\nunder attack."
+
+Attackers,
+"We have lost contact with team blue\nwe are detecting movement\njust north of their last known\nposition ,attempting to get\na visual of the area." 
+
+Mechana,
+"We seem to have accidentally\ntriggered some kind of ancient\nplanetary defense system prepare\nfor incoming attackers."
+
+Snoop,
+"We need to shut these defence systems\ndown fast, we are picking up some\nstrange transmitions in\nthe area dispatching a snooper\nscout to investigate." 
+
+Snoop2,
+"Commander the snooper scout has arrived,\nit will track down and identify\nthe source of the transmitions\nkeep this unit safe at all costs."
+
+Coms,
+"Commander we've located the source of\nthe transmitions, it appears to be\nsome kind communications\nrelay, attempting to access the\nnetwork now."
+
+Hacked,
+"We've managed to temporarily disable\nthe alien defence systems you have\napprox 30 minutes to take \nout the swarm base before they come\nback online."
+
+WinText,
+"Well done commander, the Swarm\noutpost has been erradicated." 
+
+death1,
+"DEPLOY NEAR THE BEACON NOT HALF\nA MILE AWAY,MISSION FAILED"
+
+[routine,Main,1,true]
+
+Ally,1,2
+Ally,5,6
+Ally,5,2
+Ally,6,2
+GetPlayer,player
+getbylabel,Drop1,"Drop1"
+getbylabel,Drop2,"Drop2"
+getbylabel,Drop3,"Drop3"
+getbylabel,pool1,"pool1"
+getbylabel,pool2,"pool2"
+getbylabel,pool3,"pool3"
+getbylabel,ruin_1,"ruin_1"
+getbylabel,coms,"coms"
+getbylabel,SwarmFact,"SwarmFact"
+getbylabel,SwarmRec,"SwarmRec"
+
+SetScrap,1,40
+TeamColor,2,10,10,128
+Createp,Tblue1,"ivtank",2,"friend_1"
+SetName,Tblue1,"Blue 1"
+Createp,Tblue2,"ivscout",2,"friend_2"
+SetName,Tblue2,"Blue 2"
+Createp,Tblue3,"ivscout",2,"friend_3"
+SetName,Tblue3,"Blue 3"
+Createp,Tblue4,"ivscout",2,"friend_4"
+SetName,Tblue4,"Blue 4"
+Createp,MechanaFact,"obfact",5,"FactEnemy"
+Createp,power,"obpgen",5,"pgen"
+
+setanimation,Drop1,"takeoff",1
+wait,3
+startanimation,Drop1
+wait,10
+remove,Drop1
+wait,3
+setanimation,Drop2,"takeoff",1
+wait,3
+startanimation,Drop2
+wait,10
+remove,Drop2
+wait,3
+setanimation,Drop3,"takeoff",1
+wait,3
+
+startanimation,Drop3
+wait,10
+remove,Drop3
+wait,3
+
+Display,Orders,white
+
+Follow,Tblue2,Tblue1,1
+Follow,Tblue3,Tblue1,1
+Follow,Tblue4,Tblue1,1
+GoTo,Tblue1,"patrol_1",1
+
+POOL_1:
+
+    Createp,Attacker,"svscout_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,9
+    Createp,Attacker,"svscout_J",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,9
+    Createp,Attacker,"svscout_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,25
+
+    DistObject,Tblue1,pool1
+    IfGT,80,POOL_1
+
+    wait,5
+    clear
+    Display,Pool1,white
+    Createp,nav_1,"ibnav",1,"nav1"
+    SetName,nav_1,"Pool 1"
+    BeaconOn,nav_1
+    wait,7
+    GoTo,Tblue1,"patrol_2",1
+
+POOL_2:
+
+    Createp,Attacker,"svscout_J",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,9
+    Createp,Attacker,"svinst_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,9
+    Createp,Attacker,"svscout_A",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,32
+
+    DistObject,Tblue1,pool2
+    IfGT,80,POOL_2
+
+    wait,5
+    clear
+    Display,Pool2,white
+    Createp,nav_2,"ibnav",1,"nav2"
+    SetName,nav_2,"Pool 2"
+    BeaconOn,nav_2
+    wait,7
+    GoTo,Tblue1,"patrol_3",1
+
+POOL_3:
+
+    Createp,Attacker,"svartl_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,9
+    Createp,Attacker,"svinst_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,9
+    Createp,Attacker,"svscout_A",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,22
+
+    DistObject,Tblue1,pool3
+    IfGT,80,POOL_3
+
+    wait,5
+    clear
+    Display,Pool3,white
+    Createp,nav_3,"ibnav",1,"nav3"
+    SetName,nav_3,"Pool 3"
+    BeaconOn,nav_3
+    wait,7
+    GoTo,Tblue1,"patrol_4",1
+     
+RUIN_1:
+
+    Createp,Attacker,"svartl_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,6
+    Createp,Attacker,"svinst_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,6
+    Createp,Attacker,"svtank_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,18
+
+    DistObject,Tblue1,ruin_1
+    IfGT,80,RUIN_1
+    Ally,1,6
+    CamPath,"camera_1",1500,2500,ruin_1
+    UnAlly,1,6
+    wait,5
+    clear
+    Display,Ruins,white
+    wait,7
+    GoTo,Tblue1,"patrol_5",1
+    GoTo,Tblue2,"patrol_5",1
+    GoTo,Tblue3,"patrol_5",1
+    GoTo,Tblue4,"patrol_5",1
+    UnAlly,5,2
+    UnAlly,6,2
+
+
+CHECK_BLUE1:
+
+    Createp,Attacker,"svartl_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,5
+    Createp,Attacker,"svinst_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,5
+    Createp,Attacker,"svtank_L",6,"swspawn_1"
+    GoToo,Attacker,recycler,0
+    wait,15
+
+    HealthPercent,Tblue1
+    IfLT,90,ATTACKED
+    JumpTo,CHECK_BLUE1
+
+ATTACKED:
+
+    SetPlan,"FS05.aip",5
+    SetScrap,5,50
+    clear
+    Display,Attacked,red
+    wait,25
+    clear
+    Display,Attackers,white
+    wait,25
+    Ally,1,6   
+    CamPath,"camera_2",3500,5500,MechanaFact
+    UnAlly,1,6
+    wait,15
+    clear
+    Display,Mechana,white
+    wait,250
+    clear
+    Display,Snoop,white
+    wait,350
+    clear
+    Display,Snoop2,white
+
+    SetPlan,"FS05b.aip",6
+    SetScrap,6,40
+
+
+    Createp,Snoop,"ivsnoop_BD",2,"LZ"
+    BeaconOn,Snoop
+    Ally,5,2
+    wait,20
+    RunSpeed,CheckSnoop,1,false
+
+    GoTo,Snoop,"Snoop1",1
+    Createp,Attacker,"svartl_L",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,9
+    Createp,Attacker,"svinst_L",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,9
+    Createp,Attacker,"svscout_A",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,190
+    GoTo,Snoop,"Snoop2",1
+    Createp,Attacker,"svartl_L",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,9
+    Createp,Attacker,"svinst_L",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,9
+    Createp,Attacker,"svscout_A",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,160
+    GoTo,Snoop,"Snoop3",1
+    Createp,Attacker,"svartl_L",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,9
+    Createp,Attacker,"svinst_L",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,9
+    Createp,Attacker,"svscout_A",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,160
+    GoToo,Snoop,coms,1
+    Createp,Attacker,"svartl_L",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,9
+    Createp,Attacker,"svinst_L",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,9
+    Createp,Attacker,"svscout_A",6,"swspawn_1"
+    GoToo,Attacker,Snoop,0
+    wait,10
+
+CHECK_SNOOP:
+
+    DistObject,Snoop,coms
+    IfGT,60,CHECK_SNOOP
+
+    clear
+    Display,Coms,white
+    wait,100
+    clear
+    Display,Hacked,white
+    replace,power,"obpgen2",true
+    GoToo,Snoop,recycler,1
+    RunSpeed,CheckSnoop,0,false
+    wait,5
+    RunSpeed,RemoveSnoop,1,false
+    StartTimer,1800
+
+    Createp,swarm_nav,"ibnav",1,"swarm_nav"
+    SetName,swarm_nav,"Swarm Base"
+    BeaconOn,swarm_nav
+
+
+COUNT_DOWN:
+     isaround,SwarmRec
+     ifeq,true,CONTINUE
+     isaround,SwarmFact
+     ifeq,false,WINNER
+
+CONTINUE:
+     GetTimerTime
+     IfGT,0,COUNT_DOWN
+     fail,10,"FS05fail1.des"
+     JumpTo,END
+
+WINNER:
+    Clear
+    Display,WinText,green
+    Succeed,16,"FS05win.des"
+
+END:
+
+
+[routine,CheckRecy,1,false]
+
+     getbylabel,recycler,"recycler"
+ 
+REC_IS_ALIVE:
+
+     isaround,recycler
+     ifeq,true,REC_IS_ALIVE
+     fail,10,"FS05fail2.des"
+
+[routine,CheckSnoop,0,false]
+
+
+SNOOP_IS_ALIVE:
+
+     isaround,Snoop
+     ifeq,true,SNOOP_IS_ALIVE
+     fail,10,"FS05fail3.des"
+
+
+
+[routine,Checkcoms,1,false]
+
+
+COMS_IS_ALIVE:
+
+     getbylabel,coms,"coms"
+     wait,10
+     isaround,coms
+     ifeq,true,COMS_IS_ALIVE
+     fail,10,"FS05fail5.des"
+
+[routine,RecyDeploy,1,false]
+
+   
+    Createp,base_nav,"ibnav",1,"base"
+    SetName,base_nav,"Deploy Here"
+    BeaconOn,base_nav
+
+     getbylabel,recycler,"recycler"
+
+REC_DEPLOYED:
+
+    wait,10
+    IsODF,recycler,"ibrecy_BD5"
+    ifeq,false,REC_DEPLOYED
+
+
+    DistObject,recycler,base_nav
+    IfGT,250,DEATH
+
+     JumpTo,FINNISHED
+
+DEATH:
+
+    clear
+    Display,death1,red
+    fail,10,"FS05fail4.des"
+
+FINNISHED:
+
+     RunSpeed,RecyDeploy,0,false
+
+
+[routine,RemoveSnoop,0,false]
+
+    SNOOP_AT_REC:
+    
+    wait,10
+    DistObject,Snoop,recycler
+    IfGT,40,SNOOP_AT_REC
+
+    Remove,Snoop
+
+    RunSpeed,RemoveSnoop,0,false
+
+    
