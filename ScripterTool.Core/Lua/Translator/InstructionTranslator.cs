@@ -124,6 +124,15 @@ namespace ScripterTool.Core.Lua.Translator
 				ReturnVariable = args[0],
 			}},
 
+			{"IsODF", (args, ctx) =>
+			{
+				var retVar = $"Value{ctx.Routine.Name}{ctx.LineIdx}";
+				return new Instruction($"M.{retVar} = IsODF(M.{args[0]}, {args[1]})")
+				{
+					ReturnVariable = retVar,
+				};
+			}},
+
 			{"IfEQ", (args, ctx) => new Instruction
 				{
 					Statements = new List<LuaLine>

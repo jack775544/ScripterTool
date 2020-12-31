@@ -542,24 +542,23 @@ function RecyDeploy(R, STATE)
     elseif (STATE == 1) then -- Label: REC_DEPLOYED
         Advance(R, 10);
     elseif (STATE == 2) then
-        IsODF(recycler, "ibrecy_BD5"); -- Could not translate
-    elseif (STATE == 3) then
-        if (M. == false) then
+        M.ValueRecyDeploy6 = IsODF(M.recycler, "ibrecy_BD5");
+        if (M.ValueRecyDeploy6 == false) then
             SetState(R, 1); -- Goto label REC_DEPLOYED
             return;
         end
         M.ValueRecyDeploy8 = Distance3D(M.recycler, M.base_nav);
         if (M.ValueRecyDeploy8 > 250) then
-            SetState(R, 4); -- Goto label DEATH
+            SetState(R, 3); -- Goto label DEATH
             return;
         end
-        SetState(R, 5); -- Jump to label FINNISHED
-    elseif (STATE == 4) then -- Label: DEATH
+        SetState(R, 4); -- Jump to label FINNISHED
+    elseif (STATE == 3) then -- Label: DEATH
         ClearObjectives();
         AddObjective(death1, "red");
         FailMission(10, "FS05fail4.des");
         Advance(R);
-    elseif (STATE == 5) then -- Label: FINNISHED
+    elseif (STATE == 4) then -- Label: FINNISHED
         SetRoutineActive(RecyDeploy, false);
     end
 end
