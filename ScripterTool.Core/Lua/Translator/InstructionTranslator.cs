@@ -59,9 +59,19 @@ namespace ScripterTool.Core.Lua.Translator
 					OdfPreloads = new HashSet<string> {args[1]},
 				}
 			},
-			{"Createp", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")
+			{"Createp", (args, ctx) =>
 				{
-					OdfPreloads = new HashSet<string> {args[1]},
+					// For some reason you can have a '>' prefixing the odf name
+					// The scripter dll just seems to remove them so we do the same
+					var odfName = args[1];
+					if (odfName.StartsWith("\">"))
+					{
+						odfName = "\"" + odfName.Substring(2);
+					}
+					return new Instruction($"M.{args[0]} = BuildObject({odfName}, {args[2]}, {args[3]})")
+					{
+						OdfPreloads = new HashSet<string> {args[1]},
+					};
 				}
 			},
 
