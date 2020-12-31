@@ -1,4 +1,5 @@
 assert(load(assert(LoadFile("_requirefix.lua")),"_requirefix.lua"))();
+local _ScripterCore = require('_ScripterCore');
 
 local Routines = {};
 local RoutineToIDMap = {};
@@ -452,44 +453,43 @@ function Main(R, STATE)
     elseif (STATE == 57) then
         ClearObjectives();
         AddObjective(Hacked, "white");
-        replace(power, "obpgen2", true); -- Could not translate
-    elseif (STATE == 58) then
+        M.power = _ScripterCore.replace(M.power, "obpgen2", true);
         Goto(M.Snoop, M.recycler, 1);
         SetRoutineActive(CheckSnoop, false);
         Advance(R, 5);
-    elseif (STATE == 59) then
+    elseif (STATE == 58) then
         SetRoutineActive(RemoveSnoop, true);
         StartCockpitTimer(1800);
         M.swarm_nav = BuildObject("ibnav", 1, "swarm_nav");
         SetObjectiveName(M.swarm_nav, "Swarm Base");
         SetObjectiveOn(M.swarm_nav);
         Advance(R);
-    elseif (STATE == 60) then -- Label: COUNT_DOWN
+    elseif (STATE == 59) then -- Label: COUNT_DOWN
         M.ValueMain227 = IsAround(M.SwarmRec);
         if (M.ValueMain227 == true) then
-            SetState(R, 61); -- Goto label CONTINUE
+            SetState(R, 60); -- Goto label CONTINUE
             return;
         end
         M.ValueMain229 = IsAround(M.SwarmFact);
         if (M.ValueMain229 == false) then
-            SetState(R, 62); -- Goto label WINNER
+            SetState(R, 61); -- Goto label WINNER
             return;
         end
         Advance(R);
-    elseif (STATE == 61) then -- Label: CONTINUE
+    elseif (STATE == 60) then -- Label: CONTINUE
         M.ValueMain231 = GetCockpitTimer();
         if (M.ValueMain231 > 0) then
-            SetState(R, 60); -- Goto label COUNT_DOWN
+            SetState(R, 59); -- Goto label COUNT_DOWN
             return;
         end
         FailMission(10, "FS05fail1.des");
-        SetState(R, 63); -- Jump to label END
-    elseif (STATE == 62) then -- Label: WINNER
+        SetState(R, 62); -- Jump to label END
+    elseif (STATE == 61) then -- Label: WINNER
         ClearObjectives();
         AddObjective(WinText, "green");
         SucceedMission(16, "FS05win.des");
         Advance(R);
-    elseif (STATE == 63) then -- Label: END
+    elseif (STATE == 62) then -- Label: END
     end
 end
 

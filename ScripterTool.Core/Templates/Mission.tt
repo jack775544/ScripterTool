@@ -2,6 +2,7 @@
 <#@ import namespace="ScripterTool.Core.Lua" #>
 <#@ import namespace="System.Collections.Generic" #>
 assert(load(assert(LoadFile("_requirefix.lua")),"_requirefix.lua"))();
+local _ScripterCore = require('_ScripterCore');
 
 local Routines = {};
 local RoutineToIDMap = {};
