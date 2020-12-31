@@ -99,7 +99,7 @@ namespace ScripterTool.Core.Lua
 			}
 			else
 			{
-				Console.WriteLine($"Unable to translate {command.Name}");
+				Console.WriteLine($"Unable to translate {command.Name} on line {command.LineNumber + 1}");
 				lines.Add(new LuaStatement
 				{
 					Text = $"{command.Name}({string.Join(", ", command.Params)})",
