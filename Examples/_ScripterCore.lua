@@ -24,15 +24,15 @@ function _ScripterCore.replace(handle, odf, keepHealth)
         SetCurHealth(newHandle, health);
     end
 
-    if (command == "CMD_ATTACK") then
+    if (command == AiCommand.CMD_ATTACK) then
         Attack(newHandle, who, 0);
-    elseif (command == "CMD_FOLLOW") then
+    elseif (command == AiCommand.CMD_FOLLOW) then
         Follow(newHandle, who, 0);
-    elseif (command == "CMD_DEFEND") then
+    elseif (command == AiCommand.CMD_DEFEND) then
         Defend2(newHandle, who, 0);
-    elseif (command == "CMD_LOOK_AT") then
+    elseif (command == AiCommand.CMD_LOOK_AT) then
         LookAt(newHandle, who, 0);
-    elseif (command == "CMD_SERVICE") then
+    elseif (command == AiCommand.CMD_SERVICE) then
         Service(newHandle, who, 0);
     end
 
