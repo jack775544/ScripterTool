@@ -25,7 +25,7 @@ using System.Collections.Generic;
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("JetBrains.ForTea.TextTemplating", "42.42.42.42")]
     public partial class Mission : MissionBase
     {
-        #line 132 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+        #line 131 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
 
 public ScriptFile Script { get; set; }
 public List<LuaRoutine> Routines { get; set; } = new List<LuaRoutine>();
@@ -264,24 +264,19 @@ for (var i = 0; i < Script.Routines.Count; i++) {
             #line hidden
             this.Write("    };\r\n    for k,v in pairs(preloadODFs) do\r\n        PreloadODF(v);\r\n    end\r\n    for k,v in pairs(preloadAudio) do\r\n        PreloadAudioMessage(v);\r\n    end\r\nend\r\n\r\nfunction Update()\r\n    for routineID,r in pairs(Routines) do\r\n        if M.RoutineActive[routineID] and M.RoutineWakeTime[routineID] <= GetTime() then\r\n            r(routineID, M.RoutineState[routineID]);\r\n        end\r\n    end\r\nend\r\n");
             #line 127 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- foreach (var routine in Script.Routines) { 
-            
-            #line default
-            #line hidden
-            #line 128 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
- var luaRoutine = new LuaRoutine(routine); 
+ foreach (var routine in Routines) { 
             
             #line default
             #line hidden
             this.Write("\r\n");
             
+            #line 129 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(routine.ToString(0, true)));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
             #line 130 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(luaRoutine.ToString(0, true)));
-            
-            #line default
-            #line hidden
-            this.Write("\r\n");
-            #line 131 "C:\Users\Jack\repo\ScripterTool\ScripterTool.Core\Templates\Mission.tt"
  } 
             
             #line default
