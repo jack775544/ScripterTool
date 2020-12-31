@@ -5,13 +5,13 @@ local Routines = {};
 local RoutineToIDMap = {};
 
 
-local _Text1 = "Commander take your team to the\nlanding zone and clear out the\nswarm infestation, secure the\narea before the Phaer-Rhan\ndropships arrive.";
-local _Text2 = "Well done commander the LZ is\nsecure, the Phaer-Rhan will\narrive shortly.";
-local _Text3 = "Dammit, the swarm have gotten\nAA units along the canyon, they\nare tearing the dropships to\npieces, take out those swarm units\nimmediately.";
-local _Text4 = "well done commander, we are\nrecieving a signal from a crashed\ndropship, go to the crashsite\nand escort the survivors to\nthe landing zone.";
-local _Text5 = "Escort that Phaer-Rhan Overlord\nto the landing zone ,this\nunit is vital , another essential\nunit , the processor has also\njust arrived at the LZ.";
-local _Text6 = "Well done , now help defend\nthe area while the Phaer_Rhan\nsetup base , make sure that\nprocessor is well protected .";
-local _Text7 = "Excellent work, the Phaer Rhan\nnow have a factory built\nassist them in their attack on the\nSwarm base to the north.";
+local Orders = "Commander take your team to the\nlanding zone and clear out the\nswarm infestation, secure the\narea before the Phaer-Rhan\ndropships arrive.";
+local Dropships = "Well done commander the LZ is\nsecure, the Phaer-Rhan will\narrive shortly.";
+local Canyon = "Dammit, the swarm have gotten\nAA units along the canyon, they\nare tearing the dropships to\npieces, take out those swarm units\nimmediately.";
+local Crashsite = "well done commander, we are\nrecieving a signal from a crashed\ndropship, go to the crashsite\nand escort the survivors to\nthe landing zone.";
+local Crashsite2 = "Escort that Phaer-Rhan Overlord\nto the landing zone ,this\nunit is vital , another essential\nunit , the processor has also\njust arrived at the LZ.";
+local LandingZone = "Well done , now help defend\nthe area while the Phaer_Rhan\nsetup base , make sure that\nprocessor is well protected .";
+local BaseUp = "Excellent work, the Phaer Rhan\nnow have a factory built\nassist them in their attack on the\nSwarm base to the north.";
 
 local M = {
     --Mission State
@@ -21,37 +21,37 @@ local M = {
     MissionOver = false,
 
     -- Objects
-    Object1 = nil,
-    Object2 = nil,
-    Object3 = nil,
-    Object4 = nil,
-    Object5 = nil,
-    Object6 = nil,
-    Object7 = nil,
-    Object8 = nil,
-    Object9 = nil,
-    Object10 = nil,
-    Object11 = nil,
-    Object12 = nil,
-    Object13 = nil,
-    Object14 = nil,
-    Object15 = nil,
-    Object16 = nil,
-    Object17 = nil,
-    Object18 = nil,
-    Object19 = nil,
-    Object20 = nil,
-    Object21 = nil,
-    Object22 = nil,
-    Object23 = nil,
-    Object24 = nil,
-    Object25 = nil,
-    Object26 = nil,
-    Object27 = nil,
-    Object28 = nil,
-    Object29 = nil,
-    Object30 = nil,
-    Object31 = nil,
+    SwarmGT1 = nil,
+    SwarmGT2 = nil,
+    SwarmGT3 = nil,
+    SwarmGT4 = nil,
+    SwarmGT5 = nil,
+    PRDrop1 = nil,
+    PRDrop2 = nil,
+    PRDrop3 = nil,
+    PRDrop4 = nil,
+    player = nil,
+    LZ_nav = nil,
+    SwarmAA_1 = nil,
+    SwarmAA_2 = nil,
+    SwarmAA_3 = nil,
+    SwarmAA_4 = nil,
+    SwarmAA_5 = nil,
+    SwarmAA_6 = nil,
+    Crash_nav = nil,
+    PRConst = nil,
+    PRProc = nil,
+    PRescort1 = nil,
+    PRescort2 = nil,
+    PRescort3 = nil,
+    PRGtow1 = nil,
+    PRPgen1 = nil,
+    Attacker = nil,
+    Prec = nil,
+    Pfact = nil,
+    SwarmRec = nil,
+    Parmo = nil,
+    Friend = nil,
 
     -- Variables
 
@@ -95,11 +95,11 @@ function SetRoutineActive(routine, active)
 end
 
 function DefineRoutines()
-    DefineRoutine(0, _Routine1, true);
-    DefineRoutine(1, _Routine2, false);
-    DefineRoutine(2, _Routine3, false);
-    DefineRoutine(3, _Routine4, false);
-    DefineRoutine(4, _Routine5, false);
+    DefineRoutine(0, Main, true);
+    DefineRoutine(1, PhaerRhanAI, false);
+    DefineRoutine(2, checkswarm, false);
+    DefineRoutine(3, CheckOverlord, false);
+    DefineRoutine(4, CheckProc, false);
 end
 
 function Save()
@@ -156,551 +156,531 @@ function Update()
     end
 end
 
-function _Routine1(R, STATE)
+function Main(R, STATE)
     if (STATE == 0) then
         Ally(1, 2);
-        M.Object1 = GetHandle("SwarmGT1");
-        M.Object1 = GetHandle("SwarmGT2");
-        M.Object1 = GetHandle("SwarmGT3");
-        M.Object1 = GetHandle("SwarmGT4");
-        M.Object1 = GetHandle("SwarmGT5");
-        M.Object12 = GetHandle("SwarmAA_1");
-        M.Object13 = GetHandle("SwarmAA_2");
-        M.Object14 = GetHandle("SwarmAA_3");
-        M.Object15 = GetHandle("SwarmAA_4");
-        M.Object16 = GetHandle("SwarmAA_5");
-        M.Object17 = GetHandle("SwarmAA_6");
-        M.Object11 = BuildObject("ibnav", 1, "LZ");
-        SetObjectiveName(M.Object11, "Landing Zone");
-        SetObjectiveOn(M.Object11);
+        M.SwarmGT1 = GetHandle("SwarmGT1");
+        M.SwarmGT1 = GetHandle("SwarmGT2");
+        M.SwarmGT1 = GetHandle("SwarmGT3");
+        M.SwarmGT1 = GetHandle("SwarmGT4");
+        M.SwarmGT1 = GetHandle("SwarmGT5");
+        M.SwarmAA_1 = GetHandle("SwarmAA_1");
+        M.SwarmAA_2 = GetHandle("SwarmAA_2");
+        M.SwarmAA_3 = GetHandle("SwarmAA_3");
+        M.SwarmAA_4 = GetHandle("SwarmAA_4");
+        M.SwarmAA_5 = GetHandle("SwarmAA_5");
+        M.SwarmAA_6 = GetHandle("SwarmAA_6");
+        M.LZ_nav = BuildObject("ibnav", 1, "LZ");
+        SetObjectiveName(M.LZ_nav, "Landing Zone");
+        SetObjectiveOn(M.LZ_nav);
         ClearObjectives();
-        AddObjective(_Text1, "white");
+        AddObjective(Orders, "white");
         SetAIP("FS06_s1.aip", 6);
-        M.Object26 = BuildObject("svscA_D", 6, "LZ");
-        Goto(M.Object26, "attack_path", 1);
+        M.Attacker = BuildObject("svscA_D", 6, "LZ");
+        Goto(M.Attacker, "attack_path", 1);
         Advance(R, 2);
     elseif (STATE == 1) then
-        M.Object26 = BuildObject("svscA_D", 6, "LZ");
-        Goto(M.Object26, "attack_path", 1);
+        M.Attacker = BuildObject("svscA_D", 6, "LZ");
+        Goto(M.Attacker, "attack_path", 1);
         Advance(R, 2);
     elseif (STATE == 2) then
-        M.Object26 = BuildObject("svwalk_j", 6, "LZ");
-        Goto(M.Object26, "attack_path", 1);
+        M.Attacker = BuildObject("svwalk_j", 6, "LZ");
+        Goto(M.Attacker, "attack_path", 1);
         Advance(R, 2);
     elseif (STATE == 3) then
-        M.Object26 = BuildObject("svwalk_j", 6, "LZ");
-        Goto(M.Object26, "attack_path", 1);
+        M.Attacker = BuildObject("svwalk_j", 6, "LZ");
+        Goto(M.Attacker, "attack_path", 1);
         Advance(R, 2);
     elseif (STATE == 4) then
-        M.Object26 = BuildObject("svinst_J", 6, "LZ");
-        Goto(M.Object26, "attack_path", 1);
+        M.Attacker = BuildObject("svinst_J", 6, "LZ");
+        Goto(M.Attacker, "attack_path", 1);
         Advance(R, 2);
     elseif (STATE == 5) then
-        M.Object26 = BuildObject("svinst_J", 6, "LZ");
-        Goto(M.Object26, "attack_path", 1);
+        M.Attacker = BuildObject("svinst_J", 6, "LZ");
+        Goto(M.Attacker, "attack_path", 1);
         Advance(R, 2);
     elseif (STATE == 6) then
-        M.Object26 = BuildObject("svscA_D", 6, "LZ");
-        Goto(M.Object26, "attack_path", 1);
+        M.Attacker = BuildObject("svscA_D", 6, "LZ");
+        Goto(M.Attacker, "attack_path", 1);
         Advance(R, 2);
     elseif (STATE == 7) then
-        M.Object26 = BuildObject("svscA_D", 6, "LZ");
-        Goto(M.Object26, "attack_path", 1);
+        M.Attacker = BuildObject("svscA_D", 6, "LZ");
+        Goto(M.Attacker, "attack_path", 1);
         Advance(R, 2);
     elseif (STATE == 8) then
-        M.Object26 = BuildObject("svtank_J", 6, "LZ");
-        Goto(M.Object26, "attack_path", 1);
+        M.Attacker = BuildObject("svtank_J", 6, "LZ");
+        Goto(M.Attacker, "attack_path", 1);
         Advance(R, 2);
     elseif (STATE == 9) then
-        M.Object26 = BuildObject("svtank_J", 6, "LZ");
-        Goto(M.Object26, "attack_path", 1);
+        M.Attacker = BuildObject("svtank_J", 6, "LZ");
+        Goto(M.Attacker, "attack_path", 1);
         Advance(R);
-    elseif (STATE == 10) then -- Label: LOC_47
+    elseif (STATE == 10) then -- Label: GT1_ALIVE
         Advance(R, 10);
     elseif (STATE == 11) then
-        M.Value_Routine149 = IsAround(M.Object1);
-        if (M.Value_Routine149 == 1) then
-            SetState(R, 10); -- Goto label LOC_47
+        M.ValueMain49 = IsAround(M.SwarmGT1);
+        if (M.ValueMain49 == true) then
+            SetState(R, 10); -- Goto label GT1_ALIVE
             return;
         end
         Advance(R);
-    elseif (STATE == 12) then -- Label: LOC_50
+    elseif (STATE == 12) then -- Label: GT2_ALIVE
         Advance(R, 10);
     elseif (STATE == 13) then
-        M.Value_Routine152 = IsAround(M.Object2);
-        if (M.Value_Routine152 == 1) then
-            SetState(R, 12); -- Goto label LOC_50
+        M.ValueMain52 = IsAround(M.SwarmGT2);
+        if (M.ValueMain52 == true) then
+            SetState(R, 12); -- Goto label GT2_ALIVE
             return;
         end
         Advance(R);
-    elseif (STATE == 14) then -- Label: LOC_53
+    elseif (STATE == 14) then -- Label: GT3_ALIVE
         Advance(R, 10);
     elseif (STATE == 15) then
-        M.Value_Routine155 = IsAround(M.Object3);
-        if (M.Value_Routine155 == 1) then
-            SetState(R, 14); -- Goto label LOC_53
+        M.ValueMain55 = IsAround(M.SwarmGT3);
+        if (M.ValueMain55 == true) then
+            SetState(R, 14); -- Goto label GT3_ALIVE
             return;
         end
         Advance(R);
-    elseif (STATE == 16) then -- Label: LOC_56
+    elseif (STATE == 16) then -- Label: GT4_ALIVE
         Advance(R, 10);
     elseif (STATE == 17) then
-        M.Value_Routine158 = IsAround(M.Object4);
-        if (M.Value_Routine158 == 1) then
-            SetState(R, 16); -- Goto label LOC_56
+        M.ValueMain58 = IsAround(M.SwarmGT4);
+        if (M.ValueMain58 == true) then
+            SetState(R, 16); -- Goto label GT4_ALIVE
             return;
         end
         Advance(R);
-    elseif (STATE == 18) then -- Label: LOC_59
+    elseif (STATE == 18) then -- Label: GT5_ALIVE
         Advance(R, 10);
     elseif (STATE == 19) then
-        M.Value_Routine161 = IsAround(M.Object5);
-        if (M.Value_Routine161 == 1) then
-            SetState(R, 18); -- Goto label LOC_59
+        M.ValueMain61 = IsAround(M.SwarmGT5);
+        if (M.ValueMain61 == true) then
+            SetState(R, 18); -- Goto label GT5_ALIVE
             return;
         end
         ClearObjectives();
-        AddObjective(_Text2, "green");
-        M.Object6 = BuildObject("PvDrop_01", 2, "drop_spawn");
-        Goto(M.Object6, "drop_path", 1);
+        AddObjective(Dropships, "green");
+        M.PRDrop1 = BuildObject("PvDrop_01", 2, "drop_spawn");
+        Goto(M.PRDrop1, "drop_path", 1);
         Advance(R, 25);
     elseif (STATE == 20) then
         Ally(1, 6);
-        CameraPath("camera_1", 6000, 2500, M.Object6);
+        CameraPath("camera_1", 6000, 2500, M.PRDrop1);
         UnAlly(1, 6);
-        M.Object7 = BuildObject("PvDrop_01b", 2, "drop_spawn");
-        Goto(M.Object7, "drop_path", 1);
+        M.PRDrop2 = BuildObject("PvDrop_01b", 2, "drop_spawn");
+        Goto(M.PRDrop2, "drop_path", 1);
         Advance(R, 5);
     elseif (STATE == 21) then
-        M.Object8 = BuildObject("PvDrop_01b", 2, "drop_spawn");
-        Goto(M.Object8, "drop_path", 1);
+        M.PRDrop3 = BuildObject("PvDrop_01b", 2, "drop_spawn");
+        Goto(M.PRDrop3, "drop_path", 1);
         Advance(R, 45);
     elseif (STATE == 22) then
         ClearObjectives();
-        AddObjective(_Text3, "red");
+        AddObjective(Canyon, "red");
         Advance(R);
-    elseif (STATE == 23) then -- Label: LOC_78
+    elseif (STATE == 23) then -- Label: AA1_ALIVE
         Advance(R, 10);
     elseif (STATE == 24) then
-        M.Value_Routine180 = IsAround(M.Object12);
-        if (M.Value_Routine180 == 1) then
-            SetState(R, 23); -- Goto label LOC_78
+        M.ValueMain80 = IsAround(M.SwarmAA_1);
+        if (M.ValueMain80 == true) then
+            SetState(R, 23); -- Goto label AA1_ALIVE
             return;
         end
         Advance(R);
-    elseif (STATE == 25) then -- Label: LOC_81
+    elseif (STATE == 25) then -- Label: AA2_ALIVE
         Advance(R, 10);
     elseif (STATE == 26) then
-        M.Value_Routine183 = IsAround(M.Object13);
-        if (M.Value_Routine183 == 1) then
-            SetState(R, 25); -- Goto label LOC_81
+        M.ValueMain83 = IsAround(M.SwarmAA_2);
+        if (M.ValueMain83 == true) then
+            SetState(R, 25); -- Goto label AA2_ALIVE
             return;
         end
         Advance(R);
-    elseif (STATE == 27) then -- Label: LOC_84
+    elseif (STATE == 27) then -- Label: AA3_ALIVE
         Advance(R, 10);
     elseif (STATE == 28) then
-        M.Value_Routine186 = IsAround(M.Object14);
-        if (M.Value_Routine186 == 1) then
-            SetState(R, 27); -- Goto label LOC_84
+        M.ValueMain86 = IsAround(M.SwarmAA_3);
+        if (M.ValueMain86 == true) then
+            SetState(R, 27); -- Goto label AA3_ALIVE
             return;
         end
         Advance(R);
-    elseif (STATE == 29) then -- Label: LOC_87
+    elseif (STATE == 29) then -- Label: AA4_ALIVE
         Advance(R, 10);
     elseif (STATE == 30) then
-        M.Value_Routine189 = IsAround(M.Object15);
-        if (M.Value_Routine189 == 1) then
-            SetState(R, 29); -- Goto label LOC_87
+        M.ValueMain89 = IsAround(M.SwarmAA_4);
+        if (M.ValueMain89 == true) then
+            SetState(R, 29); -- Goto label AA4_ALIVE
             return;
         end
         Advance(R);
-    elseif (STATE == 31) then -- Label: LOC_90
+    elseif (STATE == 31) then -- Label: AA5_ALIVE
         Advance(R, 10);
     elseif (STATE == 32) then
-        M.Value_Routine192 = IsAround(M.Object16);
-        if (M.Value_Routine192 == 1) then
-            SetState(R, 31); -- Goto label LOC_90
+        M.ValueMain92 = IsAround(M.SwarmAA_5);
+        if (M.ValueMain92 == true) then
+            SetState(R, 31); -- Goto label AA5_ALIVE
             return;
         end
         Advance(R);
-    elseif (STATE == 33) then -- Label: LOC_93
+    elseif (STATE == 33) then -- Label: AA6_ALIVE
         Advance(R, 10);
     elseif (STATE == 34) then
-        M.Value_Routine195 = IsAround(M.Object17);
-        if (M.Value_Routine195 == 1) then
-            SetState(R, 33); -- Goto label LOC_93
+        M.ValueMain95 = IsAround(M.SwarmAA_6);
+        if (M.ValueMain95 == true) then
+            SetState(R, 33); -- Goto label AA6_ALIVE
             return;
         end
-        M.Object18 = BuildObject("ibnav", 1, "crashsite");
-        SetObjectiveName(M.Object18, "Crashsite");
-        SetObjectiveOn(M.Object18);
+        M.Crash_nav = BuildObject("ibnav", 1, "crashsite");
+        SetObjectiveName(M.Crash_nav, "Crashsite");
+        SetObjectiveOn(M.Crash_nav);
         ClearObjectives();
-        AddObjective(_Text4, "white");
+        AddObjective(Crashsite, "white");
         Advance(R, 5);
     elseif (STATE == 35) then
-        M.Object19 = BuildObject("pvcons", 2, "crashsite");
+        M.PRConst = BuildObject("pvcons", 2, "crashsite");
         Advance(R, 5);
     elseif (STATE == 36) then
-        M.Object21 = BuildObject("pvscout", 2, "crashsite");
+        M.PRescort1 = BuildObject("pvscout", 2, "crashsite");
         Advance(R, 5);
     elseif (STATE == 37) then
-        M.Object22 = BuildObject("pvscout", 2, "crashsite");
+        M.PRescort2 = BuildObject("pvscout", 2, "crashsite");
         Advance(R, 5);
     elseif (STATE == 38) then
-        M.Object23 = BuildObject("pvscout", 2, "crashsite");
-        SetObjectiveOn(M.Object19);
+        M.PRescort3 = BuildObject("pvscout", 2, "crashsite");
+        SetObjectiveOn(M.PRConst);
         SetAIP("FS06_s2.aip", 6);
         SetScrap(6, 40);
-        SetRoutineActive(_Routine4, true);
+        SetRoutineActive(CheckOverlord, true);
         Advance(R);
-    elseif (STATE == 39) then -- Label: LOC_113
-        M.Object10 = GetPlayerHandle();
+    elseif (STATE == 39) then -- Label: AT_CRASHSITE
+        M.player = GetPlayerHandle();
         Advance(R, 15);
     elseif (STATE == 40) then
-        M.Value_Routine1116 = Distance3D(M.Object10, M.Object19);
-        if (M.Value_Routine1116 > 80) then
-            SetState(R, 39); -- Goto label LOC_113
+        M.ValueMain116 = Distance3D(M.player, M.PRConst);
+        if (M.ValueMain116 > 80) then
+            SetState(R, 39); -- Goto label AT_CRASHSITE
             return;
         end
         ClearObjectives();
-        AddObjective(_Text5, "white");
+        AddObjective(Crashsite2, "white");
         Advance(R, 5);
     elseif (STATE == 41) then
-        Goto(M.Object19, "LZ", 1);
+        Goto(M.PRConst, "LZ", 1);
         Advance(R, 3);
     elseif (STATE == 42) then
-        Follow(M.Object21, M.Object19, 1);
+        Follow(M.PRescort1, M.PRConst, 1);
         Advance(R, 3);
     elseif (STATE == 43) then
-        Follow(M.Object22, M.Object19, 1);
+        Follow(M.PRescort2, M.PRConst, 1);
         Advance(R, 3);
     elseif (STATE == 44) then
-        Follow(M.Object23, M.Object19, 1);
+        Follow(M.PRescort3, M.PRConst, 1);
         Advance(R, 3);
     elseif (STATE == 45) then
-        M.Object9 = BuildObject("PvDrop_03", 2, "drop");
+        M.PRDrop4 = BuildObject("PvDrop_03", 2, "drop");
         Advance(R, 5);
     elseif (STATE == 46) then
-        M.Object20 = BuildObject("PvProc", 2, "proc");
+        M.PRProc = BuildObject("PvProc", 2, "proc");
         Advance(R, 5);
     elseif (STATE == 47) then
-        SetRoutineActive(_Routine5, true);
-        SetObjectiveOn(M.Object20);
+        SetRoutineActive(CheckProc, true);
+        SetObjectiveOn(M.PRProc);
         Advance(R, 5);
     elseif (STATE == 48) then
-        M.Object25 = BuildObject("PvPgen", 2, "dropoff1");
-        Goto(M.Object25, "Pow1", 1);
+        M.PRPgen1 = BuildObject("PvPgen", 2, "dropoff1");
+        Goto(M.PRPgen1, "Pow1", 1);
         Advance(R, 5);
     elseif (STATE == 49) then
-        M.Object24 = BuildObject("PvGtow", 2, "dropoff2");
+        M.PRGtow1 = BuildObject("PvGtow", 2, "dropoff2");
         Advance(R);
-    elseif (STATE == 50) then -- Label: LOC_139
+    elseif (STATE == 50) then -- Label: DEPLOY_POWER
         Advance(R, 5);
     elseif (STATE == 51) then
-        DistPath(Object25, "Pow1"); -- Could not translate
+        M.ValueMain141 = GetDistance(M.PRPgen1, "Pow1");
+        if (M.ValueMain141 > 5) then
+            SetState(R, 50); -- Goto label DEPLOY_POWER
+            return;
+        end
+        SetAnimation(M.PRPgen1, "deploy", 1);
+        Advance(R, 2);
     elseif (STATE == 52) then
-        if (M.Value_Routine1116 > 5) then
-            SetState(R, 50); -- Goto label LOC_139
-            return;
-        end
-        SetAnimation(M.Object25, "deploy", 1);
-        Advance(R, 2);
+        StartAnimation(M.PRPgen1);
+        Advance(R, 10);
     elseif (STATE == 53) then
-        StartAnimation(M.Object25);
-        Advance(R, 10);
-    elseif (STATE == 54) then
-        M.Object25 = _ScripterCore.replace(M.Object25, "pbpgen", 0);
-        Goto(M.Object24, "GT1", 1);
+        M.PRPgen1 = _ScripterCore.replace(M.PRPgen1, "pbpgen", false);
+        Goto(M.PRGtow1, "GT1", 1);
         Advance(R, 5);
-    elseif (STATE == 55) then -- Label: LOC_149
+    elseif (STATE == 54) then -- Label: DEPLOY_GT
         Advance(R, 5);
-    elseif (STATE == 56) then
-        DistPath(Object24, "GT1"); -- Could not translate
-    elseif (STATE == 57) then
-        if (M.Value_Routine1116 > 5) then
-            SetState(R, 55); -- Goto label LOC_149
+    elseif (STATE == 55) then
+        M.ValueMain151 = GetDistance(M.PRGtow1, "GT1");
+        if (M.ValueMain151 > 5) then
+            SetState(R, 54); -- Goto label DEPLOY_GT
             return;
         end
-        SetAnimation(M.Object24, "deploy", 1);
+        SetAnimation(M.PRGtow1, "deploy", 1);
         Advance(R, 2);
-    elseif (STATE == 58) then
-        StartAnimation(M.Object24);
+    elseif (STATE == 56) then
+        StartAnimation(M.PRGtow1);
         Advance(R, 10);
-    elseif (STATE == 59) then
-        M.Object24 = _ScripterCore.replace(M.Object24, "pbgtow", 0);
+    elseif (STATE == 57) then
+        M.PRGtow1 = _ScripterCore.replace(M.PRGtow1, "pbgtow", false);
         Advance(R);
-    elseif (STATE == 60) then -- Label: LOC_157
+    elseif (STATE == 58) then -- Label: AT_LZ
         Advance(R, 15);
-    elseif (STATE == 61) then
-        M.Value_Routine1159 = Distance3D(M.Object19, M.Object11);
-        if (M.Value_Routine1159 > 80) then
-            SetState(R, 60); -- Goto label LOC_157
+    elseif (STATE == 59) then
+        M.ValueMain159 = Distance3D(M.PRConst, M.LZ_nav);
+        if (M.ValueMain159 > 80) then
+            SetState(R, 58); -- Goto label AT_LZ
             return;
         end
         ClearObjectives();
-        AddObjective(_Text6, "white");
+        AddObjective(LandingZone, "white");
         Advance(R, 10);
-    elseif (STATE == 62) then
-        Goto(M.Object20, "Processor", 1);
+    elseif (STATE == 60) then
+        Goto(M.PRProc, "Processor", 1);
         SetAIP("FS06_s3.aip", 6);
         Advance(R);
-    elseif (STATE == 63) then -- Label: LOC_165
+    elseif (STATE == 61) then -- Label: AT_DEPLOY
         Advance(R, 5);
-    elseif (STATE == 64) then
-        DistPath(Object20, "Processor"); -- Could not translate
-    elseif (STATE == 65) then
-        if (M.Value_Routine1159 > 8) then
-            SetState(R, 63); -- Goto label LOC_165
+    elseif (STATE == 62) then
+        M.ValueMain167 = GetDistance(M.PRProc, "Processor");
+        if (M.ValueMain167 > 8) then
+            SetState(R, 61); -- Goto label AT_DEPLOY
             return;
         end
-        SetAnimation(M.Object20, "deploy", 1);
+        SetAnimation(M.PRProc, "deploy", 1);
         Advance(R, 5);
-    elseif (STATE == 66) then
-        StartAnimation(M.Object20);
+    elseif (STATE == 63) then
+        StartAnimation(M.PRProc);
         Advance(R, 10);
-    elseif (STATE == 67) then
-        M.Object20 = _ScripterCore.replace(M.Object20, "pbproc", 0);
+    elseif (STATE == 64) then
+        M.PRProc = _ScripterCore.replace(M.PRProc, "pbproc", false);
         SetScrap(2, 40);
-        SetRoutineActive(_Routine2, true);
+        SetRoutineActive(PhaerRhanAI, true);
         SetAIP("FS06_p1.aip", 2);
-        SetRoutineActive(_Routine3, true);
-        M.Value_Routine1178 = IsAround(M.Object21);
-        if (M.Value_Routine1178 == 1) then
-            SetState(R, 70); -- Goto label LOC_184
+        SetRoutineActive(checkswarm, true);
+        M.ValueMain178 = IsAround(M.PRescort1);
+        if (M.ValueMain178 == true) then
+            SetState(R, 67); -- Goto label PATROL_1
             return;
         end
         Advance(R);
-    elseif (STATE == 68) then -- Label: LOC_179
-        M.Value_Routine1180 = IsAround(M.Object22);
-        if (M.Value_Routine1180 == 1) then
-            SetState(R, 71); -- Goto label LOC_186
+    elseif (STATE == 65) then -- Label: CHECK_ESCORT2
+        M.ValueMain180 = IsAround(M.PRescort2);
+        if (M.ValueMain180 == true) then
+            SetState(R, 68); -- Goto label PATROL_2
             return;
         end
         Advance(R);
-    elseif (STATE == 69) then -- Label: LOC_181
-        M.Value_Routine1182 = IsAround(M.Object23);
-        if (M.Value_Routine1182 == 1) then
-            SetState(R, 72); -- Goto label LOC_188
+    elseif (STATE == 66) then -- Label: CHECK_ESCORT3
+        M.ValueMain182 = IsAround(M.PRescort3);
+        if (M.ValueMain182 == true) then
+            SetState(R, 69); -- Goto label PATROL_3
             return;
         end
-        SetState(R, 73); -- Jump to label LOC_189
-    elseif (STATE == 70) then -- Label: LOC_184
-        Patrol(M.Object21, "Patrol_1", 1);
-        SetState(R, 68); -- Jump to label LOC_179
-    elseif (STATE == 71) then -- Label: LOC_186
-        Patrol(M.Object22, "Patrol_1", 1);
-        SetState(R, 69); -- Jump to label LOC_181
-    elseif (STATE == 72) then -- Label: LOC_188
-        Patrol(M.Object23, "Patrol_1", 1);
+        SetState(R, 70); -- Jump to label END
+    elseif (STATE == 67) then -- Label: PATROL_1
+        Patrol(M.PRescort1, "Patrol_1", 1);
+        SetState(R, 65); -- Jump to label CHECK_ESCORT2
+    elseif (STATE == 68) then -- Label: PATROL_2
+        Patrol(M.PRescort2, "Patrol_1", 1);
+        SetState(R, 66); -- Jump to label CHECK_ESCORT3
+    elseif (STATE == 69) then -- Label: PATROL_3
+        Patrol(M.PRescort3, "Patrol_1", 1);
         Advance(R);
-    elseif (STATE == 73) then -- Label: LOC_189
+    elseif (STATE == 70) then -- Label: END
         Advance(R, 5);
-    elseif (STATE == 74) then
-        M.Value_Routine1191 = IsAround(M.Object28);
-        if (M.Value_Routine1191 == 0) then
-            SetState(R, 73); -- Goto label LOC_189
+    elseif (STATE == 71) then
+        M.ValueMain191 = IsAround(M.Pfact);
+        if (M.ValueMain191 == false) then
+            SetState(R, 70); -- Goto label END
             return;
         end
         ClearObjectives();
-        AddObjective(_Text7, "white");
-        M.Object31 = BuildObject("ivwalk_BD", 1, "Friends");
-        SetGroup(Object31, 7); -- Could not translate
+        AddObjective(BaseUp, "white");
+        M.Friend = BuildObject("ivwalk_BD", 1, "Friends");
+        SetGroup(M.Friend, 7);
+        Goto(M.Friend, "LZ", 0);
+        Advance(R, 2);
+    elseif (STATE == 72) then
+        M.Friend = BuildObject("ivwalk_BD", 1, "Friends");
+        SetGroup(M.Friend, 7);
+        Goto(M.Friend, "LZ", 0);
+        Advance(R, 2);
+    elseif (STATE == 73) then
+        M.Friend = BuildObject("ivwalk_BD", 1, "Friends");
+        SetGroup(M.Friend, 7);
+        Goto(M.Friend, "LZ", 0);
+        Advance(R, 2);
+    elseif (STATE == 74) then
+        M.Friend = BuildObject("ivserv_BD", 1, "Friends");
+        SetGroup(M.Friend, 8);
+        Goto(M.Friend, "LZ", 0);
+        Advance(R, 2);
     elseif (STATE == 75) then
-        Goto(M.Object31, "LZ", 0);
+        M.Friend = BuildObject("ivserv_BD", 1, "Friends");
+        SetGroup(M.Friend, 8);
+        Goto(M.Friend, "LZ", 0);
         Advance(R, 2);
     elseif (STATE == 76) then
-        M.Object31 = BuildObject("ivwalk_BD", 1, "Friends");
-        SetGroup(Object31, 7); -- Could not translate
+        M.Friend = BuildObject("ivrdev_BD", 1, "Friends");
+        SetGroup(M.Friend, 9);
+        Goto(M.Friend, "LZ", 0);
+        Advance(R, 2);
     elseif (STATE == 77) then
-        Goto(M.Object31, "LZ", 0);
+        M.Friend = BuildObject("ivrdev_BD", 1, "Friends");
+        SetGroup(M.Friend, 9);
+        Goto(M.Friend, "LZ", 0);
         Advance(R, 2);
     elseif (STATE == 78) then
-        M.Object31 = BuildObject("ivwalk_BD", 1, "Friends");
-        SetGroup(Object31, 7); -- Could not translate
+        M.Friend = BuildObject("ivrdev_BD", 1, "Friends");
+        SetGroup(M.Friend, 9);
+        Goto(M.Friend, "LZ", 0);
+        Advance(R, 2);
     elseif (STATE == 79) then
-        Goto(M.Object31, "LZ", 0);
+        M.Friend = BuildObject("ivtnk4_BD", 1, "Friends");
+        SetGroup(M.Friend, 6);
+        Goto(M.Friend, "LZ", 0);
         Advance(R, 2);
     elseif (STATE == 80) then
-        M.Object31 = BuildObject("ivserv_BD", 1, "Friends");
-        SetGroup(Object31, 8); -- Could not translate
+        M.Friend = BuildObject("ivtnk4_BD", 1, "Friends");
+        SetGroup(M.Friend, 6);
+        Goto(M.Friend, "LZ", 0);
+        Advance(R, 2);
     elseif (STATE == 81) then
-        Goto(M.Object31, "LZ", 0);
+        M.Friend = BuildObject("ivtur_BD", 1, "Friends");
+        SetGroup(M.Friend, 5);
+        Goto(M.Friend, "LZ", 0);
         Advance(R, 2);
     elseif (STATE == 82) then
-        M.Object31 = BuildObject("ivserv_BD", 1, "Friends");
-        SetGroup(Object31, 8); -- Could not translate
+        M.Friend = BuildObject("ivtur_BD", 1, "Friends");
+        SetGroup(M.Friend, 5);
+        Goto(M.Friend, "LZ", 0);
+        Advance(R, 2);
     elseif (STATE == 83) then
-        Goto(M.Object31, "LZ", 0);
+        M.Friend = BuildObject("ivtur_BD", 1, "Friends");
+        SetGroup(M.Friend, 5);
+        Goto(M.Friend, "LZ", 0);
         Advance(R, 2);
     elseif (STATE == 84) then
-        M.Object31 = BuildObject("ivrdev_BD", 1, "Friends");
-        SetGroup(Object31, 9); -- Could not translate
+        M.Friend = BuildObject("ivtur_BD", 1, "Friends");
+        SetGroup(M.Friend, 5);
+        Goto(M.Friend, "LZ", 0);
+        Advance(R, 2);
     elseif (STATE == 85) then
-        Goto(M.Object31, "LZ", 0);
-        Advance(R, 2);
-    elseif (STATE == 86) then
-        M.Object31 = BuildObject("ivrdev_BD", 1, "Friends");
-        SetGroup(Object31, 9); -- Could not translate
-    elseif (STATE == 87) then
-        Goto(M.Object31, "LZ", 0);
-        Advance(R, 2);
-    elseif (STATE == 88) then
-        M.Object31 = BuildObject("ivrdev_BD", 1, "Friends");
-        SetGroup(Object31, 9); -- Could not translate
-    elseif (STATE == 89) then
-        Goto(M.Object31, "LZ", 0);
-        Advance(R, 2);
-    elseif (STATE == 90) then
-        M.Object31 = BuildObject("ivtnk4_BD", 1, "Friends");
-        SetGroup(Object31, 6); -- Could not translate
-    elseif (STATE == 91) then
-        Goto(M.Object31, "LZ", 0);
-        Advance(R, 2);
-    elseif (STATE == 92) then
-        M.Object31 = BuildObject("ivtnk4_BD", 1, "Friends");
-        SetGroup(Object31, 6); -- Could not translate
-    elseif (STATE == 93) then
-        Goto(M.Object31, "LZ", 0);
-        Advance(R, 2);
-    elseif (STATE == 94) then
-        M.Object31 = BuildObject("ivtur_BD", 1, "Friends");
-        SetGroup(Object31, 5); -- Could not translate
-    elseif (STATE == 95) then
-        Goto(M.Object31, "LZ", 0);
-        Advance(R, 2);
-    elseif (STATE == 96) then
-        M.Object31 = BuildObject("ivtur_BD", 1, "Friends");
-        SetGroup(Object31, 5); -- Could not translate
-    elseif (STATE == 97) then
-        Goto(M.Object31, "LZ", 0);
-        Advance(R, 2);
-    elseif (STATE == 98) then
-        M.Object31 = BuildObject("ivtur_BD", 1, "Friends");
-        SetGroup(Object31, 5); -- Could not translate
-    elseif (STATE == 99) then
-        Goto(M.Object31, "LZ", 0);
-        Advance(R, 2);
-    elseif (STATE == 100) then
-        M.Object31 = BuildObject("ivtur_BD", 1, "Friends");
-        SetGroup(Object31, 5); -- Could not translate
-    elseif (STATE == 101) then
-        Goto(M.Object31, "LZ", 0);
-        Advance(R, 2);
-    elseif (STATE == 102) then
     end
 end
 
-function _Routine2(R, STATE)
-    if (STATE == 0) then -- Label: LOC_251
+function PhaerRhanAI(R, STATE)
+    if (STATE == 0) then -- Label: PR_MAIN
         Advance(R, 5);
     elseif (STATE == 1) then
-        M.Object27 = GetHandle("unnamed_pbrecy");
-        M.Value_Routine23 = IsAround(M.Object27);
-        if (M.Value_Routine23 == 0) then
-            SetState(R, 4); -- Goto label LOC_264
+        M.Prec = GetHandle("unnamed_pbrecy");
+        M.ValuePhaerRhanAI3 = IsAround(M.Prec);
+        if (M.ValuePhaerRhanAI3 == false) then
+            SetState(R, 4); -- Goto label BUILD_CYARD
             return;
         end
         Advance(R, 5);
     elseif (STATE == 2) then
-        M.Object28 = GetHandle("unnamed_pbfact");
-        M.Value_Routine27 = IsAround(M.Object28);
-        if (M.Value_Routine27 == 0) then
-            SetState(R, 9); -- Goto label LOC_271
+        M.Pfact = GetHandle("unnamed_pbfact");
+        M.ValuePhaerRhanAI7 = IsAround(M.Pfact);
+        if (M.ValuePhaerRhanAI7 == false) then
+            SetState(R, 8); -- Goto label BUILD_FACT
             return;
         end
         Advance(R, 5);
     elseif (STATE == 3) then
-        M.Object30 = GetHandle("unnamed_pbarmo");
-        M.Value_Routine211 = IsAround(M.Object30);
-        if (M.Value_Routine211 == 0) then
-            SetState(R, 14); -- Goto label LOC_278
+        M.Parmo = GetHandle("unnamed_pbarmo");
+        M.ValuePhaerRhanAI11 = IsAround(M.Parmo);
+        if (M.ValuePhaerRhanAI11 == false) then
+            SetState(R, 12); -- Goto label BUILD_ARMO
             return;
         end
-        SetState(R, 0); -- Jump to label LOC_251
-    elseif (STATE == 4) then -- Label: LOC_264
-        Build(M.Object19, "pbrecy", 1);
+        SetState(R, 0); -- Jump to label PR_MAIN
+    elseif (STATE == 4) then -- Label: BUILD_CYARD
+        Build(M.PRConst, "pbrecy", 1);
     elseif (STATE == 5) then
-        Dropoff(M.Object19, "PRcyard", 1);
+        Dropoff(M.PRConst, "PRcyard", 1);
         Advance(R, 5);
-    elseif (STATE == 6) then -- Label: LOC_267
-        GetCommand(Object19); -- Could not translate
-    elseif (STATE == 7) then
-        if (M.Value_Routine211 == 0) then
-            SetState(R, 8); -- Goto label LOC_270
+    elseif (STATE == 6) then -- Label: CONSTRUCTING_CYARD
+        M.ValuePhaerRhanAI17 = GetCurrentCommand(M.PRConst);
+        if (M.ValuePhaerRhanAI17 == 0) then
+            SetState(R, 7); -- Goto label FINNISHED_CYARD
             return;
         end
-        SetState(R, 6); -- Jump to label LOC_267
-    elseif (STATE == 8) then -- Label: LOC_270
-        SetState(R, 0); -- Jump to label LOC_251
-    elseif (STATE == 9) then -- Label: LOC_271
-        Build(M.Object19, "pbfact", 1);
-    elseif (STATE == 10) then
-        Dropoff(M.Object19, "PRfact", 1);
+        SetState(R, 6); -- Jump to label CONSTRUCTING_CYARD
+    elseif (STATE == 7) then -- Label: FINNISHED_CYARD
+        SetState(R, 0); -- Jump to label PR_MAIN
+    elseif (STATE == 8) then -- Label: BUILD_FACT
+        Build(M.PRConst, "pbfact", 1);
+    elseif (STATE == 9) then
+        Dropoff(M.PRConst, "PRfact", 1);
         Advance(R, 5);
-    elseif (STATE == 11) then -- Label: LOC_274
-        GetCommand(Object19); -- Could not translate
-    elseif (STATE == 12) then
-        if (M.Value_Routine211 == 0) then
-            SetState(R, 13); -- Goto label LOC_277
+    elseif (STATE == 10) then -- Label: CONSTRUCTING_FACT
+        M.ValuePhaerRhanAI24 = GetCurrentCommand(M.PRConst);
+        if (M.ValuePhaerRhanAI24 == 0) then
+            SetState(R, 11); -- Goto label FINNISHED_FACT
             return;
         end
-        SetState(R, 11); -- Jump to label LOC_274
-    elseif (STATE == 13) then -- Label: LOC_277
-        SetState(R, 0); -- Jump to label LOC_251
-    elseif (STATE == 14) then -- Label: LOC_278
-        Build(M.Object19, "pbarmo", 1);
-    elseif (STATE == 15) then
-        Dropoff(M.Object19, "PRArm", 1);
+        SetState(R, 10); -- Jump to label CONSTRUCTING_FACT
+    elseif (STATE == 11) then -- Label: FINNISHED_FACT
+        SetState(R, 0); -- Jump to label PR_MAIN
+    elseif (STATE == 12) then -- Label: BUILD_ARMO
+        Build(M.PRConst, "pbarmo", 1);
+    elseif (STATE == 13) then
+        Dropoff(M.PRConst, "PRArm", 1);
         Advance(R, 5);
-    elseif (STATE == 16) then -- Label: LOC_281
-        GetCommand(Object19); -- Could not translate
-    elseif (STATE == 17) then
-        if (M.Value_Routine211 == 0) then
-            SetState(R, 18); -- Goto label LOC_284
+    elseif (STATE == 14) then -- Label: CONSTRUCTING_ARMO
+        M.ValuePhaerRhanAI31 = GetCurrentCommand(M.PRConst);
+        if (M.ValuePhaerRhanAI31 == 0) then
+            SetState(R, 15); -- Goto label FINNISHED_ARMO
             return;
         end
-        SetState(R, 16); -- Jump to label LOC_281
-    elseif (STATE == 18) then -- Label: LOC_284
-        SetState(R, 0); -- Jump to label LOC_251
-    elseif (STATE == 19) then
+        SetState(R, 14); -- Jump to label CONSTRUCTING_ARMO
+    elseif (STATE == 15) then -- Label: FINNISHED_ARMO
+        SetState(R, 0); -- Jump to label PR_MAIN
+    elseif (STATE == 16) then
     end
 end
 
-function _Routine3(R, STATE)
-    if (STATE == 0) then -- Label: LOC_286
-        M.Object29 = GetHandle("SwarmRec");
+function checkswarm(R, STATE)
+    if (STATE == 0) then -- Label: SWARM_IS_ALIVE
+        M.SwarmRec = GetHandle("SwarmRec");
         Advance(R, 10);
     elseif (STATE == 1) then
-        M.Value_Routine33 = IsAround(M.Object29);
-        if (M.Value_Routine33 == 1) then
-            SetState(R, 0); -- Goto label LOC_286
+        M.Valuecheckswarm3 = IsAround(M.SwarmRec);
+        if (M.Valuecheckswarm3 == true) then
+            SetState(R, 0); -- Goto label SWARM_IS_ALIVE
             return;
         end
         SucceedMission(10, "FS06win.des");
     end
 end
 
-function _Routine4(R, STATE)
-    if (STATE == 0) then -- Label: LOC_292
+function CheckOverlord(R, STATE)
+    if (STATE == 0) then -- Label: OVERLORD_IS_ALIVE
         Advance(R, 10);
     elseif (STATE == 1) then
-        M.Value_Routine42 = IsAround(M.Object19);
-        if (M.Value_Routine42 == 1) then
-            SetState(R, 0); -- Goto label LOC_292
+        M.ValueCheckOverlord2 = IsAround(M.PRConst);
+        if (M.ValueCheckOverlord2 == true) then
+            SetState(R, 0); -- Goto label OVERLORD_IS_ALIVE
             return;
         end
         FailMission(10, "FS06fail1.des");
     end
 end
 
-function _Routine5(R, STATE)
-    if (STATE == 0) then -- Label: LOC_297
+function CheckProc(R, STATE)
+    if (STATE == 0) then -- Label: PROC_IS_ALIVE
         Advance(R, 10);
     elseif (STATE == 1) then
-        M.Value_Routine52 = IsAround(M.Object20);
-        if (M.Value_Routine52 == 1) then
-            SetState(R, 0); -- Goto label LOC_297
+        M.ValueCheckProc2 = IsAround(M.PRProc);
+        if (M.ValueCheckProc2 == true) then
+            SetState(R, 0); -- Goto label PROC_IS_ALIVE
             return;
         end
         FailMission(10, "FS06fail2.des");

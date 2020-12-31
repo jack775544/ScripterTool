@@ -54,6 +54,25 @@ namespace ScripterTool.Core.Lua.Translator
 			{"TeamColor", (args, ctx) => new Instruction($"SetTeamColor({args[0]}, {args[1]}, {args[2]}, {args[3]})")},
 			{"UnAlly", (args, ctx) => new Instruction($"UnAlly({args[0]}, {args[1]})")},
 			{"Replace", (args, ctx) => new Instruction($"M.{args[0]} = _ScripterCore.replace(M.{args[0]}, {args[1]}, {args[2]})")},
+			{"DistPath", (args, ctx) =>
+				{
+					var retVar = $"Value{ctx.Routine.Name}{ctx.LineIdx}";
+					return new Instruction($"M.{retVar} = GetDistance(M.{args[0]}, {args[1]})")
+					{
+						ReturnVariable = retVar
+					};
+				}
+			},
+			{"SetGroup", (args, ctx) => new Instruction($"SetGroup(M.{args[0]}, {args[1]})")},
+			{"GetCommand", (args, ctx) =>
+				{
+					var retVar = $"Value{ctx.Routine.Name}{ctx.LineIdx}";
+					return new Instruction($"M.{retVar} = GetCurrentCommand(M.{args[0]})")
+					{
+						ReturnVariable = retVar
+					};
+				}
+			},
 
 			{"Create", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")
 				{
