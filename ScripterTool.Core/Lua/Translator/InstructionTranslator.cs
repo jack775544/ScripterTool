@@ -73,7 +73,17 @@ namespace ScripterTool.Core.Lua.Translator
 					};
 				}
 			},
-
+			{"SetTeam", (args, ctx) => new Instruction($"SetTeamNum(M.{args[0]}, {args[1]})")},
+			{"GetTeam", (args, ctx) =>
+				{
+					var retVar = $"Value{ctx.Routine.Name}{ctx.LineIdx}";
+					return new Instruction($"M.{retVar} = GetTeamNum(M.{args[0]})")
+					{
+						ReturnVariable = retVar
+					};
+				}
+			},
+			{"SetSkill", (args, ctx) => new Instruction($"SetSkill(M.{args[0]}, {args[1]})")},
 			{"Create", (args, ctx) => new Instruction($"M.{args[0]} = BuildObject({args[1]}, {args[2]}, {args[3]})")
 				{
 					OdfPreloads = new HashSet<string> {args[1]},
@@ -101,6 +111,13 @@ namespace ScripterTool.Core.Lua.Translator
 					var active = int.Parse(args[1]) > 0 ? "true" : "false";
 					return new Instruction($"SetRoutineActive({args[0]}, {active})");
 				}
+			},
+			{
+				"OnNewObject", (args, ctx) =>
+					new Instruction(
+						new LuaStatement(
+							$"M.AddObjectData = {{ \"{args[1]}\", \"{args[2]}\" }}",
+							"Activate AddObject hook, audit this code manually"))
 			},
 
 			{"DistObject", (args, ctx) =>

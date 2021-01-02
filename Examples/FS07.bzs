@@ -1,0 +1,647 @@
+
+[objects]
+Probe
+Player
+Recycler
+Attacker
+Attacker2
+t3rec
+t3Recycler
+t3fact
+t3power1
+t3power2
+t3power3
+t3com1
+t3com2
+t3GT1
+t3GT2
+t3GT3
+PRproc
+PRfact
+PRcyard
+PRpow_1
+PRpow_2
+PRpow_3
+PRpow_4
+PRGT_1
+PRGT_2
+PRGT_3
+PRGT_4
+PRGT_5
+PRmine_1
+PRmine_2
+PRmine_3
+PRcons
+base_nav
+swarm_nav
+Brec
+PlayerFac
+PlayerPow
+PlayerBay
+PlayerArmo
+PRoverlord
+Sbuild
+Swalk1
+Swalk2
+Backup1
+Backup
+PRserv_1
+PRserv_2
+Mlead1
+Mlead2
+Mwing1
+Mwing2
+Mwing3
+Mwing4
+Mwing5
+SwarmRec
+newguy
+
+
+
+[positions]
+
+
+
+[variables]
+
+
+
+[text]
+
+Orders1,
+"Commander setup base at the nav\nbeacon,prevent the swarm from\nleaving the infested zone.\nDo not enter this zone\nmechana defenses are still active."
+
+death1,
+"NEAR THE BEACON NOT HALF\nA MILE AWAY,MISSION FAILED"
+
+EDF,
+"Commander the EDF base to the\neast has been compromised,their\nRecycler is lost,take your\nforces and defend the area\nuntil a replacement arrives."
+
+NewOrders,
+"Well done the breach is sealed\nhowever a significant swarm force\nhas broken through find\nand eliminate them,they\nwere last spotted moving north."
+
+SwarmDead,
+"The Swarm force has been\ndestroyed.We are picking up\npowerful energy readings from\nthe ruins in this sector\ninvestigate and find the source."
+
+Probe,
+"Commander whatever the hell\nthat thing is, guard it\nwith your life,backup is on\nit's way."
+
+Orders2,
+"We've dropped a nav at the\nlast known position of the\nswarm force,a powerful energy\nsource in the area is\nblocking our scans."   
+
+[routine,Main,1,true]
+
+    
+Ally,1,2
+Ally,1,3
+Ally,2,3
+Ally,5,6
+Ally,5,2
+SetScrap,1,40
+SetScrap,2,40
+SetScrap,3,40
+SetScrap,5,40
+
+
+getbylabel,Probe,"Probe"
+getbylabel,Recycler,"Recycler"
+
+
+ Createp,t3fact,"ibfact",3,"t3fact"
+ Createp,t3rec,"ibrecy",3,"t3rec"
+ Createp,t3power1,"ibpgen",3,"t3power1"
+ Createp,t3power2,"ibpgen",3,"t3power2"
+ Createp,t3power3,"ibpgen",3,"t3power3"
+ Createp,t3com1,"ibcbun",3,"t3com1"
+ Createp,t3com2,"ibcbun",3,"t3com2"
+ Createp,t3GT1,"ibgtow",3,"t3GT1"
+ Createp,t3GT2,"ibgtow",3,"t3GT2"
+ Createp,t3GT3,"ibgtow",3,"t3GT3"
+ Createp,PRproc,"pbproc",2,"PRproc"
+ Createp,PRfact,"pbfact",2,"PRfact"
+ Createp,PRcyard,"pbrecy",2,"PRcyard"
+ Createp,PRpow_1,"pbpgen",2,"PRpow_1"
+ Createp,PRpow_2,"pbpgen",2,"PRpow_2"
+ Createp,PRpow_3,"pbpgen",2,"PRpow_3"
+ Createp,PRpow_3,"pbpgen",2,"PRpow_4"
+ Createp,PRGT_1,"pbgtow",2,"PRGT_1"
+ Createp,PRGT_2,"pbgtow",2,"PRGT_2"
+ Createp,PRGT_3,"pbgtow",2,"PRGT_3"
+ Createp,PRGT_4,"pbgtow",2,"PRGT_4"
+ Createp,PRGT_4,"pbgtow",2,"PRGT_5"
+ Createp,PRmine_1,"pbsturr",2,"PRmine_1"
+ Createp,PRmine_2,"pbmturr",2,"PRmine_2"
+ Createp,PRmine_3,"pbsturr",2,"PRmine_3"
+ Createp,PRoverlord,"pvcons",2,"PRove"
+ Createp,PRserv_1,"pvserv",2,"PRserv_1"
+ Createp,PRserv_2,"pvserv",2,"PRserv_2"
+
+     Createp,Sbuild,"Svcons",5,"Sbuild"
+     SetPlan,"FS07_s1.aip",5
+
+    Createp,base_nav,"ibnav",1,"base"
+    SetName,base_nav,"Base Area"
+    BeaconOn,base_nav
+    clear
+    Display,Orders1,white
+    SetPlan,"FS07_e1.aip",3
+    SetPlan,"FS07_p1.aip",2
+    RunSpeed,CheckOverlord,1,false
+
+
+REC_DEPLOYED:
+
+    Createp,Attacker,"svscL_D",5,"swarmSpawn_1"
+    attack,Attacker,Recycler,1
+    Createp,Attacker,"svscL_D",5,"swarmSpawn_2"
+    attack,Attacker,PRcyard,1
+    Createp,Attacker,"svscL_D",5,"swarmSpawn_3"
+    attack,Attacker,t3rec,1
+    wait,10
+    IsODF,Recycler,"ibrecy_BD"
+    ifeq,false,REC_DEPLOYED
+
+
+    DistObject,Recycler,base_nav
+    IfGT,250,DEATH
+
+    JumpTo,CONTINUE_1
+
+DEATH:
+
+    clear
+    Display,death1,red
+    fail,10,"FS07fail1.des"
+    JumpTo,END
+
+
+
+CONTINUE_1:  
+
+
+    wait,8
+    Createp,Attacker,"svscL_D",5,"swarmSpawn_1"
+    attack,Attacker,Recycler,1
+    wait,8
+    Createp,Attacker,"svscL_D",5,"swarmSpawn_1"
+    attack,Attacker,Recycler,1
+    Createp,Attacker,"svscL_D",5,"swarmSpawn_3"
+    attack,Attacker,t3rec,1
+
+
+    getbylabel,PlayerPow,"unnamed_ibpgenBD"
+    isaround,PlayerPow
+    ifeq,false,CONTINUE_1
+
+    RunSpeed,SwarmAttackWaves1,1,false
+
+CONTINUE_2:
+
+    wait,9
+    Createp,Attacker,"svtank_J",5,"swarmSpawn_1"
+    attack,Attacker,Recycler,1
+    wait,9
+    Createp,Attacker,"svscL_D",5,"swarmSpawn_1"
+    attack,Attacker,Recycler,1
+    Createp,Attacker,"svtank_J",5,"swarmSpawn_3"
+    attack,Attacker,t3fact,1
+
+    getbylabel,PlayerFac,"unnamed_ibfactBD"
+    isaround,PlayerFac
+    ifeq,false,CONTINUE_2
+
+    RunSpeed,SwarmAttackWaves2,1,false
+
+CONTINUE_3:
+
+    getbylabel,PlayerBay,"unnamed_ibsbayBD"
+    isaround,PlayerBay
+    ifeq,true,PART_2
+    getbylabel,PlayerArmo,"unnamed_ibarmoBD"
+    isaround,PlayerArmo
+    ifeq,false,CONTINUE_3
+
+    runspeed,new1,0,true
+
+    wait,10
+
+    runspeed,new,1,true
+
+PART_2:
+
+         
+     Createp,Attacker,"svinst_J",5,"swarmSpawn_1"
+     attack,Attacker,t3rec,1
+     Createp,Attacker,"svinst_J",5,"swarmSpawn_2"
+     attack,Attacker,t3rec,1
+     Createp,Attacker,"svwalk_J",5,"swarmSpawn_3"
+     attack,Attacker,t3GT1,1
+     wait,15
+     Createp,Attacker,"svwalk_J",5,"swarmSpawn_2"
+     attack,Attacker,t3GT3,1
+     Createp,Attacker,"svwalk_L",5,"swarmSpawn_3"
+     attack,Attacker,t3fact,1
+   
+     wait,15
+     isaround,t3rec
+     ifeq,true,PART_2
+
+    UnAlly,5,2
+
+     clear
+     Display,EDF,red
+     RunSpeed,SwarmAttackWaves1,0,false
+     RunSpeed,SwarmAttackWaves2,0,false
+     Createp,t3Recycler,"ivrecy",3,"t3Recycler"
+     GoTo,t3Recycler,"t3rec_path1",1
+     BeaconOn,t3Recycler
+     RunSpeed,CheckT3Recy,1,false
+
+T3REC_AT_PRBASE:
+
+     Createp,Attacker,"svinst_J",5,"swarmSpawn_1"
+     attack,Attacker,t3Recycler,1
+     Createp,Attacker,"svinst_J",5,"swarmSpawn_2"
+     attack,Attacker,t3Recycler,1
+     Createp,Attacker,"svinst_J",5,"swarmSpawn_3"
+     attack,Attacker,t3Recycler,1
+     Createp,Attacker,"svtank_J",5,"swarmSpawn_3"
+     attack,Attacker,t3Recycler,1
+     wait,55
+
+    GetCommand,t3Recycler
+    IfEQ,0,FINNISHED_MOVING
+    JumpTo,T3REC_AT_PRBASE
+
+FINNISHED_MOVING:
+
+     wait,45
+     GoTo,t3Recycler,"t3rec_path2",1
+
+
+T3REC_AT_BASE:
+
+     Createp,Attacker,"svinst_J",5,"swarmSpawn_1"
+     attack,Attacker,t3Recycler,1
+     Createp,Attacker,"svinst_J",5,"swarmSpawn_2"
+     attack,Attacker,t3Recycler,1
+     Createp,Attacker,"svinst_J",5,"swarmSpawn_3"
+     attack,Attacker,t3Recycler,1
+     Createp,Attacker,"svtank_J",5,"swarmSpawn_3"
+     attack,Attacker,t3Recycler,1
+     wait,55
+
+     DistPath,t3Recycler,"t3rec"
+     IfGT,30,T3REC_AT_BASE
+
+     Createp,SwarmRec,"Sbrecy00",5,"SwarmRec"
+     SetPlan,"FS07_s2.aip",5
+
+     Ally,2,5
+     Ally,3,5
+
+     Createp,Attacker,"svtank_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_1",1
+     Createp,Attacker,"svtank_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_1",1
+     Createp,Attacker,"svtank_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_1",1
+     Createp,Attacker,"svtank_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_1",1
+     Createp,Attacker,"svinst_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_1",1
+     Createp,Attacker,"svinst_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_1",1
+     Createp,Attacker,"svwalk_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_1",1
+     Createp,Attacker,"svwalk_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_1",1
+
+     Createp,Attacker2,"svtank_J2",5,"Sforce_2"
+     Patrol,Attacker2,"patrol_2",1
+     Createp,Attacker2,"svtank_J2",5,"Sforce_2"
+     Patrol,Attacker2,"patrol_2",1
+     Createp,Attacker2,"svtank_J2",5,"Sforce_2"
+     Patrol,Attacker2,"patrol_2",1
+     Createp,Attacker2,"svinst_J2",5,"Sforce_2"
+     Patrol,Attacker2,"patrol_2",1
+     Createp,Attacker2,"svinst_J2",5,"Sforce_2"
+     Patrol,Attacker2,"patrol_2",1
+     Createp,Attacker2,"svinst_J2",5,"Sforce_2"
+     Patrol,Attacker2,"patrol_2",1
+     Createp,Swalk1,"svwalk_J2",5,"Sforce_2"
+     Patrol,Swalk1,"patrol_2",1
+     Createp,Swalk2,"svwalk_J2",5,"Sforce_2"
+     Patrol,Swalk2,"patrol_2",1
+
+     Createp,Attacker,"svtank_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_3",1
+     Createp,Attacker,"svtank_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_3",1
+     Createp,Attacker,"svtank_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_3",1
+     Createp,Attacker2,"svinst_J2",5,"Sforce_2"
+     Patrol,Attacker2,"patrol_3",1
+     Createp,Attacker2,"svinst_J2",5,"Sforce_2"
+     Patrol,Attacker2,"patrol_3",1
+     Createp,Attacker2,"svinst_J2",5,"Sforce_2"
+     Patrol,Attacker2,"patrol_3",1
+     Createp,Attacker,"svwalk_J2",5,"Sforce_1"
+     Patrol,Attacker,"patrol_3",1
+     Createp,Attacker,"svwalk_J2",5,"Sforce_2"
+     Patrol,Attacker,"patrol_3",1
+
+     SetAnimation,t3Recycler,"deploy",1
+     wait,2
+     StartAnimation,t3Recycler
+     wait,10
+     Replace,t3Recycler,"ibrecy",false
+
+     SetPlan,"FS07_e1.aip",3
+
+     clear
+     Display,NewOrders,green
+     wait,60
+
+    Createp,swarm_nav,"ibnav",1,"swarm_pos"
+    SetName,swarm_nav,"Swarm Force"
+    BeaconOn,swarm_nav
+    clear
+    Display,Orders2,white
+
+
+
+
+CHECK_SWARM_FORCE:
+
+     wait,10
+     isaround,Sbuild
+     ifeq,true,CHECK_SWARM_FORCE
+
+CHECK_SWARM_FORCE2:
+
+     wait,10
+     isaround,Swalk1
+     ifeq,true,CHECK_SWARM_FORCE2
+
+CHECK_SWARM_FORCE3:
+
+     wait,10
+     isaround,Swalk2
+     ifeq,true,CHECK_SWARM_FORCE3
+
+CHECK_SWARM_FORCE4:
+
+     wait,10
+     isaround,SwarmRec
+     ifeq,true,CHECK_SWARM_FORCE4
+
+     clear
+     Display,SwarmDead,green
+
+SEARCH_RUINS:
+
+     GetPlayer,Player
+     wait,10
+     DistObject,Player,Probe
+     IfGT,350,SEARCH_RUINS
+
+     CamPath,"camera_1",5800,6000,Probe
+
+     wait,10
+     clear
+     Display,Probe,green
+
+     SetTeam,Probe,1
+
+     RunSpeed,CheckProbe,1,false
+
+    Createp,Mlead1,"OvCruise",6,"m_sp1"
+    GoToo,Mlead1,Probe,1
+    Createp,Mwing1,"OvBeam",6,"m_sp1"
+    Follow,Mwing1,Mlead1,1
+    Createp,Mwing2,"OvBeam",6,"m_sp1"
+    Follow,Mwing2,Mlead1,1
+
+
+    Createp,Mlead2,"OvCruise",6,"m_sp2"
+    GoToo,Mlead2,Probe,1
+    Createp,Mwing3,"OvBeam",6,"m_sp2"
+    Follow,Mwing3,Mlead2,1
+    Createp,Mwing4,"OvBeam",6,"m_sp2"
+    Follow,Mwing4,Mlead2,1
+
+     wait,20
+
+    Ally,5,2
+    Ally,6,2
+
+    Createp,Backup1,"pvrckt2",2,"b_sp"
+    GoTo,Backup1,"probe_path",1
+    Createp,Backup,"pvtank",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvtank",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvtank",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvtank",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvtank",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvtank",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvscout",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvscout",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvscout",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvrckt",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvrckt",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvmisl",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvmisl",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvmisl",2,"b_sp"
+    Follow,Backup,Backup1,1
+    Createp,Backup,"pvmisl",2,"b_sp"
+    Follow,Backup,Backup1,1
+
+     RunSpeed,CheckBackup,1,false
+
+
+BACKUP:
+
+    Createp,Mlead1,"OvCruise",6,"m_sp1"
+    GoToo,Mlead1,Probe,1
+    Createp,Mwing1,"OvBeam",6,"m_sp1"
+    Follow,Mwing1,Mlead1,1
+    Createp,Mwing2,"OvMisl",6,"m_sp1"
+    Follow,Mwing2,Mlead1,1
+    wait,45
+    Createp,Mlead2,"OvCruise",6,"m_sp1"
+    GoToo,Mlead2,Probe,1
+    Createp,Mwing3,"OvBeam",6,"m_sp1"
+    Follow,Mwing3,Mlead2,1
+    Createp,Mwing4,"Ovwalk",6,"m_sp1"
+    Attack,Mwing4,Probe,1
+
+     wait,45
+
+     DistObject,Backup1,Probe
+     IfGT,950,BACKUP
+
+ARRIVE:
+
+     DistObject,Backup1,Probe
+     IfGT,350,ARRIVE
+
+     succeed,10,"FS07win.des"
+
+END:
+
+
+
+
+[routine,SwarmAttackWaves1,0,false] 
+ 
+
+SWARM_1:
+
+    getbylabel,PlayerPow,"unnamed_ibpgenBD"
+    Createp,Attacker,"svscL_D",5,"swarmSpawn_1"
+    attack,Attacker,Recycler,1
+    wait,15
+    Createp,Attacker,"svscL_D",5,"swarmSpawn_3"
+    attack,Attacker,t3GT1,1
+    wait,15 
+    Createp,Attacker,"svartl_J",5,"swarmSpawn_1"
+    attack,Attacker,PlayerPow,1
+    wait,15
+    JumpTo,SWARM_1
+
+
+[routine,SwarmAttackWaves2,0,false] 
+
+SWARM_2:
+
+    getbylabel,PlayerFac,"unnamed_ibfactBD"
+    Createp,Attacker,"svinst_J",5,"swarmSpawn_1"
+    attack,Attacker,Recycler,1
+    Createp,Attacker,"svinst_J",5,"swarmSpawn_3"
+    attack,Attacker,t3fact,1
+    wait,15
+    Createp,Attacker,"svwalk_J",5,"swarmSpawn_1"
+    attack,Attacker,PlayerFac,1
+    wait,15
+    JumpTo,SWARM_2
+
+
+
+
+
+[routine,CheckOverlord,0,false] 
+
+OVERLORD_IS_ALIVE:
+     
+     wait,10
+     isaround,PRoverlord
+     ifeq,true,OVERLORD_IS_ALIVE
+     fail,10,"FS07fail2.des"
+
+
+[routine,CheckRecy,1,false] 
+
+RECY_IS_ALIVE:
+     
+     wait,10
+     isaround,Recycler
+     ifeq,true,RECY_IS_ALIVE
+     fail,10,"FS07fail3.des"
+
+[routine,CheckT3Recy,0,false] 
+
+T3RECY_IS_ALIVE:
+     
+     wait,10
+     isaround,t3Recycler
+     ifeq,true,T3RECY_IS_ALIVE
+     fail,10,"FS07fail4.des"
+
+
+
+[routine,CheckProbe,0,false] 
+
+PROBE_IS_ALIVE:
+     
+     wait,10
+     isaround,Probe
+     ifeq,true,PROBE_IS_ALIVE
+     fail,10,"FS07fail5.des"
+
+
+[routine,CheckBackup,0,false] 
+
+BACKUP_IS_ALIVE:
+     
+     wait,10
+     isaround,Backup1
+     ifeq,true,BACKUP_IS_ALIVE
+     fail,10,"FS07fail6.des"
+
+
+
+
+[routine,new1,1,true]
+
+wait,10
+OnNewObject,1,changes1,newguy
+
+
+
+
+[routine,changes1,0,true]
+
+START1:
+getteam,newguy
+ifeq,3,OVER1
+
+getteam,newguy
+ifeq,6,OVER1
+
+setskill,newguy,2
+
+OVER1:
+runspeed,changes1,0,true
+
+
+jumpto,START1
+
+
+
+
+[routine,new,0,true]
+
+wait,10
+OnNewObject,1,changes,newguy
+
+
+[routine,changes,0,true]
+
+START:
+getteam,newguy
+ifeq,3,OVER
+
+getteam,newguy
+ifeq,6,OVER
+
+setskill,newguy,3
+
+OVER:
+runspeed,changes,0,true
+
+
+jumpto,START

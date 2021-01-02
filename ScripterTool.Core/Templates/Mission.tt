@@ -21,6 +21,7 @@ local M = {
     RoutineWakeTime = {},
     RoutineActive = {},
     MissionOver = false,
+    AddObjectData = nil,
 
     -- Objects
 <# foreach (var obj in Script.Objects) { #>
@@ -80,7 +81,7 @@ function DefineRoutines()
 for (var i = 0; i < Script.Routines.Count; i++) {
     var routine = Script.Routines[i];
 #>
-    DefineRoutine(<#= i #>, <#= routine.Name #>, <#= routine.GlobalRoutineSpeed > 0 ? "true" : "false" #>);
+    DefineRoutine("<#= routine.Name #>", <#= routine.Name #>, <#= routine.GlobalRoutineSpeed > 0 ? "true" : "false" #>);
 <# } #>
 end
 
@@ -116,6 +117,18 @@ function InitialSetup()
     for k,v in pairs(preloadAudio) do
         PreloadAudioMessage(v);
     end
+end
+
+function AddObject(handle)
+    if (M.AddObjectData == nil) then
+        return;
+    end
+    
+    local routine = Routines[M.AddObjectData[1]];
+    local handleName = M.AddObjectData[2];
+
+    M[handleName] = handle;
+    SetRoutineActive(routine, true)
 end
 
 function Update()

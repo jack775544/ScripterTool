@@ -19,6 +19,7 @@ local M = {
     RoutineWakeTime = {},
     RoutineActive = {},
     MissionOver = false,
+    AddObjectData = nil,
 
     -- Objects
     SwarmGT1 = nil,
@@ -154,6 +155,18 @@ function Update()
             r(routineID, M.RoutineState[routineID]);
         end
     end
+end
+
+function AddObject(handle)
+    if (M.AddObjectData == nil) then
+        return;
+    end
+    
+    local routine = Routines[M.AddObjectData[1]];
+    local handleName = M.AddObjectData[2];
+
+    M[handleName] = handle;
+    SetRoutineActive(routine, true)
 end
 
 function Main(R, STATE)

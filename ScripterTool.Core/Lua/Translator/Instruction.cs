@@ -33,5 +33,10 @@ namespace ScripterTool.Core.Lua.Translator
 				});
 			}
 		}
+
+		public Instruction(LuaLine line)
+		{
+			Statements.Add(line);
+		}
 	}
 }

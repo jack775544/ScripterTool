@@ -6,6 +6,21 @@ namespace ScripterTool.Core.Lua
 	{
 		public string Text { get; set; }
 
+		public LuaStatement(string text)
+		{
+			Text = text;
+		}
+		
+		public LuaStatement(string text, string comment)
+		{
+			Text = text;
+			Comment = comment;
+		}
+
+		public LuaStatement()
+		{
+		}
+
 		public override string ToString()
 		{
 			return ToString(0);
