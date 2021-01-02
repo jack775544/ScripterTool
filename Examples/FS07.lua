@@ -81,6 +81,33 @@ local M = {
 
     -- Variables
 
+    -- Return Variables
+    ValueMain57 = nil,
+    ValueMain59 = nil,
+    ValueMain75 = nil,
+    ValueMain87 = nil,
+    ValueMain91 = nil,
+    ValueMain94 = nil,
+    ValueMain111 = nil,
+    ValueMain131 = nil,
+    ValueMain145 = nil,
+    ValueMain214 = nil,
+    ValueMain217 = nil,
+    ValueMain220 = nil,
+    ValueMain223 = nil,
+    ValueMain229 = nil,
+    ValueMain299 = nil,
+    ValueMain301 = nil,
+    ValueCheckOverlord2 = nil,
+    ValueCheckRecy2 = nil,
+    ValueCheckT3Recy2 = nil,
+    ValueCheckProbe2 = nil,
+    ValueCheckBackup2 = nil,
+    Valuechanges11 = nil,
+    Valuechanges13 = nil,
+    Valuechanges1 = nil,
+    Valuechanges3 = nil,
+
     -- Just end it already!
     endme = 0
 }

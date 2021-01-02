@@ -19,6 +19,7 @@ namespace ScripterTool.Core
 				Routines = routines,
 				OdfPreloads = routines.SelectMany(x => x.OdfPreloads).ToList(),
 				AudioMessagePreloads = routines.SelectMany(x => x.AudioPreloads).ToList(),
+				ReturnVariables = routines.SelectMany(x => x.ReturnVariables).ToList(),
 			};
 			return lua.TransformText();
 		}

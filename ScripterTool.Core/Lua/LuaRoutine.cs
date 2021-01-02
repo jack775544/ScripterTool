@@ -20,6 +20,7 @@ namespace ScripterTool.Core.Lua
 		private string _lastReturnVariable;
 		public HashSet<string> OdfPreloads = new HashSet<string>();
 		public HashSet<string> AudioPreloads = new HashSet<string>();
+		public HashSet<string> ReturnVariables = new HashSet<string>();
 
 		public LuaRoutine(ScripterRoutine routine)
 		{
@@ -96,6 +97,10 @@ namespace ScripterTool.Core.Lua
 
 				OdfPreloads.AddRange(instruction.OdfPreloads);
 				AudioPreloads.AddRange(instruction.AudioPreloads);
+				if (!string.IsNullOrWhiteSpace(instruction.ReturnVariable))
+				{
+					ReturnVariables.Add(instruction.ReturnVariable);
+				}
 			}
 			else
 			{

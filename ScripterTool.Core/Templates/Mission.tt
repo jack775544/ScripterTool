@@ -37,6 +37,11 @@ local M = {
     <#= variable.Name #> = <#= variable.InitialValue #>,
 <# } #>
 
+    -- Return Variables
+<# foreach (var variable in ReturnVariables) { #>
+    <#= variable #> = nil,
+<# } #>
+
     -- Just end it already!
     endme = 0
 }
@@ -147,4 +152,5 @@ public ScriptFile Script { get; set; }
 public List<LuaRoutine> Routines { get; set; } = new List<LuaRoutine>();
 public List<string> OdfPreloads { get; set; } = new List<string>();
 public List<string> AudioMessagePreloads { get; set; } = new List<string>();
+public List<string> ReturnVariables { get; set; } = new List<string>();
 #>
