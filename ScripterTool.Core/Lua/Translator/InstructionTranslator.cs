@@ -51,6 +51,7 @@ namespace ScripterTool.Core.Lua.Translator
 					_ => new Instruction($"StartCockpitTimer({args[0]})")
 				}
 			},
+			{"StopTimer", (args, ctx) => new Instruction("StopCockpitTimer()")},
 			{"TeamColor", (args, ctx) => new Instruction($"SetTeamColor({args[0]}, {args[1]}, {args[2]}, {args[3]})")},
 			{"UnAlly", (args, ctx) => new Instruction($"UnAlly({args[0]}, {args[1]})")},
 			{"Replace", (args, ctx) => new Instruction($"M.{args[0]} = _ScripterCore.replace(M.{args[0]}, {args[1]}, {args[2]})")},
